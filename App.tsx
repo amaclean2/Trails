@@ -19,7 +19,7 @@ import {
   SundayPeakProviders,
 } from '@amaclean2/sundaypeak-treewells';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AppContent from './AppContent';
+import AppContent from './Components/Navigation/AppContent';
 
 Connections.setConnections(
   {
