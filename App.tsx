@@ -1,16 +1,10 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
 import {
   Connections,
   SundayPeakProviders,
 } from '@amaclean2/sundaypeak-treewells';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {NavigationContainer} from '@react-navigation/native';
 import AppContent from './Components/Navigation/AppContent';
 
 Connections.setConnections(
@@ -24,7 +18,9 @@ Connections.setConnections(
 const App = (): JSX.Element => {
   return (
     <SundayPeakProviders>
-      <AppContent />
+      <NavigationContainer>
+        <AppContent />
+      </NavigationContainer>
     </SundayPeakProviders>
   );
 };
