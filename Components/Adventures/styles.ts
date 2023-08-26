@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
   },
   headerTextLayout: {
     flexDirection: 'column',
+    maxWidth: 300,
   },
   headerText: {
     color: colors.primaryAccentColor,

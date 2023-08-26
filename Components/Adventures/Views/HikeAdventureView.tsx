@@ -2,13 +2,13 @@ import React from 'react';
 import {ActionSheetIOS, Pressable, ScrollView, Text, View} from 'react-native';
 import {useAdventureStateContext} from '@amaclean2/sundaypeak-treewells';
 
-import {styles} from './styles';
-import {Meatball} from '../../Assets/UIGlyphs/Meatball';
-import {formatGearList, formatSeasons} from './utils';
-import ViewField from '../Reusable/Field';
-import AdventurePathView from './AdventurePathView';
+import {styles} from '../styles';
+import {Meatball} from '../../../Assets/UIGlyphs/Meatball';
+import {formatSeasons} from '../utils';
+import ViewField from '../../Reusable/Field';
+import AdventurePathView from '../AdventurePathView';
 
-const SkiAdventureView = ({navigation}: any): JSX.Element => {
+const HikeAdventureView = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
 
   const onMenuPress = () => {
@@ -79,24 +79,8 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
               content={currentAdventure?.difficulty ?? '0'}
             />
             <ViewField
-              title={'Exposure'}
-              content={currentAdventure?.exposure ?? '0'}
-            />
-            <ViewField
-              title={'Slope Angle'}
-              content={`${currentAdventure?.avg_angle ?? ''} - ${
-                currentAdventure?.max_angle ?? ''
-              }\u00b0`}
-            />
-            <ViewField
-              title={'Aspect'}
-              content={currentAdventure?.aspect ?? ''}
-            />
-          </View>
-          <View style={styles.adventureRow}>
-            <ViewField
-              title={'Approach'}
-              content={`${currentAdventure?.distance ?? ''} mi`}
+              title={'Distance'}
+              content={`${currentAdventure?.distance ?? '0'} mi`}
             />
             <ViewField
               title={'Elevation'}
@@ -105,14 +89,6 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
               } ft`}
             />
           </View>
-          <ViewField
-            title={'Gear'}
-            content={formatGearList(
-              currentAdventure?.gear?.length
-                ? JSON.parse(currentAdventure.gear)
-                : [],
-            )}
-          />
           <ViewField
             title={'Season'}
             content={formatSeasons(
@@ -127,4 +103,4 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
   );
 };
 
-export default SkiAdventureView;
+export default HikeAdventureView;

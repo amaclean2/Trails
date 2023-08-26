@@ -3,9 +3,20 @@ import {
   useAdventureStateContext,
   useTokenStateContext,
 } from '@amaclean2/sundaypeak-treewells';
-import {Camera, LineLayer, MapView, ShapeSource} from '@rnmapbox/maps';
+import {
+  Camera,
+  Images,
+  LineLayer,
+  MapView,
+  ShapeSource,
+  SymbolLayer,
+} from '@rnmapbox/maps';
 
-import {calculateCameraBounds, paddingObject} from './utils';
+import skierIcon from '../../Assets/Activities/SkierIcon.png';
+import climberIcon from '../../Assets/Activities/ClimberIcon.png';
+import hikerIcon from '../../Assets/Activities/HikerIcon.png';
+
+import {calculateCameraBounds, paddingObject, pathColor} from './utils';
 
 const MapCamera = ({workingPath = [], coordinates = []}: any): JSX.Element => (
   <>
@@ -18,7 +29,7 @@ const MapCamera = ({workingPath = [], coordinates = []}: any): JSX.Element => (
     ) : (
       <Camera
         centerCoordinate={coordinates}
-        zoomLevel={12}
+        zoomLevel={14}
         animationMode={'moveTo'}
       />
     )}
@@ -29,12 +40,18 @@ const AdventurePathView = (): JSX.Element => {
   const {mapboxStyleKey} = useTokenStateContext();
   const {workingPath, currentAdventure} = useAdventureStateContext();
 
+  const images = {
+    ski: skierIcon,
+    climb: climberIcon,
+    hike: hikerIcon,
+  };
+
   return (
     <MapView
       style={{flex: 1}}
       styleURL={mapboxStyleKey as string}
       logoEnabled={false}
-      scrollEnabled={false}
+      // scrollEnabled={false}
       pitchEnabled={false}
       // rotateEnabled={false}
       // zoomEnabled={false}
@@ -50,7 +67,7 @@ const AdventurePathView = (): JSX.Element => {
           ]}
         />
       )}
-      {workingPath.length ? (
+      {workingPath?.length ? (
         <ShapeSource
           id="pathSource"
           shape={{
@@ -64,7 +81,7 @@ const AdventurePathView = (): JSX.Element => {
           <LineLayer
             id="pathLayer"
             style={{
-              lineColor: '#38e',
+              lineColor: pathColor(currentAdventure?.adventure_type),
               lineWidth: 5,
               lineJoin: 'round',
               lineCap: 'round',
@@ -72,10 +89,36 @@ const AdventurePathView = (): JSX.Element => {
           />
         </ShapeSource>
       ) : (
-        <></>
+        <>
+          <Images images={images} />
+          <ShapeSource
+            id="pointSource"
+            shape={{
+              type: 'Feature',
+              properties: {
+                icon: currentAdventure?.adventure_type as string,
+              },
+              geometry: {
+                type: 'Point',
+                coordinates: [
+                  currentAdventure?.coordinates.lng as number,
+                  currentAdventure?.coordinates.lat as number,
+                ],
+              },
+            }}>
+            <SymbolLayer id="pointLayer" style={MapboxStyles.mapboxIcon} />
+          </ShapeSource>
+        </>
       )}
     </MapView>
   );
+};
+
+const MapboxStyles = {
+  mapboxIcon: {
+    iconImage: ['get', 'icon'],
+    iconSize: 0.4,
+  },
 };
 
 export default AdventurePathView;
