@@ -112,3 +112,14 @@ export const paddingObject = (padding: number) => ({
   paddingLeft: padding,
   paddingRight: padding,
 });
+
+export const pathColor = (adventureType = 'ski') => {
+  switch (adventureType) {
+    case 'hike':
+      return '#e53';
+    case 'bike':
+      return '#3a3';
+    default:
+      return '#38e';
+  }
+};

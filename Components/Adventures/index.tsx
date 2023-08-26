@@ -4,7 +4,7 @@ import {
   useGetAdventures,
 } from '@amaclean2/sundaypeak-treewells';
 import {Text, View} from 'react-native';
-import SkiAdventureView from './SkiAdventureView';
+import AdventureViews from './Views';
 
 type LocalAdventureChoiceType = 'hike' | 'ski' | 'climb';
 
@@ -24,7 +24,7 @@ const AdventureView = ({navigation, route}: any): JSX.Element => {
   return (
     <>
       {currentAdventure ? (
-        <SkiAdventureView navigation={navigation} />
+        <AdventureViews navigation={navigation} />
       ) : (
         <View>
           <Text>No current adventure</Text>
