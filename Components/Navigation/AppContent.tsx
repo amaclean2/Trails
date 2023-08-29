@@ -6,10 +6,20 @@ import AdventureView from '../Adventures';
 import UserProfile from '../Users';
 import Conversations from '../Conversations';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import AdventurersList from '../Adventures/AdventurersList';
+import {useUserStateContext} from '@amaclean2/sundaypeak-treewells';
+import ExternalViews from '../External';
+import OtherUser from '../Users/OtherUser';
+import {colors} from '../../Assets/Colors';
+import FriendsList from '../Users/FriendsList';
+import AdventuresList from '../Users/AdventuresList';
+import Adventurers from '../Adventures/Adventurers';
 const {Navigator, Screen} = createBottomTabNavigator();
 const {Navigator: StackNavigator, Screen: StackScreen} =
   createNativeStackNavigator();
+
+const defaultHeaderOptions = {
+  headerTintColor: colors.primaryAccentColor,
+};
 
 const AdventureStack = (): JSX.Element => {
   return (
@@ -17,18 +27,102 @@ const AdventureStack = (): JSX.Element => {
       <StackScreen
         name={'Adventures'}
         component={AdventureView}
-        options={{headerShown: false}}
+        options={{
+          ...defaultHeaderOptions,
+          headerShown: false,
+          title: 'Adventure View',
+        }}
       />
       <StackScreen
         name={'Adventurers'}
-        component={AdventurersList}
-        options={{headerShown: true}}
+        component={Adventurers}
+        options={{
+          ...defaultHeaderOptions,
+          headerShown: true,
+          title: 'Todo List',
+        }}
+      />
+      <StackScreen
+        name={'OtherProfile'}
+        component={OtherUser}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerTitle: route.params?.name,
+          headerShown: true,
+        })}
+      />
+      <StackScreen
+        name={'FriendsList'}
+        component={FriendsList}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerTitle: 'Connections',
+          headerBackTitle: route.params?.backName,
+        })}
+      />
+      <StackScreen
+        name={'AdventuresList'}
+        component={AdventuresList}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerTitle: 'Adventures',
+          headerBackTitle: route.params?.backName,
+        })}
+      />
+    </StackNavigator>
+  );
+};
+
+const UserStack = (): JSX.Element => {
+  return (
+    <StackNavigator screenOptions={{headerShown: false}}>
+      <StackScreen
+        name={'Profile'}
+        component={UserProfile}
+        options={{...defaultHeaderOptions, headerShown: false}}
+      />
+      <StackScreen
+        name={'FriendsList'}
+        component={FriendsList}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerTitle: 'Connections',
+          headerBackTitle: route.params?.backName,
+        })}
+      />
+      <StackScreen
+        name={'OtherProfile'}
+        component={OtherUser}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerTitle: route.params?.name,
+          headerShown: true,
+          headerBackTitle: route.params?.backName,
+        })}
+      />
+      <StackScreen
+        name={'AdventuresList'}
+        component={AdventuresList}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerTitle: 'Adventures',
+          headerBackTitle: route.params?.backName,
+        })}
       />
     </StackNavigator>
   );
 };
 
 const AppContent = (): JSX.Element => {
+  const {loggedInUser} = useUserStateContext();
+  if (!loggedInUser) {
+    return <ExternalViews />;
+  }
+
   return (
     <Navigator>
       <Screen
@@ -42,9 +136,9 @@ const AppContent = (): JSX.Element => {
         options={{headerShown: false, title: 'Adventures'}}
       />
       <Screen
-        name="Profile"
-        component={UserProfile}
-        options={{headerShown: false}}
+        name="UserStack"
+        component={UserStack}
+        options={{headerShown: false, title: 'Profile'}}
       />
       <Screen
         name="Conversations"
