@@ -16,25 +16,31 @@ import skierIcon from '../../Assets/Activities/SkierIcon.png';
 import climberIcon from '../../Assets/Activities/ClimberIcon.png';
 import hikerIcon from '../../Assets/Activities/HikerIcon.png';
 
-import {calculateCameraBounds, paddingObject, pathColor} from './utils';
+import {paddingObject, pathColor} from './utils';
 
-const MapCamera = ({workingPath = [], coordinates = []}: any): JSX.Element => (
-  <>
-    {workingPath.length ? (
-      <Camera
-        bounds={calculateCameraBounds(workingPath)}
-        animationMode={'moveTo'}
-        padding={paddingObject(50)}
-      />
-    ) : (
-      <Camera
-        centerCoordinate={coordinates}
-        zoomLevel={14}
-        animationMode={'moveTo'}
-      />
-    )}
-  </>
-);
+const MapCamera = ({workingPath = []}: any): JSX.Element => {
+  const {currentAdventure} = useAdventureStateContext();
+  return (
+    <>
+      {currentAdventure?.path && workingPath.length ? (
+        <Camera
+          bounds={currentAdventure?.cameraBounds}
+          animationMode={'moveTo'}
+          padding={paddingObject(50)}
+        />
+      ) : (
+        <Camera
+          centerCoordinate={[
+            currentAdventure?.coordinates.lng as number,
+            currentAdventure?.coordinates.lat as number,
+          ]}
+          zoomLevel={14}
+          animationMode={'moveTo'}
+        />
+      )}
+    </>
+  );
+};
 
 const AdventurePathView = (): JSX.Element => {
   const {mapboxStyleKey} = useTokenStateContext();
@@ -67,7 +73,7 @@ const AdventurePathView = (): JSX.Element => {
           ]}
         />
       )}
-      {workingPath?.length ? (
+      {workingPath?.length && currentAdventure?.path ? (
         <ShapeSource
           id="pathSource"
           shape={{

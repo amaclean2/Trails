@@ -1,5 +1,12 @@
 import React from 'react';
-import {ActionSheetIOS, Pressable, ScrollView, Text, View} from 'react-native';
+import {
+  ActionSheetIOS,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import {useAdventureStateContext} from '@amaclean2/sundaypeak-treewells';
 
 import {styles} from '../styles';
@@ -7,6 +14,7 @@ import {Meatball} from '../../../Assets/UIGlyphs/Meatball';
 import {formatSeasons} from '../utils';
 import ViewField from '../../Reusable/Field';
 import AdventurePathView from '../AdventurePathView';
+import {generalStyles} from '../../GeneralStyles';
 
 const ClimbAdventureView = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
@@ -20,9 +28,7 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
           'Complete Adventure',
           'View Adventurers',
           'Edit Adventure',
-          'Delete Adventure',
         ],
-        destructiveButtonIndex: 5,
         cancelButtonIndex: 0,
       },
       buttonIndex => {
@@ -39,9 +45,6 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
           case 4:
             console.log('edited');
             break;
-          case 5:
-            console.log('deleted');
-            break;
           default:
             console.log('canceled');
         }
@@ -50,14 +53,14 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={generalStyles.container}>
       <ScrollView>
-        <View style={styles.header}>
-          <View style={styles.headerTextLayout}>
-            <Text style={styles.headerText}>
+        <View style={generalStyles.header}>
+          <View style={generalStyles.headerTextLayout}>
+            <Text style={generalStyles.headerText}>
               {currentAdventure?.adventure_name}
             </Text>
-            <Text style={styles.headerSubText}>
+            <Text style={generalStyles.headerSubText}>
               {currentAdventure?.nearest_city}
             </Text>
           </View>
@@ -72,7 +75,7 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
           <View style={styles.adventureRow}>
             <Text>{currentAdventure?.bio}</Text>
           </View>
-          <View style={styles.lineBreak} />
+          <View style={generalStyles.lineBreak} />
           <View style={styles.adventureRow}>
             <ViewField
               title={'Climb Type'}
@@ -111,7 +114,7 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
           />
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
