@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pressable, Text, View} from 'react-native';
+import {Pressable, SafeAreaView, Text, View} from 'react-native';
 import {
   MapView,
   UserLocation,
@@ -58,7 +58,7 @@ const Mapbox = ({navigation}: any): JSX.Element => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <MapView
         style={styles.map}
         styleURL={mapboxStyleKey as string}
@@ -133,7 +133,7 @@ const Mapbox = ({navigation}: any): JSX.Element => {
           </Text>
         </Pressable>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

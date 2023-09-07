@@ -14,10 +14,13 @@ import {generalStyles} from '../GeneralStyles';
 import {Meatball} from '../../Assets/UIGlyphs/Meatball';
 import {styles} from './styles';
 import ViewField from '../Reusable/Field';
+import {useImageUploads} from '../Helpers';
+import ImageGallery from '../Reusable/ImageGallery';
 
 const UserProfile = ({navigation}: any): JSX.Element => {
   const {logoutUser} = useGetUser();
   const {loggedInUser} = useUserStateContext();
+  const {saveUserImage} = useImageUploads();
 
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -91,6 +94,13 @@ const UserProfile = ({navigation}: any): JSX.Element => {
           </Pressable>
         </View>
         <Text style={styles.bio}>{loggedInUser?.bio}</Text>
+        <ImageGallery
+          navigation={navigation}
+          source={'User'}
+          backName={`${loggedInUser?.first_name} ${loggedInUser?.last_name}`}
+          images={loggedInUser?.images ?? []}
+          onAddPicture={saveUserImage}
+        />
       </ScrollView>
     </SafeAreaView>
   );

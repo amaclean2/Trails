@@ -15,6 +15,7 @@ import {Meatball} from '../../Assets/UIGlyphs/Meatball';
 import {styles} from './styles';
 import ViewField from '../Reusable/Field';
 import {Pin} from '../../Assets/UIGlyphs/Pin';
+import ImageGallery from '../Reusable/ImageGallery';
 
 const OtherUser = ({navigation, route}: any): JSX.Element => {
   const {logoutUser} = useGetUser();
@@ -54,6 +55,10 @@ const OtherUser = ({navigation, route}: any): JSX.Element => {
       navigation.navigate('UserStack', {screen: 'Profile'});
     }
   }, [route.params]);
+
+  if (workingUser?.id === loggedInUser?.id) {
+    return <></>;
+  }
 
   return (
     <SafeAreaView
@@ -112,6 +117,13 @@ const OtherUser = ({navigation, route}: any): JSX.Element => {
           </View>
         </View>
         <Text style={styles.bio}>{workingUser?.bio}</Text>
+        <ImageGallery
+          navigation={navigation}
+          source="User"
+          backName={`${workingUser?.first_name} ${workingUser?.last_name}`}
+          images={workingUser?.images as string[]}
+          onAddPicture={undefined}
+        />
       </ScrollView>
     </SafeAreaView>
   );

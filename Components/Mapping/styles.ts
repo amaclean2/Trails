@@ -11,8 +11,7 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginBottom: -78,
-    marginTop: 50,
-    height: 28,
+    height: 27,
     flexDirection: 'row',
     gap: 5,
     paddingEnd: 5,
@@ -22,7 +21,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.mainOffWhite,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 10,
+    borderRadius: 5,
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
