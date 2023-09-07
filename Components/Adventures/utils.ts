@@ -1,3 +1,91 @@
+import {
+  useAdventureStateContext,
+  useSaveCompletedAdventure,
+  useSaveTodo,
+  useUserStateContext,
+} from '@amaclean2/sundaypeak-treewells';
+
+export const useAdventureMenu = () => {
+  const {loggedInUser} = useUserStateContext();
+  const {currentAdventure} = useAdventureStateContext();
+  const {saveTodo} = useSaveTodo();
+  const {saveCompletedAdventure} = useSaveCompletedAdventure();
+
+  const buildMenuContents = ({navigation}: any) => {
+    if (!loggedInUser) {
+      return null;
+    }
+
+    const canAddTodo =
+      !loggedInUser?.todo_adventures
+        ?.map(({adventure_id}) => adventure_id)
+        .includes(currentAdventure?.id as number) &&
+      !loggedInUser?.completed_adventures
+        ?.map(({adventure_id}) => adventure_id)
+        .includes(currentAdventure?.id as number);
+
+    const canComplete = !loggedInUser?.completed_adventures
+      ?.map(({adventure_id}) => adventure_id)
+      .includes(currentAdventure?.id as number);
+
+    const fields = [];
+
+    if (currentAdventure) {
+      fields.push({
+        action: () => console.log('Canceled...'),
+        text: 'Cancel',
+      });
+
+      fields.push({
+        action: () => navigation.navigate('Adventurers'),
+        text: 'View Adventurers',
+      });
+
+      fields.push({
+        action: () => console.log('Sharing...'),
+        text: 'Share Adventure',
+      });
+
+      fields.push({
+        action: () => console.log('Editing...'),
+        text: 'Edit Adventure',
+      });
+
+      if (canAddTodo) {
+        fields.push({
+          action: () =>
+            saveTodo({
+              adventureId: currentAdventure.id as number,
+              adventureType: currentAdventure.adventure_type,
+            }),
+          text: 'Add Adventure to Todo List',
+        });
+      }
+
+      if (canComplete) {
+        fields.push({
+          action: () =>
+            saveCompletedAdventure({
+              adventureId: currentAdventure.id as number,
+              adventureType: currentAdventure.adventure_type,
+            }),
+          text: 'Complete Adventure',
+        });
+      }
+    }
+
+    if (!fields.length) {
+      return null;
+    }
+
+    return fields;
+  };
+
+  return {
+    buildMenuContents,
+  };
+};
+
 const months = [
   'January',
   'February',

@@ -11,7 +11,11 @@ const ViewField = ({
   return (
     <View style={styles.viewField}>
       <Text style={styles.fieldHeader}>{title}</Text>
-      <Text style={styles.fieldText}>{content}</Text>
+      {typeof content === 'string' || typeof content === 'number' ? (
+        <Text style={styles.fieldText}>{content}</Text>
+      ) : (
+        content
+      )}
     </View>
   );
 };

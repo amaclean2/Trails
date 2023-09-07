@@ -2,7 +2,6 @@ import React from 'react';
 import Mapbox from '../Mapping/Mapbox';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import AdventureView from '../Adventures';
 import UserProfile from '../Users';
 import Conversations from '../Conversations';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -13,6 +12,10 @@ import {colors} from '../../Assets/Colors';
 import FriendsList from '../Users/FriendsList';
 import AdventuresList from '../Users/AdventuresList';
 import Adventurers from '../Adventures/Adventurers';
+import AdventureViews from '../Adventures/Views';
+import DefaultAdventure from '../Adventures';
+import ImageViewer from '../Reusable/ImageViewer';
+
 const {Navigator, Screen} = createBottomTabNavigator();
 const {Navigator: StackNavigator, Screen: StackScreen} =
   createNativeStackNavigator();
@@ -25,8 +28,17 @@ const AdventureStack = (): JSX.Element => {
   return (
     <StackNavigator screenOptions={{headerShown: false}}>
       <StackScreen
+        name={'DefaultAdventure'}
+        component={DefaultAdventure}
+        options={{
+          ...defaultHeaderOptions,
+          headerShown: false,
+          title: 'Adventure View',
+        }}
+      />
+      <StackScreen
         name={'Adventures'}
-        component={AdventureView}
+        component={AdventureViews}
         options={{
           ...defaultHeaderOptions,
           headerShown: false,
@@ -71,6 +83,15 @@ const AdventureStack = (): JSX.Element => {
           headerBackTitle: route.params?.backName,
         })}
       />
+      <StackScreen
+        name={'ImageViewer'}
+        component={ImageViewer}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerTitle: route.params?.adventureTitle,
+        })}
+      />
     </StackNavigator>
   );
 };
@@ -111,6 +132,15 @@ const UserStack = (): JSX.Element => {
           headerShown: true,
           headerTitle: 'Adventures',
           headerBackTitle: route.params?.backName,
+        })}
+      />
+      <StackScreen
+        name={'ImageViewer'}
+        component={ImageViewer}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerTitle: route.params?.userName,
         })}
       />
     </StackNavigator>

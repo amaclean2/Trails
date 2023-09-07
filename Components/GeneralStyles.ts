@@ -55,7 +55,7 @@ export const generalStyles = StyleSheet.create({
     marginVertical: 20,
     flexDirection: 'row',
     paddingHorizontal: 15,
-    paddingEnd: 30,
+    paddingEnd: 15,
     justifyContent: 'space-between',
     alignItems: 'center',
   },

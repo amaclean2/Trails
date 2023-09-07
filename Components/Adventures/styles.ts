@@ -13,8 +13,37 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   mapContainer: {
-    width: 420,
     backgroundColor: colors.mainOffWhite,
     height: 300,
+  },
+  picturesContainer: {
+    height: 100,
+    marginVertical: 15,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  picture: {
+    height: 100,
+    width: 100,
+    objectFit: 'cover',
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  addImageButton: {
+    borderColor: colors.borderColor,
+    borderRadius: 5,
+    borderWidth: StyleSheet.hairlineWidth,
+    height: 100,
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+  },
+  fieldText: {
+    fontSize: 18,
+    fontWeight: '400',
+    paddingVertical: 5,
+    color: colors.primaryAccentColor,
   },
 });

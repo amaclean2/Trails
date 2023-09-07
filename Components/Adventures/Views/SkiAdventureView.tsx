@@ -7,48 +7,34 @@ import {
   Text,
   View,
 } from 'react-native';
-import {useAdventureStateContext} from '@amaclean2/sundaypeak-treewells';
+import {
+  useAdventureStateContext,
+  useUserStateContext,
+} from '@amaclean2/sundaypeak-treewells';
 
 import {styles} from '../styles';
 import {Meatball} from '../../../Assets/UIGlyphs/Meatball';
-import {formatGearList, formatSeasons} from '../utils';
+import {formatGearList, formatSeasons, useAdventureMenu} from '../utils';
 import ViewField from '../../Reusable/Field';
 import AdventurePathView from '../AdventurePathView';
 import {generalStyles} from '../../GeneralStyles';
+import ImageGallery from '../../Reusable/ImageGallery';
+import {useImageUploads} from '../../Helpers';
 
 const SkiAdventureView = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
+  const {saveAdventureImage} = useImageUploads();
+  const {buildMenuContents} = useAdventureMenu();
+  const menuContents = buildMenuContents({navigation});
+  const {loggedInUser} = useUserStateContext();
 
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: [
-          'Cancel',
-          'Add Adventure to Todo List',
-          'Complete Adventure',
-          'View Adventurers',
-          'Edit Adventure',
-        ],
+        options: menuContents?.map(({text}) => text) ?? [],
         cancelButtonIndex: 0,
       },
-      buttonIndex => {
-        switch (buttonIndex) {
-          case 3:
-            navigation.navigate('Adventurers');
-            break;
-          case 1:
-            console.log('added to todo');
-            break;
-          case 2:
-            console.log('completed');
-            break;
-          case 4:
-            console.log('edited');
-            break;
-          default:
-            console.log('canceled');
-        }
-      },
+      buttonIndex => menuContents?.[buttonIndex].action(),
     );
   };
 
@@ -64,10 +50,23 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
               {currentAdventure?.nearest_city}
             </Text>
           </View>
-          <Pressable onPress={onMenuPress}>
-            <Meatball />
-          </Pressable>
+          {menuContents !== null && (
+            <Pressable onPress={onMenuPress}>
+              <Meatball />
+            </Pressable>
+          )}
         </View>
+        <ImageGallery
+          navigation={navigation}
+          source={'Adventure'}
+          backName={currentAdventure?.adventure_name || ''}
+          images={currentAdventure?.images as string[]}
+          onAddPicture={
+            currentAdventure?.creator_id === loggedInUser?.id
+              ? saveAdventureImage
+              : undefined
+          }
+        />
         <View style={styles.mapContainer}>
           <AdventurePathView />
         </View>
@@ -123,6 +122,22 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
                 ? JSON.parse(currentAdventure.season)
                 : [],
             )}
+          />
+          <ViewField
+            title={'Creator'}
+            content={
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('OtherProfile', {
+                    name: currentAdventure?.creator_name,
+                    userId: currentAdventure?.creator_id,
+                  })
+                }>
+                <Text style={styles.fieldText}>
+                  {currentAdventure?.creator_name}
+                </Text>
+              </Pressable>
+            }
           />
         </View>
       </ScrollView>
