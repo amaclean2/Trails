@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import {colors} from '../../Assets/Colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -7,6 +6,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
+    marginHorizontal: 20,
   },
   mainLogo: {
     width: 350,
@@ -18,5 +18,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  fieldContainer: {
+    flexDirection: 'column',
+    alignSelf: 'stretch',
+    marginHorizontal: 10,
   },
 });

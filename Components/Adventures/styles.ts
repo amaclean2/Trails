@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   adventureRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 50,
+    gap: 35,
     justifyContent: 'flex-start',
   },
   mapContainer: {
@@ -45,5 +45,11 @@ export const styles = StyleSheet.create({
     fontWeight: '400',
     paddingVertical: 5,
     color: colors.primaryAccentColor,
+  },
+  symbolView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginTop: 5,
   },
 });

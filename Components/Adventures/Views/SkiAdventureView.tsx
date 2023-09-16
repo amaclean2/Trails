@@ -20,6 +20,12 @@ import AdventurePathView from '../AdventurePathView';
 import {generalStyles} from '../../GeneralStyles';
 import ImageGallery from '../../Reusable/ImageGallery';
 import {useImageUploads} from '../../Helpers';
+import {
+  AngleIcon,
+  DistanceIcon,
+  ElevationIcon,
+} from '../../../Assets/Symbols/LabelIcons';
+import {AspectIcon} from '../../../Assets/Symbols/AspectIcon';
 
 const SkiAdventureView = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
@@ -68,7 +74,7 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
           }
         />
         <View style={styles.mapContainer}>
-          <AdventurePathView />
+          <AdventurePathView navigation={navigation} />
         </View>
         <View style={styles.adventureBody}>
           <View style={styles.adventureRow}>
@@ -78,33 +84,54 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
           <View style={styles.adventureRow}>
             <ViewField
               title={'Difficulty'}
-              content={currentAdventure?.difficulty ?? '0'}
+              content={`${currentAdventure?.difficulty ?? '0'} / 5`}
             />
             <ViewField
               title={'Exposure'}
-              content={currentAdventure?.exposure ?? '0'}
+              content={`${currentAdventure?.exposure ?? '0'} / 5`}
             />
             <ViewField
               title={'Slope Angle'}
-              content={`${currentAdventure?.avg_angle ?? ''} - ${
-                currentAdventure?.max_angle ?? ''
-              }\u00b0`}
-            />
-            <ViewField
-              title={'Aspect'}
-              content={currentAdventure?.aspect ?? ''}
+              content={
+                <View style={styles.symbolView}>
+                  <AngleIcon />
+                  <Text>
+                    {`${currentAdventure?.avg_angle ?? ''} - ${
+                      currentAdventure?.max_angle ?? ''
+                    }\u00b0`}
+                  </Text>
+                </View>
+              }
             />
           </View>
           <View style={styles.adventureRow}>
             <ViewField
+              title={'Aspect'}
+              content={
+                <View style={styles.symbolView}>
+                  <AspectIcon direction={currentAdventure?.aspect} />
+                </View>
+              }
+            />
+            <ViewField
               title={'Approach'}
-              content={`${currentAdventure?.distance ?? ''} mi`}
+              content={
+                <View style={styles.symbolView}>
+                  <DistanceIcon />
+                  <Text>{`${currentAdventure?.distance ?? ''} mi`}</Text>
+                </View>
+              }
             />
             <ViewField
               title={'Elevation'}
-              content={`${currentAdventure?.base_elevation ?? ''} - ${
-                currentAdventure?.summit_elevation
-              } ft`}
+              content={
+                <View style={styles.symbolView}>
+                  <ElevationIcon />
+                  <Text>{`${currentAdventure?.base_elevation ?? ''} - ${
+                    currentAdventure?.summit_elevation
+                  } ft`}</Text>
+                </View>
+              }
             />
           </View>
           <ViewField

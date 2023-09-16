@@ -1,12 +1,38 @@
 import React from 'react';
 import {G, Polygon, Svg} from 'react-native-svg';
 
-export const AspectIcon = (): JSX.Element => (
+const calculateRotation = (aspect: string) => {
+  switch (aspect) {
+    case 'SE':
+      return '45deg';
+    case 'S':
+      return '90deg';
+    case 'SW':
+      return '135deg';
+    case 'W':
+      return '180deg';
+    case 'NW':
+      return '235deg';
+    case 'N':
+      return '270deg';
+    case 'NE':
+      return '315deg';
+    default:
+      return '0deg';
+  }
+};
+
+export const AspectIcon = ({
+  direction = 'N',
+}: {
+  direction?: string;
+}): JSX.Element => (
   <Svg
     id="Layer_1"
     data-name="Layer 1"
     width="32"
     height="32"
+    transform={[{rotate: calculateRotation(direction)}]}
     viewBox="0 0 32 32">
     <G>
       <Polygon

@@ -15,10 +15,9 @@ import {
 import skierIcon from '../../Assets/Activities/SkierIcon.png';
 import climberIcon from '../../Assets/Activities/ClimberIcon.png';
 import hikerIcon from '../../Assets/Activities/HikerIcon.png';
+import {paddingObject, pathColor} from '../Adventures/utils';
 
-import {paddingObject, pathColor} from './utils';
-
-const MapCamera = (): JSX.Element => {
+const MapCamera = ({navigation, route}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
   return (
     <>
@@ -42,7 +41,7 @@ const MapCamera = (): JSX.Element => {
   );
 };
 
-const AdventurePathView = ({navigation}: any): JSX.Element => {
+const AdventureMap = (): JSX.Element => {
   const {mapboxStyleKey} = useTokenStateContext();
   const {workingPath, currentAdventure} = useAdventureStateContext();
 
@@ -56,20 +55,14 @@ const AdventurePathView = ({navigation}: any): JSX.Element => {
     <MapView
       style={{flex: 1}}
       styleURL={mapboxStyleKey as string}
-      logoEnabled={false}
-      scrollEnabled={false}
+      logoEnabled
       pitchEnabled={false}
-      rotateEnabled={false}
-      zoomEnabled={false}
       attributionEnabled={false}
-      onPress={() =>
-        navigation.navigate('AdventureMap', {
-          adventureName: currentAdventure?.adventure_name,
-        })
-      }
-      scaleBarEnabled={false}>
+      compassEnabled
+      compassPosition={{bottom: 15, right: 15}}
+      scaleBarEnabled>
       {currentAdventure?.path?.length ? (
-        <MapCamera />
+        <MapCamera workingPath={workingPath} />
       ) : (
         <MapCamera
           coordinates={[
@@ -132,4 +125,4 @@ const MapboxStyles = {
   },
 };
 
-export default AdventurePathView;
+export default AdventureMap;

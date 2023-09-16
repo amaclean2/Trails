@@ -3,7 +3,7 @@ import Mapbox from '../Mapping/Mapbox';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import UserProfile from '../Users';
-import Conversations from '../Conversations';
+// import Conversations from '../Conversations';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useUserStateContext} from '@amaclean2/sundaypeak-treewells';
 import ExternalViews from '../External';
@@ -15,6 +15,10 @@ import Adventurers from '../Adventures/Adventurers';
 import AdventureViews from '../Adventures/Views';
 import DefaultAdventure from '../Adventures';
 import ImageViewer from '../Reusable/ImageViewer';
+import EditUser from '../Users/EditUser';
+import AdventureEditor from '../Adventures/Editors';
+import AdventureMap from '../Mapping/AdventureMap';
+import TabBar from './TabBar';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 const {Navigator: StackNavigator, Screen: StackScreen} =
@@ -92,6 +96,23 @@ const AdventureStack = (): JSX.Element => {
           headerTitle: route.params?.adventureTitle,
         })}
       />
+      <StackScreen
+        name={'AdventureEditor'}
+        component={AdventureEditor}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerTitle: route.params?.adventureTitle,
+        })}
+      />
+      <Screen
+        name="AdventureMap"
+        component={AdventureMap}
+        options={({route}) => ({
+          headerShown: true,
+          headerTitle: route.params?.adventureName,
+        })}
+      />
     </StackNavigator>
   );
 };
@@ -143,6 +164,15 @@ const UserStack = (): JSX.Element => {
           headerTitle: route.params?.userName,
         })}
       />
+      <StackScreen
+        name={'EditUser'}
+        component={EditUser}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerTitle: route.params?.userName,
+        })}
+      />
     </StackNavigator>
   );
 };
@@ -154,11 +184,11 @@ const AppContent = (): JSX.Element => {
   }
 
   return (
-    <Navigator>
+    <Navigator tabBar={props => <TabBar {...props} />}>
       <Screen
         name="Explore"
         component={Mapbox}
-        options={{headerShown: false}}
+        options={{headerShown: false, title: 'Explore'}}
       />
       <Screen
         name="AdventureStack"
@@ -170,11 +200,11 @@ const AppContent = (): JSX.Element => {
         component={UserStack}
         options={{headerShown: false, title: 'Profile'}}
       />
-      <Screen
+      {/* <Screen
         name="Conversations"
         component={Conversations}
         options={{headerShown: false}}
-      />
+      /> */}
     </Navigator>
   );
 };

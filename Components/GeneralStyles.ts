@@ -3,12 +3,11 @@ import {colors} from '../Assets/Colors';
 
 export const generalStyles = StyleSheet.create({
   inputField: {
-    backgroundColor: colors.offBackgroundColor,
+    backgroundColor: colors.borderColor,
     paddingVertical: 8,
     paddingHorizontal: 16,
     margin: 3,
     borderRadius: 8,
-    width: 350,
     fontSize: 16,
   },
   button: {
@@ -105,5 +104,15 @@ export const generalStyles = StyleSheet.create({
     height: 40,
     width: 40,
     borderRadius: 5,
+  },
+  backButton: {
+    backgroundColor: colors.primaryAccentColor,
+    width: 350,
+    paddingVertical: 10,
+    margin: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginHorizontal: 15,
+    justifyContent: 'center',
   },
 });

@@ -1,21 +1,10 @@
 import React, {useState} from 'react';
-import {
-  FlatList,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {FlatList, Pressable, SafeAreaView, Text, View} from 'react-native';
 import {generalStyles} from '../GeneralStyles';
-import {colors} from '../../Assets/Colors';
 import {useDebounce, useGetAdventures} from '@amaclean2/sundaypeak-treewells';
 import {LargeSkierIcon} from '../../Assets/Activities/LargeSkierIcon';
 import {LargeClimberIcon} from '../../Assets/Activities/LargeClimberIcon';
 import {LargeHikerIcon} from '../../Assets/Activities/LargeHikerIcon';
-import {Icon, SearchBar} from 'react-native-elements';
-import Search from '../../Assets/UIGlyphs/Search';
 import SearchField from '../Reusable/SearchField';
 
 const DefaultAdventure = ({navigation, route}: any): JSX.Element => {
