@@ -18,10 +18,8 @@ const ImageGallery = ({
   const [formattedImages, setFormattedImages] = useState([]);
 
   useEffect(() => {
-    console.log({images});
     const imagePromises = images.map(image => {
       return new Promise(res => {
-        console.log({image});
         Image.getSize(image, (width, height) => {
           res({url: image, ar: width / height});
         });

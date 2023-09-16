@@ -25,51 +25,59 @@ const Signup = ({toggleAuthFlow = () => {}}): JSX.Element => {
           <Text style={generalStyles.errorFieldText}>{userError}</Text>
         </View>
       )}
-      <TextInput
-        placeholder="First Name"
-        style={generalStyles.inputField}
-        onChangeText={text => editFormFields({name: 'first_name', value: text})}
-        value={formFields.first_name}
-      />
-      <TextInput
-        placeholder="Last Name"
-        style={generalStyles.inputField}
-        onChangeText={text => editFormFields({name: 'last_name', value: text})}
-        value={formFields.last_name}
-      />
-      <TextInput
-        placeholder="Email"
-        style={generalStyles.inputField}
-        autoCapitalize="none"
-        keyboardType={'email-address'}
-        autoComplete={'email'}
-        onChangeText={text => editFormFields({name: 'email', value: text})}
-        value={formFields.email}
-      />
-      <TextInput
-        placeholder="Password"
-        autoComplete={'new-password'}
-        style={generalStyles.inputField}
-        secureTextEntry
-        onChangeText={text => editFormFields({name: 'password', value: text})}
-        value={formFields.password}
-      />
-      <TextInput
-        placeholder="Confirm Password"
-        secureTextEntry
-        autoComplete={'new-password'}
-        style={generalStyles.inputField}
-        onChangeText={text => editFormFields({name: 'password_2', value: text})}
-        value={formFields.password_2}
-      />
-      <View style={generalStyles.checkboxField}>
-        <CheckBox
-          value={formFields.legal}
-          onValueChange={newChecked =>
-            editFormFields({name: 'legal', value: newChecked})
+      <View style={styles.fieldContainer}>
+        <TextInput
+          placeholder="First Name"
+          style={generalStyles.inputField}
+          onChangeText={text =>
+            editFormFields({name: 'first_name', value: text})
           }
+          value={formFields.first_name}
         />
-        <Text>Agree to the Sunday Peak Privacy Policy.</Text>
+        <TextInput
+          placeholder="Last Name"
+          style={generalStyles.inputField}
+          onChangeText={text =>
+            editFormFields({name: 'last_name', value: text})
+          }
+          value={formFields.last_name}
+        />
+        <TextInput
+          placeholder="Email"
+          style={generalStyles.inputField}
+          autoCapitalize="none"
+          keyboardType={'email-address'}
+          autoComplete={'email'}
+          onChangeText={text => editFormFields({name: 'email', value: text})}
+          value={formFields.email}
+        />
+        <TextInput
+          placeholder="Password"
+          autoComplete={'new-password'}
+          style={generalStyles.inputField}
+          secureTextEntry
+          onChangeText={text => editFormFields({name: 'password', value: text})}
+          value={formFields.password}
+        />
+        <TextInput
+          placeholder="Confirm Password"
+          secureTextEntry
+          autoComplete={'new-password'}
+          style={generalStyles.inputField}
+          onChangeText={text =>
+            editFormFields({name: 'password_2', value: text})
+          }
+          value={formFields.password_2}
+        />
+        <View style={generalStyles.checkboxField}>
+          <CheckBox
+            value={formFields.legal}
+            onValueChange={newChecked =>
+              editFormFields({name: 'legal', value: newChecked})
+            }
+          />
+          <Text>Agree to the Sunday Peak Privacy Policy.</Text>
+        </View>
       </View>
       <Pressable style={generalStyles.button} onPress={createNewUser}>
         <Text style={generalStyles.buttonText}>Sign Up for Sunday Peak</Text>

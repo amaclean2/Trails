@@ -31,7 +31,9 @@ const UserProfile = ({navigation}: any): JSX.Element => {
       buttonIndex => {
         switch (buttonIndex) {
           case 1:
-            console.log('Editing User');
+            navigation.navigate('EditUser', {
+              userName: `${loggedInUser?.first_name} ${loggedInUser?.last_name}`,
+            });
             break;
           case 2:
             logoutUser();

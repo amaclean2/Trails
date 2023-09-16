@@ -22,23 +22,25 @@ const Login = ({toggleAuthFlow = () => {}}): JSX.Element => {
           <Text style={generalStyles.errorFieldText}>{userError}</Text>
         </View>
       )}
-      <TextInput
-        placeholder="Email"
-        style={generalStyles.inputField}
-        autoCapitalize="none"
-        onChangeText={text => editFormFields({name: 'email', value: text})}
-        keyboardType={'email-address'}
-        autoComplete={'email'}
-        value={formFields.email}
-      />
-      <TextInput
-        placeholder="Password"
-        style={generalStyles.inputField}
-        onChangeText={text => editFormFields({name: 'password', value: text})}
-        autoComplete={'current-password'}
-        secureTextEntry
-        value={formFields.password}
-      />
+      <View style={styles.fieldContainer}>
+        <TextInput
+          placeholder="Email"
+          style={generalStyles.inputField}
+          autoCapitalize="none"
+          onChangeText={text => editFormFields({name: 'email', value: text})}
+          keyboardType={'email-address'}
+          autoComplete={'email'}
+          value={formFields.email}
+        />
+        <TextInput
+          placeholder="Password"
+          style={generalStyles.inputField}
+          onChangeText={text => editFormFields({name: 'password', value: text})}
+          autoComplete={'current-password'}
+          secureTextEntry
+          value={formFields.password}
+        />
+      </View>
       <Pressable style={generalStyles.button} onPress={loginUser}>
         <Text style={generalStyles.buttonText}>Login to Sunday Peak</Text>
       </Pressable>

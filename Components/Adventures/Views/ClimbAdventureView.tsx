@@ -14,7 +14,7 @@ import {
 
 import {styles} from '../styles';
 import {Meatball} from '../../../Assets/UIGlyphs/Meatball';
-import {formatSeasons} from '../utils';
+import {climbTypes, formatSeasons} from '../utils';
 import ViewField from '../../Reusable/Field';
 import AdventurePathView from '../AdventurePathView';
 import {generalStyles} from '../../GeneralStyles';
@@ -32,10 +32,10 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: menuContents?.titles ?? [],
+        options: menuContents?.map(({text}) => text) ?? [],
         cancelButtonIndex: 0,
       },
-      buttonIndex => menuContents?.actions[buttonIndex],
+      buttonIndex => menuContents?.[buttonIndex].action(),
     );
   };
 
@@ -69,7 +69,7 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
           }
         />
         <View style={styles.mapContainer}>
-          <AdventurePathView />
+          <AdventurePathView navigation={navigation} />
         </View>
         <View style={styles.adventureBody}>
           <View style={styles.adventureRow}>
@@ -79,7 +79,13 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
           <View style={styles.adventureRow}>
             <ViewField
               title={'Climb Type'}
-              content={currentAdventure?.climb_type ?? ''}
+              content={
+                (
+                  climbTypes.find(
+                    type => type.value === currentAdventure?.climb_type,
+                  ) ?? {label: 'Boulder'}
+                ).label
+              }
             />
             <ViewField
               title={'Grade'}
@@ -111,6 +117,10 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
                 ? JSON.parse(currentAdventure.season)
                 : [],
             )}
+          />
+          <ViewField
+            title={'Nearest City'}
+            content={currentAdventure?.nearest_city}
           />
           <ViewField
             title={'Creator'}

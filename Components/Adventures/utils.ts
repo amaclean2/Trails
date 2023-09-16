@@ -47,7 +47,10 @@ export const useAdventureMenu = () => {
       });
 
       fields.push({
-        action: () => console.log('Editing...'),
+        action: () =>
+          navigation.navigate('AdventureEditor', {
+            adventureTitle: currentAdventure.adventure_name,
+          }),
         text: 'Edit Adventure',
       });
 
@@ -209,5 +212,95 @@ export const pathColor = (adventureType = 'ski') => {
       return '#3a3';
     default:
       return '#38e';
+  }
+};
+
+export const directions = [
+  {label: 'North', value: 'N'},
+  {label: 'North East', value: 'NE'},
+  {label: 'East', value: 'E'},
+  {label: 'South East', value: 'SE'},
+  {label: 'South', value: 'S'},
+  {label: 'South West', value: 'SW'},
+  {label: 'West', value: 'W'},
+  {label: 'North West', value: 'NW'},
+];
+
+export const sexLabels = [
+  {label: 'Male', value: 'male'},
+  {label: 'Female', value: 'female'},
+  {label: 'Non-binary', value: 'non-binary'},
+  {label: 'Prefer not to say', value: 'decline'},
+];
+
+export const climbTypes = [
+  {label: 'Boulder', value: 'boulder'},
+  {label: 'Sport', value: 'sport'},
+  {label: 'Trad', value: 'trad'},
+  {label: 'Alpine', value: 'alpine'},
+  {label: 'Ice', value: 'ice'},
+];
+
+export const showClimbGrades = (climbType: string) => {
+  switch (climbType) {
+    case 'boulder':
+      return [
+        {label: 'V1', value: 'V1'},
+        {label: 'V2', value: 'V2'},
+        {label: 'V3', value: 'V3'},
+        {label: 'V4', value: 'V4'},
+        {label: 'V5', value: 'V5'},
+        {label: 'V6', value: 'V6'},
+        {label: 'V7', value: 'V7'},
+        {label: 'V8', value: 'V8'},
+        {label: 'V9', value: 'V9'},
+        {label: 'V10', value: 'V10'},
+        {label: 'V11', value: 'V11'},
+        {label: 'V12', value: 'V12'},
+        {label: 'V13', value: 'V13'},
+        {label: 'V14', value: 'V14'},
+        {label: 'V15', value: 'V15'},
+        {label: 'V16', value: 'V16'},
+      ];
+    case 'sport':
+    case 'trad':
+      return [
+        {label: '5.0', value: '5.0'},
+        {label: '5.1', value: '5.1'},
+        {label: '5.2', value: '5.2'},
+        {label: '5.3', value: '5.3'},
+        {label: '5.4', value: '5.4'},
+        {label: '5.5', value: '5.5'},
+        {label: '5.6', value: '5.6'},
+        {label: '5.7', value: '5.7'},
+        {label: '5.8', value: '5.8'},
+        {label: '5.9', value: '5.9'},
+        {label: '5.10a', value: '5.10a'},
+        {label: '5.10b', value: '5.10b'},
+        {label: '5.10c', value: '5.10c'},
+        {label: '5.10d', value: '5.10d'},
+        {label: '5.11a', value: '5.11a'},
+        {label: '5.11b', value: '5.11b'},
+        {label: '5.11c', value: '5.11c'},
+        {label: '5.11d', value: '5.11d'},
+        {label: '5.12a', value: '5.12a'},
+        {label: '5.12b', value: '5.12b'},
+        {label: '5.12c', value: '5.12c'},
+        {label: '5.12d', value: '5.12d'},
+        {label: '5.13a', value: '5.13a'},
+        {label: '5.13b', value: '5.13b'},
+        {label: '5.13c', value: '5.13c'},
+        {label: '5.13d', value: '5.13d'},
+        {label: '5.14a', value: '5.14a'},
+        {label: '5.14b', value: '5.14b'},
+        {label: '5.14c', value: '5.14c'},
+        {label: '5.14d', value: '5.14d'},
+        {label: '5.15a', value: '5.15a'},
+        {label: '5.15b', value: '5.15b'},
+        {label: '5.15c', value: '5.15c'},
+        {label: '5.15d', value: '5.15d'},
+      ];
+    default:
+      return [{label: 'Something', value: 'something'}];
   }
 };

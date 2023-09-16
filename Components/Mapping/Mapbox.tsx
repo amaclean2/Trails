@@ -20,6 +20,7 @@ import hikerIcon from '../../Assets/Activities/HikerIcon.png';
 import {OnPressEvent} from '@rnmapbox/maps/lib/typescript/types/OnPressEvent';
 
 import {styles} from './styles';
+import Search from '../../Assets/UIGlyphs/Search';
 
 const Mapbox = ({navigation}: any): JSX.Element => {
   const {mapboxStyleKey, mapboxToken} = useTokenStateContext();
@@ -60,6 +61,7 @@ const Mapbox = ({navigation}: any): JSX.Element => {
   return (
     <SafeAreaView style={styles.container}>
       <MapView
+        scaleBarEnabled={false}
         style={styles.map}
         styleURL={mapboxStyleKey as string}
         compassEnabled
@@ -130,6 +132,17 @@ const Mapbox = ({navigation}: any): JSX.Element => {
               globalAdventureType === 'hike' && styles.activeButtonText,
             ]}>
             Hike
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={() =>
+            navigation.navigate('AdventureStack', {
+              screen: 'DefaultAdventure',
+            })
+          }
+          style={[styles.button, {backgroundColor: 'transparent'}]}>
+          <Text style={styles.buttonText}>
+            <Search isDark />
           </Text>
         </Pressable>
       </View>

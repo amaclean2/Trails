@@ -32,10 +32,10 @@ const HikeAdventureView = ({navigation}: any): JSX.Element => {
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: menuContents?.titles ?? [],
+        options: menuContents?.map(({text}) => text) ?? [],
         cancelButtonIndex: 0,
       },
-      buttonIndex => menuContents?.actions[buttonIndex],
+      buttonIndex => menuContents?.[buttonIndex].action(),
     );
   };
 
@@ -69,7 +69,7 @@ const HikeAdventureView = ({navigation}: any): JSX.Element => {
           }
         />
         <View style={styles.mapContainer}>
-          <AdventurePathView />
+          <AdventurePathView navigation={navigation} />
         </View>
         <View style={styles.adventureBody}>
           <View style={styles.adventureRow}>
