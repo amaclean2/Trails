@@ -1,0 +1,23 @@
+name: SundayPeak Trails
+
+on:
+  commit:
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create PR
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          branch: main
+          delete-branch: false
+          labels: automated pr
+          assignees: amaclean2
