@@ -1,8 +1,8 @@
 import React from 'react';
-import {Slider} from 'react-native-elements';
 import {colors} from '../../Assets/Colors';
 import {StyleSheet, Text, View} from 'react-native';
 import {fieldStyles} from './FieldStyles';
+import {Slider} from '@rneui/themed';
 
 const SliderElement = ({
   value,

@@ -22,7 +22,7 @@ const ClimbAdventureEditor = ({navigation}: any): JSX.Element => {
   }, [currentAdventure?.adventure_name]);
 
   return (
-    <ScrollView style={{marginTop: 30}}>
+    <ScrollView style={{paddingTop: 30}}>
       <View style={{marginHorizontal: 20, marginVertical: 10}}>
         <LargeClimberIcon size={40} />
       </View>

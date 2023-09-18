@@ -9,33 +9,27 @@ import {
   Text,
   View,
 } from 'react-native';
-import {useGetUser, useUserStateContext} from '@amaclean2/sundaypeak-treewells';
+import {useUserStateContext} from '@amaclean2/sundaypeak-treewells';
 import {generalStyles} from '../GeneralStyles';
 import {Meatball} from '../../Assets/UIGlyphs/Meatball';
 import {styles} from './styles';
 import ViewField from '../Reusable/Field';
 import {Pin} from '../../Assets/UIGlyphs/Pin';
 import ImageGallery from '../Reusable/ImageGallery';
+import {useBuildButtons} from './MenuButtons';
 
 const OtherUser = ({navigation, route}: any): JSX.Element => {
-  const {logoutUser} = useGetUser();
   const {workingUser, loggedInUser} = useUserStateContext();
+  const {buildMenuButtons} = useBuildButtons();
 
   const onMenuPress = () => {
+    const buttons = buildMenuButtons();
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['Cancel', 'Logout'],
+        options: buttons.map(({title}) => title),
         cancelButtonIndex: 0,
       },
-      buttonIndex => {
-        switch (buttonIndex) {
-          case 1:
-            logoutUser();
-            break;
-          default:
-            console.log('canceled');
-        }
-      },
+      buttonIndex => buttons[buttonIndex].action(),
     );
   };
 

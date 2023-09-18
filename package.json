@@ -17,6 +17,7 @@
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
+    "@rneui/themed": "^4.0.0-rc.8",
     "@rnmapbox/maps": "^10.0.11",
     "@turf/helpers": "^6.5.0",
     "react": "18.2.0",

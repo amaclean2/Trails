@@ -10,6 +10,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  View,
 } from 'react-native';
 import EditElement from '../Reusable/EditElement';
 import {colors} from '../../Assets/Colors';
@@ -17,6 +18,7 @@ import {useImageUploads} from '../Helpers';
 import {generalStyles} from '../GeneralStyles';
 import PickerElement from '../Reusable/PickerElement';
 import {sexLabels} from '../Adventures/utils';
+import {fieldStyles} from '../Reusable/FieldStyles';
 
 const EditUser = ({navigation}: any): JSX.Element => {
   const {loggedInUser} = useUserStateContext();
@@ -32,12 +34,17 @@ const EditUser = ({navigation}: any): JSX.Element => {
   return (
     <SafeAreaView>
       <ScrollView>
-        <Pressable onPress={updateProfilePicture}>
-          <Image
-            style={localStyles.profilePicture}
-            source={{uri: loggedInUser?.profile_picture_url}}
-          />
-        </Pressable>
+        <View>
+          <Text style={localStyles.profileImageText}>Profile Image</Text>
+          <Pressable
+            onPress={updateProfilePicture}
+            style={localStyles.profilePicture}>
+            <Image
+              source={{uri: loggedInUser?.profile_picture_url}}
+              style={localStyles.imageSource}
+            />
+          </Pressable>
+        </View>
         <EditElement
           name={'first_name'}
           title="First Name"
@@ -111,7 +118,19 @@ const localStyles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
+    overflow: 'hidden',
     margin: 15,
+    marginTop: 5,
+    marginBottom: 30,
+  },
+  imageSource: {
+    width: 100,
+    height: 100,
+  },
+  profileImageText: {
+    ...fieldStyles.descriptor,
+    marginHorizontal: 20,
+    marginTop: 20,
   },
 });
 

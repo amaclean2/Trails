@@ -5,7 +5,6 @@ import {colors} from '../../Assets/Colors';
 export const fieldStyles = StyleSheet.create({
   textArea: {
     ...generalStyles.inputField,
-    backgroundColor: colors.borderColor,
     marginVertical: 5,
     marginHorizontal: 0,
   },

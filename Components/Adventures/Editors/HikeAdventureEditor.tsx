@@ -9,6 +9,8 @@ import {generalStyles} from '../../GeneralStyles';
 import MultiElement from '../../Reusable/MultiElement';
 import SliderElement from '../../Reusable/SliderElement';
 import {LargeHikerIcon} from '../../../Assets/Activities/LargeHikerIcon';
+import SelectManyElement from '../../Reusable/SelectManyElement';
+import {months} from '../utils';
 
 const HikeAdventureEditor = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
@@ -21,7 +23,7 @@ const HikeAdventureEditor = ({navigation}: any): JSX.Element => {
   }, [currentAdventure?.adventure_name]);
 
   return (
-    <ScrollView style={{marginTop: 30}}>
+    <ScrollView style={{paddingTop: 30}}>
       <View style={{marginHorizontal: 20, marginVertical: 10}}>
         <LargeHikerIcon size={40} />
       </View>
@@ -66,6 +68,15 @@ const HikeAdventureEditor = ({navigation}: any): JSX.Element => {
         minValue={1}
         maxValue={5}
         title={'Difficulty'}
+      />
+      <SelectManyElement
+        name="season"
+        value={
+          currentAdventure?.season ?? JSON.stringify(months.map(() => false))
+        }
+        onChange={editAdventure}
+        properties={months}
+        title="Season"
       />
       <EditElement
         title="Nearest City"
