@@ -9,7 +9,11 @@ import {
   Text,
   View,
 } from 'react-native';
-import {useGetUser, useUserStateContext} from '@amaclean2/sundaypeak-treewells';
+import {
+  useGetUser,
+  useMessages,
+  useUserStateContext,
+} from '@amaclean2/sundaypeak-treewells';
 import {generalStyles} from '../GeneralStyles';
 import {Meatball} from '../../Assets/UIGlyphs/Meatball';
 import {styles} from './styles';
@@ -21,6 +25,7 @@ const UserProfile = ({navigation}: any): JSX.Element => {
   const {logoutUser} = useGetUser();
   const {loggedInUser} = useUserStateContext();
   const {saveUserImage} = useImageUploads();
+  const {closeConnection} = useMessages();
 
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -36,6 +41,7 @@ const UserProfile = ({navigation}: any): JSX.Element => {
             });
             break;
           case 2:
+            closeConnection();
             logoutUser();
             break;
           default:

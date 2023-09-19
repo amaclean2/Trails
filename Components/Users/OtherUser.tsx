@@ -9,7 +9,11 @@ import {
   Text,
   View,
 } from 'react-native';
-import {useGetUser, useUserStateContext} from '@amaclean2/sundaypeak-treewells';
+import {
+  useFollowUser,
+  useMessages,
+  useUserStateContext,
+} from '@amaclean2/sundaypeak-treewells';
 import {generalStyles} from '../GeneralStyles';
 import {Meatball} from '../../Assets/UIGlyphs/Meatball';
 import {styles} from './styles';
@@ -18,24 +22,50 @@ import {Pin} from '../../Assets/UIGlyphs/Pin';
 import ImageGallery from '../Reusable/ImageGallery';
 
 const OtherUser = ({navigation, route}: any): JSX.Element => {
-  const {logoutUser} = useGetUser();
   const {workingUser, loggedInUser} = useUserStateContext();
+  const {friendUser} = useFollowUser();
+  const {addConversation} = useMessages();
+
+  const buildMenuButtons = () => {
+    const buttons = [];
+    const friends = loggedInUser?.friends.map(friend => friend.user_id);
+
+    buttons.push({
+      title: 'Cancel',
+      action: () => console.log('Canceled'),
+    });
+
+    if (friends?.includes(workingUser?.id)) {
+      buttons.push({
+        title: `Message ${workingUser?.first_name}`,
+        action: () => {
+          addConversation({
+            userId: workingUser?.id ?? 0,
+            name: `${workingUser?.first_name} ${workingUser?.last_name}`,
+          });
+          navigation.navigate('ConversationView', {
+            conversationName: `${workingUser?.first_name} ${workingUser?.last_name}`,
+          });
+        },
+      });
+    } else {
+      buttons.push({
+        title: `Friend ${workingUser?.first_name}`,
+        action: () => friendUser({leaderId: workingUser?.id ?? 0}),
+      });
+    }
+
+    return buttons;
+  };
 
   const onMenuPress = () => {
+    const buttons = buildMenuButtons();
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['Cancel', 'Logout'],
+        options: buttons.map(({title}) => title),
         cancelButtonIndex: 0,
       },
-      buttonIndex => {
-        switch (buttonIndex) {
-          case 1:
-            logoutUser();
-            break;
-          default:
-            console.log('canceled');
-        }
-      },
+      buttonIndex => buttons[buttonIndex].action(),
     );
   };
 
@@ -56,7 +86,7 @@ const OtherUser = ({navigation, route}: any): JSX.Element => {
     }
   }, [route.params]);
 
-  if (workingUser?.id === loggedInUser?.id) {
+  if (route.params.userId !== workingUser?.id) {
     return <></>;
   }
 

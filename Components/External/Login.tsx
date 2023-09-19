@@ -6,6 +6,7 @@ import LogoInline from '../../Assets/Logos/LogoInline';
 import {
   useEditUser,
   useGetUser,
+  useMessages,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
 
@@ -13,6 +14,7 @@ const Login = ({toggleAuthFlow = () => {}}): JSX.Element => {
   const {editFormFields} = useEditUser();
   const {formFields, userError} = useUserStateContext();
   const {loginUser} = useGetUser();
+  const {initiateConnection} = useMessages();
 
   return (
     <View style={styles.container}>
@@ -41,7 +43,9 @@ const Login = ({toggleAuthFlow = () => {}}): JSX.Element => {
           value={formFields.password}
         />
       </View>
-      <Pressable style={generalStyles.button} onPress={loginUser}>
+      <Pressable
+        style={generalStyles.button}
+        onPress={() => loginUser().then(initiateConnection)}>
         <Text style={generalStyles.buttonText}>Login to Sunday Peak</Text>
       </Pressable>
       <View style={styles.navigateToLogin}>

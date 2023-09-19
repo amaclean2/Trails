@@ -10,11 +10,13 @@ import {
 import {colors} from '../../Assets/Colors';
 import MapIcon from '../../Assets/UIGlyphs/MapIcon';
 import AdventureIcon from '../../Assets/UIGlyphs/AdventureIcon';
-import {useUserStateContext} from '@amaclean2/sundaypeak-treewells';
 import ProfileIcon from '../../Assets/UIGlyphs/ProfileIcon';
+import ConversationIcon from '../../Assets/UIGlyphs/ConversationIcon';
+import {useUserStateContext} from '@amaclean2/sundaypeak-treewells';
 
 const TabBar = ({state, descriptors, navigation}: any): JSX.Element => {
   const {loggedInUser} = useUserStateContext();
+
   return (
     <SafeAreaView
       style={{
@@ -75,13 +77,24 @@ const TabBar = ({state, descriptors, navigation}: any): JSX.Element => {
                   }
                 />
               );
-            default:
+            case 'Conversations':
               return (
-                <ProfileIcon
+                <ConversationIcon
                   size={iconSize}
                   color={
                     isFocused ? colors.primaryAccentColor : colors.mainOffDark
                   }
+                />
+              );
+            default:
+              return (
+                <Image
+                  source={{uri: loggedInUser?.profile_picture_url}}
+                  style={{
+                    width: iconSize * 1.2,
+                    height: iconSize * 1.2,
+                    borderRadius: iconSize,
+                  }}
                 />
               );
           }
@@ -97,7 +110,15 @@ const TabBar = ({state, descriptors, navigation}: any): JSX.Element => {
             onLongPress={onLongPress}
             style={localStyles.bottomButton}
             key={`tab_${index}`}>
-            {showIcon()}
+            <View
+              style={{
+                width: 20,
+                height: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              {showIcon()}
+            </View>
             <Text
               style={[
                 localStyles.bottomButtonText,

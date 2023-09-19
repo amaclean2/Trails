@@ -8,12 +8,10 @@ import {Pressable, ScrollView, Text, View} from 'react-native';
 import {generalStyles} from '../../GeneralStyles';
 import {LargeSkierIcon} from '../../../Assets/Activities/LargeSkierIcon';
 import MultiElement from '../../Reusable/MultiElement';
-import {Slider} from 'react-native-elements';
-import {colors} from '../../../Assets/Colors';
 import SliderElement from '../../Reusable/SliderElement';
-import {Picker} from '@react-native-picker/picker';
 import PickerElement from '../../Reusable/PickerElement';
-import {directions} from '../utils';
+import {directions, gearOptions, months} from '../utils';
+import SelectManyElement from '../../Reusable/SelectManyElement';
 
 const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
@@ -25,8 +23,27 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
     });
   }, [currentAdventure?.adventure_name]);
 
+  useEffect(() => {
+    if (!currentAdventure?.season) {
+      editAdventure({
+        target: {
+          name: 'season',
+          value: JSON.stringify(months.map(() => false)),
+        },
+      });
+    }
+    if (!currentAdventure?.gear) {
+      editAdventure({
+        target: {
+          name: 'season',
+          value: JSON.stringify(months.map(() => false)),
+        },
+      });
+    }
+  }, []);
+
   return (
-    <ScrollView style={{marginTop: 30}}>
+    <ScrollView style={{paddingTop: 30}}>
       <View style={{marginHorizontal: 20, marginVertical: 10}}>
         <LargeSkierIcon size={40} />
       </View>
@@ -100,6 +117,24 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
         minValue={1}
         maxValue={5}
         title={'Exposure'}
+      />
+      <SelectManyElement
+        name="gear"
+        value={
+          currentAdventure?.gear ?? JSON.stringify(gearOptions.map(() => false))
+        }
+        onChange={editAdventure}
+        properties={gearOptions}
+        title="Gear"
+      />
+      <SelectManyElement
+        name="season"
+        value={
+          currentAdventure?.season ?? JSON.stringify(months.map(() => false))
+        }
+        onChange={editAdventure}
+        properties={months}
+        title="Season"
       />
       <EditElement
         title="Nearest City"

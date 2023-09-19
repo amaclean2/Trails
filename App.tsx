@@ -9,8 +9,8 @@ import AppContent from './Components/Navigation/AppContent';
 
 Connections.setConnections(
   {
-    restUrl: 'https://api.sundaypeak.com',
-    websocketUrl: 'wss://api.sundaypeak.com/ws',
+    restUrl: 'http://sundaypeak.local:5000',
+    websocketUrl: 'ws://sundaypeak.local:4000',
   },
   AsyncStorage,
 );

@@ -1,0 +1,21 @@
+{
+  "editor.formatOnSave": true,
+  "files.defaultLanguage": "typescript",
+  "prettier.endOfLine": "auto",
+  "prettier.jsxSingleQuote": true,
+  "prettier.printWidth": 100,
+  "prettier.semi": false,
+  "prettier.singleAttributePerLine": true,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "none",
+  "prettier.useTabs": true,
+  "editor.tabSize": 2,
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+  "vue3snippets.semi": false,
+  "javascript.format.semicolons": "remove",
+  "typescript.format.semicolons": "remove",
+  "vue.autoInsert.bracketSpacing": false,
+  "vue3snippets.bracketSpacing": false
+}

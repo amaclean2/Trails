@@ -4,6 +4,7 @@ import {
   useSaveTodo,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
+import {Share} from 'react-native';
 
 export const useAdventureMenu = () => {
   const {loggedInUser} = useUserStateContext();
@@ -28,7 +29,10 @@ export const useAdventureMenu = () => {
       ?.map(({adventure_id}) => adventure_id)
       .includes(currentAdventure?.id as number);
 
-    const fields = [];
+    const fields: {
+      text: string;
+      action: () => void;
+    }[] = [];
 
     if (currentAdventure) {
       fields.push({
@@ -42,7 +46,22 @@ export const useAdventureMenu = () => {
       });
 
       fields.push({
-        action: () => console.log('Sharing...'),
+        action: () =>
+          Share.share({
+            message: 'Check out this adventure!',
+            url: `https://sundaypeak.com/adventure/${currentAdventure?.adventure_type}/${currentAdventure?.id}`,
+          }).then(result => {
+            console.log({result});
+            if (result.action === Share.sharedAction) {
+              if (result.activityType) {
+                console.log('Shared successfully');
+              } else {
+                console.log('No activity');
+              }
+            } else if (result.action === Share.dismissedAction) {
+              console.log('Share dismissed');
+            }
+          }),
         text: 'Share Adventure',
       });
 
@@ -89,7 +108,7 @@ export const useAdventureMenu = () => {
   };
 };
 
-const months = [
+export const months = [
   'January',
   'February',
   'March',
@@ -104,7 +123,7 @@ const months = [
   'December',
 ];
 
-const gearOptions = [
+export const gearOptions = [
   'Rope',
   'Ice Axe',
   'Glacier Kit',

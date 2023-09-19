@@ -3,7 +3,7 @@ import Mapbox from '../Mapping/Mapbox';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import UserProfile from '../Users';
-// import Conversations from '../Conversations';
+import Conversations from '../Conversations';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useUserStateContext} from '@amaclean2/sundaypeak-treewells';
 import ExternalViews from '../External';
@@ -19,8 +19,9 @@ import EditUser from '../Users/EditUser';
 import AdventureEditor from '../Adventures/Editors';
 import AdventureMap from '../Mapping/AdventureMap';
 import TabBar from './TabBar';
+import ConversationView from '../Conversations/ConversationView';
 
-const {Navigator, Screen} = createBottomTabNavigator();
+const {Navigator: TabNavigator, Screen: TabScreen} = createBottomTabNavigator();
 const {Navigator: StackNavigator, Screen: StackScreen} =
   createNativeStackNavigator();
 
@@ -105,7 +106,7 @@ const AdventureStack = (): JSX.Element => {
           headerTitle: route.params?.adventureTitle,
         })}
       />
-      <Screen
+      <StackScreen
         name="AdventureMap"
         component={AdventureMap}
         options={({route}) => ({
@@ -177,35 +178,62 @@ const UserStack = (): JSX.Element => {
   );
 };
 
+const AppTabs = (): JSX.Element => {
+  return (
+    <TabNavigator tabBar={props => <TabBar {...props} />}>
+      <TabScreen
+        name="Explore"
+        component={Mapbox}
+        options={{headerShown: false, title: 'Explore'}}
+      />
+      <TabScreen
+        name="AdventureStack"
+        component={AdventureStack}
+        options={{headerShown: false, title: 'Adventures'}}
+      />
+      <TabScreen
+        name={'ConversationSelector'}
+        component={Conversations}
+        options={{
+          ...defaultHeaderOptions,
+          title: 'Conversations',
+          headerShown: true,
+        }}
+      />
+      <TabScreen
+        name="UserStack"
+        component={UserStack}
+        options={{headerShown: false, title: 'Profile'}}
+      />
+    </TabNavigator>
+  );
+};
+
 const AppContent = (): JSX.Element => {
   const {loggedInUser} = useUserStateContext();
+
   if (!loggedInUser) {
     return <ExternalViews />;
   }
 
   return (
-    <Navigator tabBar={props => <TabBar {...props} />}>
-      <Screen
-        name="Explore"
-        component={Mapbox}
-        options={{headerShown: false, title: 'Explore'}}
-      />
-      <Screen
-        name="AdventureStack"
-        component={AdventureStack}
-        options={{headerShown: false, title: 'Adventures'}}
-      />
-      <Screen
-        name="UserStack"
-        component={UserStack}
-        options={{headerShown: false, title: 'Profile'}}
-      />
-      {/* <Screen
-        name="Conversations"
-        component={Conversations}
+    <StackNavigator>
+      <StackScreen
+        name={'AppTabs'}
+        component={AppTabs}
         options={{headerShown: false}}
-      /> */}
-    </Navigator>
+      />
+      <StackScreen
+        name={'ConversationView'}
+        component={ConversationView}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerBackTitleVisible: false,
+          headerTitle: route.params?.conversationName,
+        })}
+      />
+    </StackNavigator>
   );
 };
 

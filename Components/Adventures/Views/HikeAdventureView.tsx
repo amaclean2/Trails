@@ -21,6 +21,7 @@ import {generalStyles} from '../../GeneralStyles';
 import {useAdventureMenu} from '../utils';
 import ImageGallery from '../../Reusable/ImageGallery';
 import {useImageUploads} from '../../Helpers';
+import {DistanceIcon, ElevationIcon} from '../../../Assets/Symbols/LabelIcons';
 
 const HikeAdventureView = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
@@ -83,13 +84,23 @@ const HikeAdventureView = ({navigation}: any): JSX.Element => {
             />
             <ViewField
               title={'Distance'}
-              content={`${currentAdventure?.distance ?? '0'} mi`}
+              content={
+                <View style={styles.symbolView}>
+                  <DistanceIcon />
+                  <Text>{`${currentAdventure?.distance ?? ''} mi`}</Text>
+                </View>
+              }
             />
             <ViewField
               title={'Elevation'}
-              content={`${currentAdventure?.base_elevation ?? ''} - ${
-                currentAdventure?.summit_elevation
-              } ft`}
+              content={
+                <View style={styles.symbolView}>
+                  <ElevationIcon />
+                  <Text>{`${currentAdventure?.base_elevation ?? ''} - ${
+                    currentAdventure?.summit_elevation
+                  } ft`}</Text>
+                </View>
+              }
             />
           </View>
           <ViewField

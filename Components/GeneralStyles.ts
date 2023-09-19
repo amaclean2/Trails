@@ -8,7 +8,6 @@ export const generalStyles = StyleSheet.create({
     paddingHorizontal: 16,
     margin: 3,
     borderRadius: 8,
-    fontSize: 16,
   },
   button: {
     backgroundColor: colors.primaryAccentColor,
@@ -49,6 +48,7 @@ export const generalStyles = StyleSheet.create({
     justifyContent: 'flex-start',
     gap: 15,
     marginVertical: 15,
+    marginStart: 15,
   },
   header: {
     marginVertical: 20,
@@ -107,7 +107,6 @@ export const generalStyles = StyleSheet.create({
   },
   backButton: {
     backgroundColor: colors.primaryAccentColor,
-    width: 350,
     paddingVertical: 10,
     margin: 20,
     borderRadius: 8,
