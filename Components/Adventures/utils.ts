@@ -29,7 +29,10 @@ export const useAdventureMenu = () => {
       ?.map(({adventure_id}) => adventure_id)
       .includes(currentAdventure?.id as number);
 
-    const fields = [];
+    const fields: {
+      text: string;
+      action: () => void;
+    }[] = [];
 
     if (currentAdventure) {
       fields.push({

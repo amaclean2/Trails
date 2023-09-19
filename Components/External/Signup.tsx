@@ -3,9 +3,9 @@ import {Pressable, Text, TextInput, View} from 'react-native';
 import {
   useCreateUser,
   useEditUser,
+  useMessages,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
-import CheckBox from '@react-native-community/checkbox';
 
 import LogoInline from '../../Assets/Logos/LogoInline';
 import {generalStyles} from '../GeneralStyles';
@@ -17,6 +17,7 @@ const Signup = ({toggleAuthFlow = () => {}}): JSX.Element => {
   const {editFormFields} = useEditUser();
   const {formFields, userError} = useUserStateContext();
   const {createNewUser} = useCreateUser();
+  const {initiateConnection} = useMessages();
 
   return (
     <View style={styles.container}>
@@ -79,7 +80,9 @@ const Signup = ({toggleAuthFlow = () => {}}): JSX.Element => {
           />
         </View>
       </View>
-      <Pressable style={generalStyles.button} onPress={createNewUser}>
+      <Pressable
+        style={generalStyles.button}
+        onPress={() => createNewUser().then(initiateConnection)}>
         <Text style={generalStyles.buttonText}>Sign Up for Sunday Peak</Text>
       </Pressable>
       <View style={styles.navigateToLogin}>
