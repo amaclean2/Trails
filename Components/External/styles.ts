@@ -18,10 +18,17 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 15,
   },
   fieldContainer: {
     flexDirection: 'column',
     alignSelf: 'stretch',
+    justifyContent: 'center',
     marginHorizontal: 10,
+  },
+  resetText: {
+    fontWeight: '600',
+    padding: 10,
+    fontSize: 15,
   },
 });

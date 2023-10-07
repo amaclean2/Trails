@@ -6,7 +6,6 @@ import UserProfile from '../Users';
 import Conversations from '../Conversations';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useUserStateContext} from '@amaclean2/sundaypeak-treewells';
-import ExternalViews from '../External';
 import OtherUser from '../Users/OtherUser';
 import {colors} from '../../Assets/Colors';
 import FriendsList from '../Users/FriendsList';
@@ -20,6 +19,9 @@ import AdventureEditor from '../Adventures/Editors';
 import AdventureMap from '../Mapping/AdventureMap';
 import TabBar from './TabBar';
 import ConversationView from '../Conversations/ConversationView';
+import ForgotPassword from '../External/ForgotPassword';
+import Login from '../External/Login';
+import Signup from '../External/Signup';
 
 const {Navigator: TabNavigator, Screen: TabScreen} = createBottomTabNavigator();
 const {Navigator: StackNavigator, Screen: StackScreen} =
@@ -112,6 +114,7 @@ const AdventureStack = (): JSX.Element => {
         options={({route}) => ({
           headerShown: true,
           headerTitle: route.params?.adventureName,
+          headerBackTitle: 'Adventure',
         })}
       />
     </StackNavigator>
@@ -210,14 +213,13 @@ const AppTabs = (): JSX.Element => {
 };
 
 const AppContent = (): JSX.Element => {
-  const {loggedInUser} = useUserStateContext();
-
-  if (!loggedInUser) {
-    return <ExternalViews />;
-  }
-
   return (
     <StackNavigator>
+      <StackScreen
+        name={'Login'}
+        component={Login}
+        options={{headerShown: false}}
+      />
       <StackScreen
         name={'AppTabs'}
         component={AppTabs}
@@ -232,6 +234,16 @@ const AppContent = (): JSX.Element => {
           headerBackTitleVisible: false,
           headerTitle: route.params?.conversationName,
         })}
+      />
+      <StackScreen
+        name={'ForgotPassword'}
+        component={ForgotPassword}
+        options={{headerShown: false}}
+      />
+      <StackScreen
+        name={'SignUp'}
+        component={Signup}
+        options={{headerShown: false}}
       />
     </StackNavigator>
   );

@@ -4,13 +4,14 @@ import {
   useSaveTodo,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
+import {useState} from 'react';
 import {Share} from 'react-native';
 
 export const useAdventureMenu = () => {
   const {loggedInUser} = useUserStateContext();
   const {currentAdventure} = useAdventureStateContext();
   const {saveTodo} = useSaveTodo();
-  const {saveCompletedAdventure} = useSaveCompletedAdventure();
+  const [rateAdventureVisible, setRateAdventureVisible] = useState(false);
 
   const buildMenuContents = ({navigation}: any) => {
     if (!loggedInUser) {
@@ -86,11 +87,9 @@ export const useAdventureMenu = () => {
 
       if (canComplete) {
         fields.push({
-          action: () =>
-            saveCompletedAdventure({
-              adventureId: currentAdventure.id as number,
-              adventureType: currentAdventure.adventure_type,
-            }),
+          action: () => {
+            setRateAdventureVisible(true);
+          },
           text: 'Complete Adventure',
         });
       }
@@ -105,6 +104,8 @@ export const useAdventureMenu = () => {
 
   return {
     buildMenuContents,
+    rateAdventureVisible,
+    closeRateAdventure: () => setRateAdventureVisible(false),
   };
 };
 
@@ -322,4 +323,8 @@ export const showClimbGrades = (climbType: string) => {
     default:
       return [{label: 'Something', value: 'something'}];
   }
+};
+
+export const gradeConverter = (grade: string) => {
+  return grade.split(':')[0];
 };

@@ -14,7 +14,7 @@ import {
 
 import {styles} from '../styles';
 import {Meatball} from '../../../Assets/UIGlyphs/Meatball';
-import {climbTypes, formatSeasons} from '../utils';
+import {climbTypes, formatSeasons, gradeConverter} from '../utils';
 import ViewField from '../../Reusable/Field';
 import AdventurePathView from '../AdventurePathView';
 import {generalStyles} from '../../GeneralStyles';
@@ -89,7 +89,7 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
             />
             <ViewField
               title={'Grade'}
-              content={currentAdventure?.grade ?? ''}
+              content={gradeConverter(currentAdventure?.difficulty)}
             />
           </View>
           <View style={styles.adventureRow}>

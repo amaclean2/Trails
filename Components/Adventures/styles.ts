@@ -52,4 +52,32 @@ export const styles = StyleSheet.create({
     gap: 10,
     marginTop: 5,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    padding: 20,
+    backgroundColor: colors.mainLight,
+    borderRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowColor: colors.mainDark,
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    width: 350,
+  },
+  finishButton: {
+    width: 'auto',
+    marginBottom: 0,
+    marginTop: 35,
+  },
+  closeButton: {
+    width: 'auto',
+    alignItems: 'center',
+    marginTop: 10,
+  },
 });

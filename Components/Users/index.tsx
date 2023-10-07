@@ -43,6 +43,7 @@ const UserProfile = ({navigation}: any): JSX.Element => {
           case 2:
             closeConnection();
             logoutUser();
+            navigation.navigate('Login');
             break;
           default:
             console.log('canceled');
