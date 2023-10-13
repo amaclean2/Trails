@@ -26,7 +26,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'Trails' do
+target 'SundayPeak' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -46,7 +46,7 @@ target 'Trails' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'TrailsTests' do
+  target 'SundayPeakTests' do
     inherit! :complete
     # Pods for testing
   end

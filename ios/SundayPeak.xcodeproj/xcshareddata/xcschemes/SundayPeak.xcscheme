@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Trails.app"
-               BlueprintName = "Trails"
-               ReferencedContainer = "container:Trails.xcodeproj">
+               BuildableName = "SundayPeak.app"
+               BlueprintName = "SundayPeak"
+               ReferencedContainer = "container:SundayPeak.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "TrailsTests.xctest"
-               BlueprintName = "TrailsTests"
-               ReferencedContainer = "container:Trails.xcodeproj">
+               BuildableName = "SundayPeakTests.xctest"
+               BlueprintName = "SundayPeakTests"
+               ReferencedContainer = "container:SundayPeak.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Trails.app"
-            BlueprintName = "Trails"
-            ReferencedContainer = "container:Trails.xcodeproj">
+            BuildableName = "SundayPeak.app"
+            BlueprintName = "SundayPeak"
+            ReferencedContainer = "container:SundayPeak.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Trails.app"
-            BlueprintName = "Trails"
-            ReferencedContainer = "container:Trails.xcodeproj">
+            BuildableName = "SundayPeak.app"
+            BlueprintName = "SundayPeak"
+            ReferencedContainer = "container:SundayPeak.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
