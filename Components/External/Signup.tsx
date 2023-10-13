@@ -13,7 +13,7 @@ import {generalStyles} from '../GeneralStyles';
 import {styles} from './styles';
 import CheckboxElement from '../Reusable/CheckboxElement';
 
-const Signup = ({toggleAuthFlow = () => {}}): JSX.Element => {
+const Signup = ({navigation}): JSX.Element => {
   const {editFormFields} = useEditUser();
   const {formFields, userError} = useUserStateContext();
   const {createNewUser} = useCreateUser();
@@ -89,7 +89,7 @@ const Signup = ({toggleAuthFlow = () => {}}): JSX.Element => {
         <Text>Already have an account?</Text>
         <Pressable
           style={generalStyles.secondaryButton}
-          onPress={toggleAuthFlow}>
+          onPress={() => navigation.navigate('Login')}>
           <Text style={generalStyles.secondaryButtonText}>
             Login to Sunday Peak
           </Text>

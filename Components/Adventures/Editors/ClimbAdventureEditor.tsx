@@ -21,6 +21,8 @@ const ClimbAdventureEditor = ({navigation}: any): JSX.Element => {
     });
   }, [currentAdventure?.adventure_name]);
 
+  console.log(Number(currentAdventure?.difficulty?.split(':')[1]) < 2);
+
   return (
     <ScrollView style={{paddingTop: 30}}>
       <View style={{marginHorizontal: 20, marginVertical: 10}}>
@@ -40,13 +42,19 @@ const ClimbAdventureEditor = ({navigation}: any): JSX.Element => {
           items={climbTypes}
           onChange={editAdventure}
         />
-        <PickerElement
-          title={'Grade'}
-          name={'grade'}
-          value={currentAdventure?.grade ?? 'None Selected'}
-          items={showClimbGrades(currentAdventure?.climb_type ?? 'boulder')}
-          onChange={editAdventure}
-        />
+        {Number(currentAdventure?.difficulty?.split(':')[1]) < 2 && (
+          <PickerElement
+            title={'Grade'}
+            name={'difficulty'}
+            value={
+              currentAdventure?.difficulty?.split(':')[0] ?? 'None Selected'
+            }
+            items={showClimbGrades(currentAdventure?.climb_type ?? 'boulder')}
+            onChange={({target: {name, value}}) => {
+              editAdventure({target: {name, value: `${value}:1`}});
+            }}
+          />
+        )}
       </MultiElement>
       <EditElement
         title="Description"

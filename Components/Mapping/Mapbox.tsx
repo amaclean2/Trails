@@ -52,10 +52,7 @@ const Mapbox = ({navigation}: any): JSX.Element => {
     const adventureId = adventureProperties.id;
     const adventureType = adventureProperties.adventure_type;
 
-    navigation.navigate('AdventureStack', {
-      screen: 'Adventures',
-      params: {adventureId, adventureType},
-    });
+    navigation.navigate('Adventures', {adventureId, adventureType});
   };
 
   return (

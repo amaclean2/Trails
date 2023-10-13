@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ActionSheetIOS,
+  Modal,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -9,6 +10,7 @@ import {
 } from 'react-native';
 import {
   useAdventureStateContext,
+  useSaveCompletedAdventure,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
 
@@ -26,13 +28,19 @@ import {
   ElevationIcon,
 } from '../../../Assets/Symbols/LabelIcons';
 import {AspectIcon} from '../../../Assets/Symbols/AspectIcon';
+import RatingPicker from '../../Reusable/RatingPicker';
 
 const SkiAdventureView = ({navigation}: any): JSX.Element => {
+  const [votedRating, setVotedRating] = useState('0');
+  const [votedDifficulty, setVotedDifficulty] = useState('0');
+
   const {currentAdventure} = useAdventureStateContext();
   const {saveAdventureImage} = useImageUploads();
-  const {buildMenuContents} = useAdventureMenu();
+  const {buildMenuContents, rateAdventureVisible, closeRateAdventure} =
+    useAdventureMenu();
   const menuContents = buildMenuContents({navigation});
   const {loggedInUser} = useUserStateContext();
+  const {saveCompletedAdventure} = useSaveCompletedAdventure();
 
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -84,7 +92,7 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
           <View style={styles.adventureRow}>
             <ViewField
               title={'Difficulty'}
-              content={`${currentAdventure?.difficulty ?? '0'} / 5`}
+              content={`${currentAdventure?.difficulty?.split(':')[0]} / 5`}
             />
             <ViewField
               title={'Exposure'}
@@ -168,6 +176,41 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
           />
         </View>
       </ScrollView>
+      <Modal visible={rateAdventureVisible} transparent animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modal}>
+            <Text>
+              Vote on a rating and difficulty to complete this adventure
+            </Text>
+            <RatingPicker rating={votedRating} setRating={setVotedRating} />
+            <RatingPicker
+              title={'Difficulty'}
+              rating={votedDifficulty}
+              color="blue"
+              setRating={setVotedDifficulty}
+            />
+            <Pressable
+              style={[generalStyles.button, styles.finishButton]}
+              onPress={() => {
+                console.log({difficulty: currentAdventure?.difficulty});
+                saveCompletedAdventure({
+                  adventureId: currentAdventure?.id as number,
+                  adventureType: 'ski',
+                  difficulty: `${votedDifficulty}:${currentAdventure?.difficulty}`,
+                  rating: `${votedRating}:${currentAdventure?.rating}`,
+                });
+                closeRateAdventure();
+              }}>
+              <Text style={generalStyles.buttonText}>Complete</Text>
+            </Pressable>
+            <Pressable
+              onPress={closeRateAdventure}
+              style={[generalStyles.secondaryButton, styles.closeButton]}>
+              <Text style={generalStyles.secondaryButtonText}>Close</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };

@@ -1,9 +1,7 @@
 import {Picker} from '@react-native-picker/picker';
-import React, {useState} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {type ReactNode, useState} from 'react';
+import {Pressable, Text, View} from 'react-native';
 
-import {colors} from '../../Assets/Colors';
-import {generalStyles} from '../GeneralStyles';
 import {fieldStyles} from './FieldStyles';
 
 const PickerElement = ({
@@ -12,7 +10,13 @@ const PickerElement = ({
   name,
   value,
   title,
-}: any): JSX.Element => {
+}: {
+  items: any[];
+  onChange: (event: {target: {name: string; value: string}}) => void;
+  name: string;
+  value: string;
+  title: ReactNode;
+}): JSX.Element => {
   const [isActive, setIsActive] = useState(false);
 
   const handleChange = (newValue?: string) => {

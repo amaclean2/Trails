@@ -17,6 +17,7 @@ export const fieldStyles = StyleSheet.create({
     color: colors.mainOffDark,
     // fontWeight: '600',
     fontSize: 12,
+    // textTransform: 'uppercase',
   },
   viewField: {
     flexDirection: 'column',
