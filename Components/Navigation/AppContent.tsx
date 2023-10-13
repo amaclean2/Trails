@@ -181,12 +181,98 @@ const UserStack = (): JSX.Element => {
   );
 };
 
+const ExploreStack = (): JSX.Element => {
+  return (
+    <StackNavigator screenOptions={{headerShown: false}}>
+      <StackScreen
+        name={'Explore'}
+        component={Mapbox}
+        options={{headerShown: false, title: 'Explore'}}
+      />
+      <StackScreen
+        name={'Adventures'}
+        component={AdventureViews}
+        options={{
+          ...defaultHeaderOptions,
+          headerShown: false,
+          title: 'Adventure View',
+        }}
+      />
+      <StackScreen
+        name={'Adventurers'}
+        component={Adventurers}
+        options={{
+          ...defaultHeaderOptions,
+          headerShown: true,
+          title: 'Todo List',
+        }}
+      />
+      <StackScreen
+        name={'OtherProfile'}
+        component={OtherUser}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerTitle: route.params?.name,
+          headerShown: true,
+        })}
+      />
+      <StackScreen
+        name={'FriendsList'}
+        component={FriendsList}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerTitle: 'Connections',
+          headerBackTitle: route.params?.backName,
+        })}
+      />
+      <StackScreen
+        name={'AdventuresList'}
+        component={AdventuresList}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerTitle: 'Adventures',
+          headerBackTitle: route.params?.backName,
+        })}
+      />
+      <StackScreen
+        name={'ImageViewer'}
+        component={ImageViewer}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerTitle: route.params?.adventureTitle,
+        })}
+      />
+      <StackScreen
+        name={'AdventureEditor'}
+        component={AdventureEditor}
+        options={({route}) => ({
+          ...defaultHeaderOptions,
+          headerShown: true,
+          headerTitle: route.params?.adventureTitle,
+        })}
+      />
+      <StackScreen
+        name="AdventureMap"
+        component={AdventureMap}
+        options={({route}) => ({
+          headerShown: true,
+          headerTitle: route.params?.adventureName,
+          headerBackTitle: 'Adventure',
+        })}
+      />
+    </StackNavigator>
+  );
+};
+
 const AppTabs = (): JSX.Element => {
   return (
     <TabNavigator tabBar={props => <TabBar {...props} />}>
       <TabScreen
-        name="Explore"
-        component={Mapbox}
+        name="ExploreStack"
+        component={ExploreStack}
         options={{headerShown: false, title: 'Explore'}}
       />
       <TabScreen

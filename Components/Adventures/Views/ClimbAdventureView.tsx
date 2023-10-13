@@ -1,33 +1,51 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ActionSheetIOS,
+  Modal,
   Pressable,
   SafeAreaView,
   ScrollView,
+  StyleSheet,
   Text,
   View,
 } from 'react-native';
 import {
   useAdventureStateContext,
+  useSaveCompletedAdventure,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
 
 import {styles} from '../styles';
 import {Meatball} from '../../../Assets/UIGlyphs/Meatball';
-import {climbTypes, formatSeasons, gradeConverter} from '../utils';
+import {
+  climbTypes,
+  formatSeasons,
+  gradeConverter,
+  showClimbGrades,
+} from '../utils';
 import ViewField from '../../Reusable/Field';
 import AdventurePathView from '../AdventurePathView';
 import {generalStyles} from '../../GeneralStyles';
 import {useAdventureMenu} from '../utils';
 import ImageGallery from '../../Reusable/ImageGallery';
 import {useImageUploads} from '../../Helpers';
+import RatingPicker from '../../Reusable/RatingPicker';
+import {Picker} from '@react-native-picker/picker';
+import {fieldStyles} from '../../Reusable/FieldStyles';
 
 const ClimbAdventureView = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
-  const {buildMenuContents} = useAdventureMenu();
+  const {buildMenuContents, rateAdventureVisible, closeRateAdventure} =
+    useAdventureMenu();
   const menuContents = buildMenuContents({navigation});
   const {saveAdventureImage} = useImageUploads();
   const {loggedInUser} = useUserStateContext();
+  const {saveCompletedAdventure} = useSaveCompletedAdventure();
+
+  const [votedRating, setVotedRating] = useState<string>('0');
+  const [votedDifficulty, setVotedDifficulty] = useState<string>(
+    currentAdventure?.difficulty?.split(':')[0] as string,
+  );
 
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -37,6 +55,16 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
       },
       buttonIndex => menuContents?.[buttonIndex].action(),
     );
+  };
+
+  const submitRating = () => {
+    saveCompletedAdventure({
+      adventureId: currentAdventure?.id as number,
+      adventureType: 'climb',
+      difficulty: `${votedDifficulty}:${currentAdventure?.difficulty}`,
+      rating: `${votedRating}:${currentAdventure?.rating}`,
+    });
+    closeRateAdventure();
   };
 
   return (
@@ -89,7 +117,10 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
             />
             <ViewField
               title={'Grade'}
-              content={gradeConverter(currentAdventure?.difficulty)}
+              content={gradeConverter(
+                currentAdventure?.difficulty,
+                currentAdventure.climb_type,
+              )}
             />
           </View>
           <View style={styles.adventureRow}>
@@ -140,8 +171,50 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
           />
         </View>
       </ScrollView>
+      <Modal visible={rateAdventureVisible} transparent animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modal}>
+            <Text>
+              Vote on a rating and difficulty to complete this adventure
+            </Text>
+            <RatingPicker rating={votedRating} setRating={setVotedRating} />
+            <View style={localStyles.gradePicker}>
+              <Text style={fieldStyles.descriptor}>Grade</Text>
+              <Picker
+                selectedValue={votedDifficulty}
+                onValueChange={newValue => setVotedDifficulty(newValue)}>
+                {showClimbGrades(currentAdventure?.climb_type ?? 'boulder').map(
+                  (item, key) => (
+                    <Picker.Item
+                      label={item.label}
+                      value={item.value}
+                      key={`picker_item_${key}`}
+                    />
+                  ),
+                )}
+              </Picker>
+            </View>
+            <Pressable
+              style={[generalStyles.button, styles.finishButton]}
+              onPress={submitRating}>
+              <Text style={generalStyles.buttonText}>Complete</Text>
+            </Pressable>
+            <Pressable
+              onPress={closeRateAdventure}
+              style={[generalStyles.secondaryButton, styles.closeButton]}>
+              <Text style={generalStyles.secondaryButtonText}>Close</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
+
+const localStyles = StyleSheet.create({
+  gradePicker: {
+    marginVertical: 20,
+  },
+});
 
 export default ClimbAdventureView;

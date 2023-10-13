@@ -26,19 +26,23 @@ const OtherUser = ({navigation, route}: any): JSX.Element => {
   const {friendUser} = useFollowUser();
   const {addConversation} = useMessages();
 
-  const buildMenuButtons = () => {
-    const buttons = [];
-    const friends = loggedInUser?.friends.map(friend => friend.user_id);
+  const onMenuPress = () => {
+    const isFriend = loggedInUser?.friends.some(
+      ({user_id}: {user_id: number}) => user_id === workingUser.id,
+    );
 
-    buttons.push({
-      title: 'Cancel',
-      action: () => console.log('Canceled'),
-    });
-
-    if (friends?.includes(workingUser?.id)) {
-      buttons.push({
-        title: `Message ${workingUser?.first_name}`,
-        action: () => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: [
+          'Cancel',
+          isFriend
+            ? `Message ${workingUser?.first_name}`
+            : `Friend ${workingUser?.first_name}`,
+        ],
+        cancelButtonIndex: 0,
+      },
+      buttonIndex => {
+        if (buttonIndex === 1 && isFriend) {
           addConversation({
             userId: workingUser?.id ?? 0,
             name: `${workingUser?.first_name} ${workingUser?.last_name}`,
@@ -46,26 +50,12 @@ const OtherUser = ({navigation, route}: any): JSX.Element => {
           navigation.navigate('ConversationView', {
             conversationName: `${workingUser?.first_name} ${workingUser?.last_name}`,
           });
-        },
-      });
-    } else {
-      buttons.push({
-        title: `Friend ${workingUser?.first_name}`,
-        action: () => friendUser({leaderId: workingUser?.id ?? 0}),
-      });
-    }
-
-    return buttons;
-  };
-
-  const onMenuPress = () => {
-    const buttons = buildMenuButtons();
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: buttons.map(({title}) => title),
-        cancelButtonIndex: 0,
+        } else if (buttonIndex === 1 && !isFriend) {
+          friendUser({leaderId: workingUser?.id ?? 0});
+        } else {
+          console.log(`Canceled ${buttonIndex}`);
+        }
       },
-      buttonIndex => buttons[buttonIndex].action(),
     );
   };
 

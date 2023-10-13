@@ -31,8 +31,9 @@ import {AspectIcon} from '../../../Assets/Symbols/AspectIcon';
 import RatingPicker from '../../Reusable/RatingPicker';
 
 const SkiAdventureView = ({navigation}: any): JSX.Element => {
-  const [votedRating, setVotedRating] = useState(0);
-  const [votedDifficulty, setVotedDifficulty] = useState(0);
+  const [votedRating, setVotedRating] = useState('0');
+  const [votedDifficulty, setVotedDifficulty] = useState('0');
+
   const {currentAdventure} = useAdventureStateContext();
   const {saveAdventureImage} = useImageUploads();
   const {buildMenuContents, rateAdventureVisible, closeRateAdventure} =
@@ -91,7 +92,7 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
           <View style={styles.adventureRow}>
             <ViewField
               title={'Difficulty'}
-              content={`${currentAdventure?.difficulty ?? '0'} / 5`}
+              content={`${currentAdventure?.difficulty?.split(':')[0]} / 5`}
             />
             <ViewField
               title={'Exposure'}
@@ -191,13 +192,10 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
             <Pressable
               style={[generalStyles.button, styles.finishButton]}
               onPress={() => {
+                console.log({difficulty: currentAdventure?.difficulty});
                 saveCompletedAdventure({
                   adventureId: currentAdventure?.id as number,
-                  adventureType: currentAdventure?.adventure_type as
-                    | 'ski'
-                    | 'hike'
-                    | 'climb'
-                    | 'bike',
+                  adventureType: 'ski',
                   difficulty: `${votedDifficulty}:${currentAdventure?.difficulty}`,
                   rating: `${votedRating}:${currentAdventure?.rating}`,
                 });

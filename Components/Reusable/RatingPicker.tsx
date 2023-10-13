@@ -10,28 +10,28 @@ const RatingPicker = ({
   color = 'green',
 }: {
   title?: string;
-  rating: number;
-  setRating: (value: number) => void;
+  rating: string;
+  setRating: (value: string) => void;
   color?: 'blue' | 'green';
 }) => {
   return (
     <View style={localStyles.ratingAndTitle}>
       <Text style={localStyles.ratingText}>{title}</Text>
       <View style={localStyles.ratingContainer}>
-        <Pressable onPress={() => setRating(1)}>
-          {rating < 1 ? <RatingEmpty /> : <RatingFull color={color} />}
+        <Pressable onPress={() => setRating('1')}>
+          {Number(rating) < 1 ? <RatingEmpty /> : <RatingFull color={color} />}
         </Pressable>
-        <Pressable onPress={() => setRating(2)}>
-          {rating < 2 ? <RatingEmpty /> : <RatingFull color={color} />}
+        <Pressable onPress={() => setRating('2')}>
+          {Number(rating) < 2 ? <RatingEmpty /> : <RatingFull color={color} />}
         </Pressable>
-        <Pressable onPress={() => setRating(3)}>
-          {rating < 3 ? <RatingEmpty /> : <RatingFull color={color} />}
+        <Pressable onPress={() => setRating('3')}>
+          {Number(rating) < 3 ? <RatingEmpty /> : <RatingFull color={color} />}
         </Pressable>
-        <Pressable onPress={() => setRating(4)}>
-          {rating < 4 ? <RatingEmpty /> : <RatingFull color={color} />}
+        <Pressable onPress={() => setRating('4')}>
+          {Number(rating) < 4 ? <RatingEmpty /> : <RatingFull color={color} />}
         </Pressable>
-        <Pressable onPress={() => setRating(5)}>
-          {rating < 5 ? <RatingEmpty /> : <RatingFull color={color} />}
+        <Pressable onPress={() => setRating('5')}>
+          {Number(rating) < 5 ? <RatingEmpty /> : <RatingFull color={color} />}
         </Pressable>
       </View>
     </View>

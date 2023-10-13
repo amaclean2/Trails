@@ -102,14 +102,16 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
         title={'Aspect'}
         value={currentAdventure?.aspect ?? 'N'}
       />
-      <SliderElement
-        name="difficulty"
-        value={currentAdventure?.difficulty}
-        onChange={editAdventure}
-        minValue={1}
-        maxValue={5}
-        title={'Difficulty'}
-      />
+      {Number(currentAdventure?.difficulty?.split(':')[1]) < 2 && (
+        <SliderElement
+          name="difficulty"
+          value={Number(currentAdventure?.difficulty?.split(':')[0])}
+          onChange={editAdventure}
+          minValue={1}
+          maxValue={5}
+          title={'Difficulty'}
+        />
+      )}
       <SliderElement
         name="exposure"
         value={currentAdventure?.exposure}
