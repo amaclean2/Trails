@@ -32,7 +32,7 @@ const Login = ({navigation}: any): JSX.Element => {
       <View style={styles.fieldContainer}>
         <TextInput
           placeholder="Email"
-          style={generalStyles.inputField}
+          style={[generalStyles.inputField, styles.loginField]}
           autoCapitalize="none"
           onChangeText={text => editFormFields({name: 'email', value: text})}
           keyboardType={'email-address'}
@@ -41,7 +41,7 @@ const Login = ({navigation}: any): JSX.Element => {
         />
         <TextInput
           placeholder="Password"
-          style={generalStyles.inputField}
+          style={[generalStyles.inputField, styles.loginField]}
           onChangeText={text => editFormFields({name: 'password', value: text})}
           autoComplete={'current-password'}
           secureTextEntry
@@ -49,7 +49,7 @@ const Login = ({navigation}: any): JSX.Element => {
         />
       </View>
       <Pressable
-        style={generalStyles.button}
+        style={[generalStyles.button, styles.loginButton]}
         onPress={() => loginUser().then(initiateConnection)}>
         <Text style={generalStyles.buttonText}>Login to Sunday Peak</Text>
       </Pressable>

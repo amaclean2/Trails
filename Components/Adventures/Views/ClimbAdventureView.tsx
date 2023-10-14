@@ -32,6 +32,7 @@ import {useImageUploads} from '../../Helpers';
 import RatingPicker from '../../Reusable/RatingPicker';
 import {Picker} from '@react-native-picker/picker';
 import {fieldStyles} from '../../Reusable/FieldStyles';
+import RatingView from '../../Reusable/RatingView';
 
 const ClimbAdventureView = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
@@ -85,6 +86,9 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
             </Pressable>
           )}
         </View>
+        <RatingView
+          ratingCount={Number(currentAdventure?.rating?.split(':')[0])}
+        />
         <ImageGallery
           navigation={navigation}
           source={'Adventure'}

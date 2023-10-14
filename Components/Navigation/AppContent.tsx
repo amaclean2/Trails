@@ -40,7 +40,7 @@ const AdventureStack = (): JSX.Element => {
         options={{
           ...defaultHeaderOptions,
           headerShown: false,
-          title: 'Adventure View',
+          title: 'Adventure',
         }}
       />
       <StackScreen
@@ -49,7 +49,7 @@ const AdventureStack = (): JSX.Element => {
         options={{
           ...defaultHeaderOptions,
           headerShown: false,
-          title: 'Adventure View',
+          title: 'Adventure',
         }}
       />
       <StackScreen

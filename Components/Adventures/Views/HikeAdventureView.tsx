@@ -25,6 +25,7 @@ import ImageGallery from '../../Reusable/ImageGallery';
 import {useImageUploads} from '../../Helpers';
 import {DistanceIcon, ElevationIcon} from '../../../Assets/Symbols/LabelIcons';
 import RatingPicker from '../../Reusable/RatingPicker';
+import RatingView from '../../Reusable/RatingView';
 
 const HikeAdventureView = ({navigation}: any): JSX.Element => {
   const [votedRating, setVotedRating] = useState('0');
@@ -65,6 +66,9 @@ const HikeAdventureView = ({navigation}: any): JSX.Element => {
             </Pressable>
           )}
         </View>
+        <RatingView
+          ratingCount={Number(currentAdventure?.rating?.split(':')[0])}
+        />
         <ImageGallery
           navigation={navigation}
           source={'Adventure'}

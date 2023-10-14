@@ -42,6 +42,8 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
     }
   }, []);
 
+  console.log({difficulty: currentAdventure?.difficulty});
+
   return (
     <ScrollView style={{paddingTop: 30}}>
       <View style={{marginHorizontal: 20, marginVertical: 10}}>
@@ -106,7 +108,11 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
         <SliderElement
           name="difficulty"
           value={Number(currentAdventure?.difficulty?.split(':')[0])}
-          onChange={editAdventure}
+          onChange={({target: {name = '', value = ''}}) => {
+            editAdventure({
+              target: {name, value: `${value}:${currentAdventure?.difficulty}`},
+            });
+          }}
           minValue={1}
           maxValue={5}
           title={'Difficulty'}

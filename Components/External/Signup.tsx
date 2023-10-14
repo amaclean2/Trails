@@ -20,8 +20,11 @@ const Signup = ({navigation}): JSX.Element => {
   const {initiateConnection} = useMessages();
 
   return (
-    <View style={styles.container}>
-      <LogoInline color={'green'} style={styles.mainLogo} />
+    <View style={[styles.container, styles.signupContainer]}>
+      <LogoInline
+        color={'green'}
+        style={[styles.mainLogo, styles.signupLogo]}
+      />
       {userError && (
         <View style={generalStyles.errorField}>
           <Text style={generalStyles.errorFieldText}>{userError}</Text>
@@ -30,7 +33,7 @@ const Signup = ({navigation}): JSX.Element => {
       <View style={styles.fieldContainer}>
         <TextInput
           placeholder="First Name"
-          style={generalStyles.inputField}
+          style={[generalStyles.inputField, styles.loginField]}
           onChangeText={text =>
             editFormFields({name: 'first_name', value: text})
           }
@@ -38,7 +41,7 @@ const Signup = ({navigation}): JSX.Element => {
         />
         <TextInput
           placeholder="Last Name"
-          style={generalStyles.inputField}
+          style={[generalStyles.inputField, styles.loginField]}
           onChangeText={text =>
             editFormFields({name: 'last_name', value: text})
           }
@@ -46,7 +49,7 @@ const Signup = ({navigation}): JSX.Element => {
         />
         <TextInput
           placeholder="Email"
-          style={generalStyles.inputField}
+          style={[generalStyles.inputField, styles.loginField]}
           autoCapitalize="none"
           keyboardType={'email-address'}
           autoComplete={'email'}
@@ -56,7 +59,7 @@ const Signup = ({navigation}): JSX.Element => {
         <TextInput
           placeholder="Password"
           autoComplete={'new-password'}
-          style={generalStyles.inputField}
+          style={[generalStyles.inputField, styles.loginField]}
           secureTextEntry
           onChangeText={text => editFormFields({name: 'password', value: text})}
           value={formFields.password}
@@ -65,7 +68,7 @@ const Signup = ({navigation}): JSX.Element => {
           placeholder="Confirm Password"
           secureTextEntry
           autoComplete={'new-password'}
-          style={generalStyles.inputField}
+          style={[generalStyles.inputField, styles.loginField]}
           onChangeText={text =>
             editFormFields({name: 'password_2', value: text})
           }
@@ -81,11 +84,11 @@ const Signup = ({navigation}): JSX.Element => {
         </View>
       </View>
       <Pressable
-        style={generalStyles.button}
+        style={[generalStyles.button, styles.loginButton]}
         onPress={() => createNewUser().then(initiateConnection)}>
         <Text style={generalStyles.buttonText}>Sign Up for Sunday Peak</Text>
       </Pressable>
-      <View style={styles.navigateToLogin}>
+      <View style={[styles.navigateToLogin, styles.signupNavigate]}>
         <Text>Already have an account?</Text>
         <Pressable
           style={generalStyles.secondaryButton}

@@ -29,6 +29,9 @@ import {
 } from '../../../Assets/Symbols/LabelIcons';
 import {AspectIcon} from '../../../Assets/Symbols/AspectIcon';
 import RatingPicker from '../../Reusable/RatingPicker';
+import {Rating} from '@rneui/themed';
+import {colors} from '../../../Assets/Colors';
+import RatingView from '../../Reusable/RatingView';
 
 const SkiAdventureView = ({navigation}: any): JSX.Element => {
   const [votedRating, setVotedRating] = useState('0');
@@ -70,6 +73,9 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
             </Pressable>
           )}
         </View>
+        <RatingView
+          ratingCount={Number(currentAdventure?.rating?.split(':')[0])}
+        />
         <ImageGallery
           navigation={navigation}
           source={'Adventure'}

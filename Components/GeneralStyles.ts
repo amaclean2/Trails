@@ -11,11 +11,11 @@ export const generalStyles = StyleSheet.create({
   },
   button: {
     backgroundColor: colors.primaryAccentColor,
-    width: 350,
     paddingVertical: 10,
-    margin: 20,
+    marginVertical: 20,
     borderRadius: 8,
     alignItems: 'center',
+    width: 310,
   },
   buttonText: {
     color: colors.mainLight,
@@ -25,7 +25,7 @@ export const generalStyles = StyleSheet.create({
   secondaryButtonText: {
     fontWeight: '700',
     color: colors.primaryAccentColor,
-    padding: 10,
+    padding: 8,
   },
   errorField: {
     backgroundColor: colors.alertErrorColor,
