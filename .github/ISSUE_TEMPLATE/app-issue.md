@@ -1,8 +1,8 @@
 ---
-name: App Issue
-about: Use this template to create a new issue in Sunday Peak
+name: Bug Report
+about: Use this template to create a new bug in Sunday Peak
 title: "[Bug]: "
-labels: 'bug'
+labels: ["bug", "triage"]
 projects: ["amaclean2/6"]
 assignees: amaclean2
 body:
@@ -60,6 +60,6 @@ body:
       label: Code of Conduct
       description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
       options:
-        - label: I agree t
-
+        - label: I agree to follow this project's Code of Conduct
+          required: true
 ---
