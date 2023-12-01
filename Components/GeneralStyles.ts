@@ -3,11 +3,12 @@ import {colors} from '../Assets/Colors';
 
 export const generalStyles = StyleSheet.create({
   inputField: {
-    backgroundColor: colors.borderColor,
+    backgroundColor: colors.textAreaBackground,
     paddingVertical: 8,
     paddingHorizontal: 16,
     margin: 3,
     borderRadius: 8,
+    fontSize: 18,
   },
   button: {
     backgroundColor: colors.primaryAccentColor,
@@ -68,10 +69,10 @@ export const generalStyles = StyleSheet.create({
   headerText: {
     color: colors.primaryAccentColor,
     fontWeight: '700',
-    fontSize: 20,
+    fontSize: 24,
   },
   headerSubText: {
-    fontSize: 15,
+    fontSize: 16,
     paddingTop: 5,
   },
   container: {
@@ -113,5 +114,15 @@ export const generalStyles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 15,
     justifyContent: 'center',
+  },
+  fullScreenView: {
+    flex: 1,
+  },
+  badButton: {
+    backgroundColor: colors.mainOffWhite,
+    marginVertical: 0,
+  },
+  badButtonText: {
+    color: colors.alertErrorColor,
   },
 });

@@ -33,11 +33,16 @@ import RatingPicker from '../../Reusable/RatingPicker';
 import {Picker} from '@react-native-picker/picker';
 import {fieldStyles} from '../../Reusable/FieldStyles';
 import RatingView from '../../Reusable/RatingView';
+import FlexSpacer from '../../Reusable/FlexSpacer';
 
 const ClimbAdventureView = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
-  const {buildMenuContents, rateAdventureVisible, closeRateAdventure} =
-    useAdventureMenu();
+  const {
+    buildMenuContents,
+    rateAdventureVisible,
+    closeRateAdventure,
+    openRateAdventureVisible,
+  } = useAdventureMenu();
   const menuContents = buildMenuContents({navigation});
   const {saveAdventureImage} = useImageUploads();
   const {loggedInUser} = useUserStateContext();
@@ -68,6 +73,18 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
     closeRateAdventure();
   };
 
+  const canAddTodo =
+    !loggedInUser?.todo_adventures
+      ?.map(({adventure_id}) => adventure_id)
+      .includes(currentAdventure?.id as number) &&
+    !loggedInUser?.completed_adventures
+      ?.map(({adventure_id}) => adventure_id)
+      .includes(currentAdventure?.id as number);
+
+  const canComplete = !loggedInUser?.completed_adventures
+    ?.map(({adventure_id}) => adventure_id)
+    .includes(currentAdventure?.id as number);
+
   return (
     <SafeAreaView style={generalStyles.container}>
       <ScrollView>
@@ -89,6 +106,33 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
         <RatingView
           ratingCount={Number(currentAdventure?.rating?.split(':')[0])}
         />
+        <View style={styles.adventureActionButtonContainer}>
+          {canComplete && (
+            <Pressable
+              style={[
+                generalStyles.secondaryButton,
+                styles.adventureActionButton,
+              ]}
+              onPress={openRateAdventureVisible}>
+              <Text style={[generalStyles.secondaryButtonText]}>
+                Complete Adventure
+              </Text>
+            </Pressable>
+          )}
+          {canAddTodo ? (
+            <Pressable
+              style={[
+                generalStyles.secondaryButton,
+                styles.adventureActionButton,
+              ]}>
+              <Text style={generalStyles.secondaryButtonText}>
+                Add to Todo List
+              </Text>
+            </Pressable>
+          ) : (
+            <FlexSpacer />
+          )}
+        </View>
         <ImageGallery
           navigation={navigation}
           source={'Adventure'}
@@ -122,8 +166,8 @@ const ClimbAdventureView = ({navigation}: any): JSX.Element => {
             <ViewField
               title={'Grade'}
               content={gradeConverter(
-                currentAdventure?.difficulty,
-                currentAdventure.climb_type,
+                currentAdventure?.difficulty as string,
+                currentAdventure?.climb_type,
               )}
             />
           </View>

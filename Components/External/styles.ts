@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
   resetText: {
     fontWeight: '600',
     padding: 10,
-    fontSize: 15,
+    fontSize: 16,
   },
   signupContainer: {
     marginTop: 30,

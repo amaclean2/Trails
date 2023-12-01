@@ -5,6 +5,7 @@ import {
   Pressable,
   SafeAreaView,
   ScrollView,
+  Share,
   StatusBar,
   Text,
   View,
@@ -20,8 +21,12 @@ import {styles} from './styles';
 import ViewField from '../Reusable/Field';
 import {useImageUploads} from '../Helpers';
 import ImageGallery from '../Reusable/ImageGallery';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamsList} from '../Navigation/AppContent';
 
-const UserProfile = ({navigation}: any): JSX.Element => {
+const UserProfile = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamsList, 'Profile'>): JSX.Element => {
   const {logoutUser} = useGetUser();
   const {loggedInUser} = useUserStateContext();
   const {saveUserImage} = useImageUploads();
@@ -30,18 +35,33 @@ const UserProfile = ({navigation}: any): JSX.Element => {
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['Cancel', 'Edit Profile', 'Logout'],
+        options: ['Cancel', 'Share', 'Edit Profile', 'Logout'],
         cancelButtonIndex: 0,
       },
       buttonIndex => {
         switch (buttonIndex) {
           case 1:
+            return Share.share({
+              message: 'Check out this adventure!',
+              url: `https://sundaypeak.com/user/${loggedInUser?.id}`,
+            }).then(result => {
+              if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                  console.log('Shared successfully');
+                } else {
+                  console.log('No activity');
+                }
+              } else if (result.action === Share.dismissedAction) {
+                console.log('Share dismissed');
+              }
+            });
+          case 2:
             navigation.navigate('EditUser', {
               userName: `${loggedInUser?.first_name} ${loggedInUser?.last_name}`,
             });
             break;
-          case 2:
-            closeConnection();
+          case 3:
+            closeConnection('moving away from conversations');
             logoutUser();
             navigation.navigate('Login');
             break;
@@ -77,6 +97,7 @@ const UserProfile = ({navigation}: any): JSX.Element => {
             style={styles.profileImage}
           />
           <Pressable
+            style={styles.attributeButton}
             onPress={() =>
               navigation.navigate('FriendsList', {
                 friends: loggedInUser?.friends,
@@ -86,9 +107,11 @@ const UserProfile = ({navigation}: any): JSX.Element => {
             <ViewField
               title={'Friends'}
               content={loggedInUser?.friends.length}
+              contentStyles={styles.contentStyles}
             />
           </Pressable>
           <Pressable
+            style={styles.attributeButton}
             onPress={() =>
               navigation.navigate('AdventuresList', {
                 todoAdventures: loggedInUser?.todo_adventures,
@@ -99,6 +122,7 @@ const UserProfile = ({navigation}: any): JSX.Element => {
             <ViewField
               title={'Adventures'}
               content={loggedInUser?.completed_adventures.length}
+              contentStyles={styles.contentStyles}
             />
           </Pressable>
         </View>

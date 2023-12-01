@@ -26,13 +26,18 @@ import {useImageUploads} from '../../Helpers';
 import {DistanceIcon, ElevationIcon} from '../../../Assets/Symbols/LabelIcons';
 import RatingPicker from '../../Reusable/RatingPicker';
 import RatingView from '../../Reusable/RatingView';
+import FlexSpacer from '../../Reusable/FlexSpacer';
 
 const HikeAdventureView = ({navigation}: any): JSX.Element => {
   const [votedRating, setVotedRating] = useState('0');
   const [votedDifficulty, setVotedDifficulty] = useState('0');
   const {currentAdventure} = useAdventureStateContext();
-  const {buildMenuContents, rateAdventureVisible, closeRateAdventure} =
-    useAdventureMenu();
+  const {
+    buildMenuContents,
+    rateAdventureVisible,
+    closeRateAdventure,
+    openRateAdventureVisible,
+  } = useAdventureMenu();
   const {saveAdventureImage} = useImageUploads();
   const menuContents = buildMenuContents({navigation});
   const {loggedInUser} = useUserStateContext();
@@ -47,6 +52,18 @@ const HikeAdventureView = ({navigation}: any): JSX.Element => {
       buttonIndex => menuContents?.[buttonIndex].action(),
     );
   };
+
+  const canAddTodo =
+    !loggedInUser?.todo_adventures
+      ?.map(({adventure_id}) => adventure_id)
+      .includes(currentAdventure?.id as number) &&
+    !loggedInUser?.completed_adventures
+      ?.map(({adventure_id}) => adventure_id)
+      .includes(currentAdventure?.id as number);
+
+  const canComplete = !loggedInUser?.completed_adventures
+    ?.map(({adventure_id}) => adventure_id)
+    .includes(currentAdventure?.id as number);
 
   return (
     <SafeAreaView style={generalStyles.container}>
@@ -69,6 +86,33 @@ const HikeAdventureView = ({navigation}: any): JSX.Element => {
         <RatingView
           ratingCount={Number(currentAdventure?.rating?.split(':')[0])}
         />
+        <View style={styles.adventureActionButtonContainer}>
+          {canComplete && (
+            <Pressable
+              style={[
+                generalStyles.secondaryButton,
+                styles.adventureActionButton,
+              ]}
+              onPress={openRateAdventureVisible}>
+              <Text style={[generalStyles.secondaryButtonText]}>
+                Complete Adventure
+              </Text>
+            </Pressable>
+          )}
+          {canAddTodo ? (
+            <Pressable
+              style={[
+                generalStyles.secondaryButton,
+                styles.adventureActionButton,
+              ]}>
+              <Text style={generalStyles.secondaryButtonText}>
+                Add to Todo List
+              </Text>
+            </Pressable>
+          ) : (
+            <FlexSpacer />
+          )}
+        </View>
         <ImageGallery
           navigation={navigation}
           source={'Adventure'}
@@ -156,7 +200,6 @@ const HikeAdventureView = ({navigation}: any): JSX.Element => {
             <Pressable
               style={[generalStyles.button, styles.finishButton]}
               onPress={() => {
-                console.log({difficulty: currentAdventure?.difficulty});
                 saveCompletedAdventure({
                   adventureId: currentAdventure?.id as number,
                   adventureType: 'hike',

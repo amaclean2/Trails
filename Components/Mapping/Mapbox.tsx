@@ -1,5 +1,5 @@
-import React from 'react';
-import {Pressable, SafeAreaView, Text, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {Linking, SafeAreaView, Text} from 'react-native';
 import {
   MapView,
   UserLocation,
@@ -11,21 +11,31 @@ import {
 } from '@rnmapbox/maps';
 import {
   useAdventureStateContext,
-  useGetAdventures,
+  useManipulateFlows,
   useTokenStateContext,
 } from '@amaclean2/sundaypeak-treewells';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {OnPressEvent} from '@rnmapbox/maps/lib/typescript/types/OnPressEvent';
+
 import skierIcon from '../../Assets/Activities/SkierIcon.png';
 import climberIcon from '../../Assets/Activities/ClimberIcon.png';
 import hikerIcon from '../../Assets/Activities/HikerIcon.png';
-import {OnPressEvent} from '@rnmapbox/maps/lib/typescript/types/OnPressEvent';
 
 import {styles} from './styles';
-import Search from '../../Assets/UIGlyphs/Search';
+import TypeButtons from '../Reusable/TypeButtons';
+import {useSetupConversations} from './utils';
+import {RootStackParamsList} from '../Navigation/AppContent';
+import {useLinking} from '../Navigation/DeepLinks';
 
-const Mapbox = ({navigation}: any): JSX.Element => {
+const Mapbox = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamsList, 'Explore'>): JSX.Element => {
   const {mapboxStyleKey, mapboxToken} = useTokenStateContext();
-  const {allAdventures, globalAdventureType} = useAdventureStateContext();
-  const {changeAdventureType} = useGetAdventures();
+  const {allAdventures, globalAdventureType, startPosition} =
+    useAdventureStateContext();
+  const {updateStartPosition} = useManipulateFlows();
+  const {setupConversations} = useSetupConversations(navigation);
+  useLinking(navigation);
 
   const images = {
     ski: skierIcon,
@@ -33,13 +43,20 @@ const Mapbox = ({navigation}: any): JSX.Element => {
     hike: hikerIcon,
   };
 
-  setAccessToken(mapboxToken);
+  useEffect(() => {
+    setAccessToken(mapboxToken);
+    setupConversations();
+
+    Linking.getInitialURL().then(url => {
+      console.log({url});
+    });
+  }, []);
 
   if (!mapboxToken || !allAdventures) {
     return (
-      <View style={styles.map}>
+      <SafeAreaView style={styles.map}>
         <Text>Waiting for access token...</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -64,11 +81,22 @@ const Mapbox = ({navigation}: any): JSX.Element => {
         compassEnabled
         compassPosition={{bottom: 15, left: 15}}
         logoEnabled={false}
+        onMapIdle={({properties}) => {
+          const [longitude, latitude] = properties.center;
+          updateStartPosition({
+            latitude: Math.round(latitude * 10000) / 10000,
+            longitude: Math.round(longitude * 10000) / 10000,
+            zoom: Math.round(properties.zoom * 10) / 10,
+          });
+        }}
         compassFadeWhenNorth>
-        <UserLocation />
+        <UserLocation animated />
         <Camera
-          zoomLevel={10}
-          centerCoordinate={[-120.17, 39.33]}
+          zoomLevel={startPosition?.zoom ?? 10}
+          centerCoordinate={[
+            startPosition?.longitude ?? -120.17,
+            startPosition?.latitude ?? 39.33,
+          ]}
           animationMode={'moveTo'}
         />
         <Images images={images} />
@@ -82,67 +110,15 @@ const Mapbox = ({navigation}: any): JSX.Element => {
               properties: {
                 ...mappedFeature.properties,
                 icon: globalAdventureType,
+                size: 30,
               },
             })),
           }}>
           <SymbolLayer id="adventuresLayer" style={MapboxStyles.mapboxIcon} />
         </ShapeSource>
       </MapView>
-      <View style={styles.buttonContainer}>
-        <Pressable
-          onPress={() => changeAdventureType({type: 'ski'})}
-          style={[
-            styles.button,
-            globalAdventureType === 'ski' && styles.activeButton,
-          ]}>
-          <Text
-            style={[
-              styles.buttonText,
-              globalAdventureType === 'ski' && styles.activeButtonText,
-            ]}>
-            Ski
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={() => changeAdventureType({type: 'climb'})}
-          style={[
-            styles.button,
-            globalAdventureType === 'climb' && styles.activeButton,
-          ]}>
-          <Text
-            style={[
-              styles.buttonText,
-              globalAdventureType === 'climb' && styles.activeButtonText,
-            ]}>
-            Climb
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={() => changeAdventureType({type: 'hike'})}
-          style={[
-            styles.button,
-            globalAdventureType === 'hike' && styles.activeButton,
-          ]}>
-          <Text
-            style={[
-              styles.buttonText,
-              globalAdventureType === 'hike' && styles.activeButtonText,
-            ]}>
-            Hike
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={() =>
-            navigation.navigate('AdventureStack', {
-              screen: 'DefaultAdventure',
-            })
-          }
-          style={[styles.button, {backgroundColor: 'transparent'}]}>
-          <Text style={styles.buttonText}>
-            <Search isDark />
-          </Text>
-        </Pressable>
-      </View>
+      <TypeButtons />
+      {/* <TestNotifications /> */}
     </SafeAreaView>
   );
 };
@@ -150,7 +126,7 @@ const Mapbox = ({navigation}: any): JSX.Element => {
 const MapboxStyles = {
   mapboxIcon: {
     iconImage: ['get', 'icon'],
-    iconSize: 0.4,
+    iconSize: 0.45,
   },
 };
 

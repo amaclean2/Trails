@@ -17,7 +17,7 @@ import climberIcon from '../../Assets/Activities/ClimberIcon.png';
 import hikerIcon from '../../Assets/Activities/HikerIcon.png';
 import {paddingObject, pathColor} from '../Adventures/utils';
 
-const MapCamera = ({navigation, route}: any): JSX.Element => {
+const MapCamera = (): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
   return (
     <>
@@ -96,7 +96,7 @@ const AdventureMap = (): JSX.Element => {
         <>
           <Images images={images} />
           <ShapeSource
-            id="adventurePointSource"
+            id="mapPointSource"
             shape={{
               type: 'Feature',
               properties: {

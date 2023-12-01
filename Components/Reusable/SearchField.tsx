@@ -18,6 +18,7 @@ const SearchField = ({
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
+        style={localStyles.searchText}
       />
     </View>
   );
@@ -27,10 +28,17 @@ const localStyles = StyleSheet.create({
   fieldBody: {
     flexDirection: 'row',
     gap: 10,
-    padding: 10,
-    backgroundColor: colors.borderColor,
+    backgroundColor: colors.textAreaBackground,
     marginHorizontal: 15,
     borderRadius: 8,
+    alignItems: 'center',
+    paddingStart: 15,
+    overflow: 'hidden',
+  },
+  searchText: {
+    fontSize: 16,
+    flex: 1,
+    paddingVertical: 10,
   },
 });
 

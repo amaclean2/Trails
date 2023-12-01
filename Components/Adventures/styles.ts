@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   },
   addImageButton: {
     borderColor: colors.borderColor,
-    borderRadius: 5,
+    borderRadius: 8,
     borderWidth: StyleSheet.hairlineWidth,
     height: 100,
     margin: 10,
@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
   modal: {
     padding: 20,
     backgroundColor: colors.mainLight,
-    borderRadius: 10,
+    borderRadius: 8,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -79,5 +79,18 @@ export const styles = StyleSheet.create({
     width: 'auto',
     alignItems: 'center',
     marginTop: 10,
+  },
+  adventureActionButton: {
+    flex: 1,
+    backgroundColor: colors.mainOffWhite,
+    alignItems: 'center',
+    borderRadius: 8,
+  },
+  adventureActionButtonContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    padding: 15,
+    paddingTop: 20,
+    gap: 10,
   },
 });

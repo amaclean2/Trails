@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {
   useFollowUser,
+  useGetUser,
   useMessages,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
@@ -20,63 +21,75 @@ import {styles} from './styles';
 import ViewField from '../Reusable/Field';
 import {Pin} from '../../Assets/UIGlyphs/Pin';
 import ImageGallery from '../Reusable/ImageGallery';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamsList} from '../Navigation/AppContent';
 
-const OtherUser = ({navigation, route}: any): JSX.Element => {
+const OtherUser = ({
+  navigation,
+  route,
+}: NativeStackScreenProps<
+  RootStackParamsList,
+  'OtherProfile'
+>): JSX.Element => {
   const {workingUser, loggedInUser} = useUserStateContext();
   const {friendUser} = useFollowUser();
   const {addConversation} = useMessages();
-
-  const onMenuPress = () => {
-    const isFriend = loggedInUser?.friends.some(
-      ({user_id}: {user_id: number}) => user_id === workingUser.id,
-    );
-
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: [
-          'Cancel',
-          isFriend
-            ? `Message ${workingUser?.first_name}`
-            : `Friend ${workingUser?.first_name}`,
-        ],
-        cancelButtonIndex: 0,
-      },
-      buttonIndex => {
-        if (buttonIndex === 1 && isFriend) {
-          addConversation({
-            userId: workingUser?.id ?? 0,
-            name: `${workingUser?.first_name} ${workingUser?.last_name}`,
-          });
-          navigation.navigate('ConversationView', {
-            conversationName: `${workingUser?.first_name} ${workingUser?.last_name}`,
-          });
-        } else if (buttonIndex === 1 && !isFriend) {
-          friendUser({leaderId: workingUser?.id ?? 0});
-        } else {
-          console.log(`Canceled ${buttonIndex}`);
-        }
-      },
-    );
-  };
+  const {getNonLoggedInUser} = useGetUser();
 
   useEffect(() => {
+    const onMenuPress = () => {
+      const isFriend = loggedInUser?.friends.some(
+        ({user_id}: {user_id: number}) => user_id === workingUser.id,
+      );
+
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: [
+            'Cancel',
+            isFriend
+              ? `Message ${workingUser?.first_name}`
+              : `Friend ${workingUser?.first_name}`,
+          ],
+          cancelButtonIndex: 0,
+        },
+        buttonIndex => {
+          if (buttonIndex === 1 && isFriend) {
+            addConversation({
+              userId: workingUser?.id ?? 0,
+            });
+            navigation.navigate('ConversationView', {
+              conversationName: `${workingUser?.first_name} ${workingUser?.last_name}`,
+            });
+          } else if (buttonIndex === 1 && !isFriend) {
+            friendUser({leaderId: workingUser?.id ?? 0});
+          } else {
+            console.log(`Canceled ${buttonIndex}`);
+          }
+        },
+      );
+    };
+
     navigation.setOptions({
       headerRight: () => (
         <Pressable onPress={onMenuPress}>
           <Meatball />
         </Pressable>
       ),
+      headerTitle: `${workingUser?.first_name} ${workingUser?.last_name}`,
     });
-  }, []);
+  }, [workingUser?.id]);
 
   useEffect(() => {
-    const match = route.params.userId === loggedInUser?.id;
+    const match = route.params?.userId === loggedInUser?.id;
     if (match) {
       navigation.navigate('UserStack', {screen: 'Profile'});
     }
+    if (workingUser?.id !== route.params?.userId) {
+      getNonLoggedInUser({userId: route.params?.userId});
+    }
   }, [route.params]);
 
-  if (route.params.userId !== workingUser?.id) {
+  if (route.params?.userId !== workingUser?.id) {
     return <></>;
   }
 
@@ -106,6 +119,7 @@ const OtherUser = ({navigation, route}: any): JSX.Element => {
             )}
             <View style={localStyles.viewContainerHorizontal}>
               <Pressable
+                style={styles.attributeButton}
                 onPress={() =>
                   navigation.navigate('FriendsList', {
                     friends: workingUser?.friends,
@@ -115,9 +129,11 @@ const OtherUser = ({navigation, route}: any): JSX.Element => {
                 <ViewField
                   title={'Friends'}
                   content={workingUser?.friends.length}
+                  contentStyles={styles.contentStyles}
                 />
               </Pressable>
               <Pressable
+                style={styles.attributeButton}
                 onPress={() =>
                   navigation.navigate('AdventuresList', {
                     todoAdventures: workingUser?.todo_adventures,
@@ -131,6 +147,7 @@ const OtherUser = ({navigation, route}: any): JSX.Element => {
                     (workingUser?.completed_adventures.length ?? 0) +
                     (workingUser?.todo_adventures.length ?? 0)
                   }
+                  contentStyles={styles.contentStyles}
                 />
               </Pressable>
             </View>

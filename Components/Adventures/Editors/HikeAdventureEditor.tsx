@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import EditElement from '../../Reusable/EditElement';
 import {
   useAdventureStateContext,
@@ -11,10 +11,13 @@ import SliderElement from '../../Reusable/SliderElement';
 import {LargeHikerIcon} from '../../../Assets/Activities/LargeHikerIcon';
 import SelectManyElement from '../../Reusable/SelectManyElement';
 import {months} from '../utils';
+import FlexSpacer from '../../Reusable/FlexSpacer';
+import DeleteModal from './DeleteModal';
 
 const HikeAdventureEditor = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
   const {editAdventure} = useSaveAdventure();
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({
@@ -89,6 +92,23 @@ const HikeAdventureEditor = ({navigation}: any): JSX.Element => {
         onPress={() => navigation.goBack()}>
         <Text style={generalStyles.buttonText}>Finish</Text>
       </Pressable>
+      <Pressable
+        style={[generalStyles.backButton, generalStyles.badButton]}
+        onPress={() => {
+          setIsDeleteModalVisible(true);
+        }}>
+        <Text
+          style={[
+            generalStyles.buttonText,
+            generalStyles.badButtonText,
+          ]}>{`Delete ${currentAdventure?.adventure_name}`}</Text>
+      </Pressable>
+      <FlexSpacer height={60} />
+      <DeleteModal
+        deleteModalVisible={isDeleteModalVisible}
+        navigation={navigation}
+        closeModal={() => setIsDeleteModalVisible(false)}
+      />
     </ScrollView>
   );
 };

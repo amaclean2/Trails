@@ -1,6 +1,5 @@
 import {
   useAdventureStateContext,
-  useSaveCompletedAdventure,
   useSaveTodo,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
@@ -50,9 +49,8 @@ export const useAdventureMenu = () => {
         action: () =>
           Share.share({
             message: 'Check out this adventure!',
-            url: `https://sundaypeak.com/adventure/${currentAdventure?.adventure_type}/${currentAdventure?.id}`,
+            url: `sp://adventure/${currentAdventure?.adventure_type}/${currentAdventure?.id}`,
           }).then(result => {
-            console.log({result});
             if (result.action === Share.sharedAction) {
               if (result.activityType) {
                 console.log('Shared successfully');
@@ -105,6 +103,7 @@ export const useAdventureMenu = () => {
   return {
     buildMenuContents,
     rateAdventureVisible,
+    openRateAdventureVisible: () => setRateAdventureVisible(true),
     closeRateAdventure: () => setRateAdventureVisible(false),
   };
 };

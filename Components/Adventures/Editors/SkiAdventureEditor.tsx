@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import EditElement from '../../Reusable/EditElement';
 import {
   useAdventureStateContext,
@@ -12,10 +12,13 @@ import SliderElement from '../../Reusable/SliderElement';
 import PickerElement from '../../Reusable/PickerElement';
 import {directions, gearOptions, months} from '../utils';
 import SelectManyElement from '../../Reusable/SelectManyElement';
+import FlexSpacer from '../../Reusable/FlexSpacer';
+import DeleteModal from './DeleteModal';
 
 const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
   const {editAdventure} = useSaveAdventure();
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({
@@ -41,8 +44,6 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
       });
     }
   }, []);
-
-  console.log({difficulty: currentAdventure?.difficulty});
 
   return (
     <ScrollView style={{paddingTop: 30}}>
@@ -155,6 +156,23 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
         onPress={() => navigation.goBack()}>
         <Text style={generalStyles.buttonText}>Finish</Text>
       </Pressable>
+      <Pressable
+        style={[generalStyles.backButton, generalStyles.badButton]}
+        onPress={() => {
+          setIsDeleteModalVisible(true);
+        }}>
+        <Text
+          style={[
+            generalStyles.buttonText,
+            generalStyles.badButtonText,
+          ]}>{`Delete ${currentAdventure?.adventure_name}`}</Text>
+      </Pressable>
+      <FlexSpacer height={60} />
+      <DeleteModal
+        deleteModalVisible={isDeleteModalVisible}
+        navigation={navigation}
+        closeModal={() => setIsDeleteModalVisible(false)}
+      />
     </ScrollView>
   );
 };

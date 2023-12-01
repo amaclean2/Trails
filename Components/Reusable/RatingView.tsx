@@ -16,8 +16,8 @@ const RatingView = ({ratingCount = 5}): JSX.Element => {
     <View style={localStyles.ratingContainer}>
       {Array(fullStars)
         .fill(1)
-        .map(() => (
-          <RatingFull />
+        .map((_, key) => (
+          <RatingFull key={`rating_${key}`} />
         ))}
       {remainingStars <= 0.25 && remainingStars > 0 && <RatingQuarter />}
       {remainingStars <= 0.5 && remainingStars > 0.25 && <RatingHalf />}

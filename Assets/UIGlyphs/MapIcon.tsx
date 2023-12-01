@@ -11,29 +11,16 @@ const MapIcon = ({size = 20, color = colors.primaryAccentColor}: any) => (
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-    <Svg
-      id="Component_17_1"
-      width={size}
-      height={size * (51 / 53)}
-      viewBox="0 0 53 51">
+    <Svg width={size} height={size * (51 / 59)} viewBox="0 0 59 51">
+      <Path d="M0,41H17V51Zm0,0V0L17,10V41Z" fill={color} />
       <Path
-        id="Union_1"
-        data-name="Union 1"
-        d="M0,41H17V51Zm0,0V0L17,10V41Z"
-        fill={color}
-      />
-      <Path
-        id="Union_2"
-        data-name="Union 2"
         d="M0,41H17L0,51Zm0,0V10L17,0V41Z"
-        transform="translate(18)"
+        transform="translate(21)"
         fill={color}
       />
       <Path
-        id="Union_3"
-        data-name="Union 3"
         d="M0,41H17V51Zm0,0V0L17,10V41Z"
-        transform="translate(36)"
+        transform="translate(42)"
         fill={color}
       />
     </Svg>

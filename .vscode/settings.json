@@ -17,5 +17,21 @@
   "javascript.format.semicolons": "remove",
   "typescript.format.semicolons": "remove",
   "vue.autoInsert.bracketSpacing": false,
-  "vue3snippets.bracketSpacing": false
+  "vue3snippets.bracketSpacing": false,
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "128.199.3.44",
+      "port": 3300,
+      "driver": "MySQL",
+      "name": "Sunday Peak Production",
+      "database": "friends",
+      "username": "byf",
+      "askForPassword": true
+    }
+  ]
 }

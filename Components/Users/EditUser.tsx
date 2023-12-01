@@ -19,8 +19,12 @@ import {generalStyles} from '../GeneralStyles';
 import PickerElement from '../Reusable/PickerElement';
 import {sexLabels} from '../Adventures/utils';
 import {fieldStyles} from '../Reusable/FieldStyles';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamsList} from '../Navigation/AppContent';
 
-const EditUser = ({navigation}: any): JSX.Element => {
+const EditUser = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamsList, 'EditUser'>): JSX.Element => {
   const {loggedInUser} = useUserStateContext();
   const {updateProfilePicture} = useImageUploads();
   const {editUser} = useEditUser();
@@ -114,7 +118,7 @@ const EditUser = ({navigation}: any): JSX.Element => {
 
 const localStyles = StyleSheet.create({
   profilePicture: {
-    backgroundColor: colors.borderColor,
+    backgroundColor: colors.textAreaBackground,
     width: 100,
     height: 100,
     borderRadius: 50,

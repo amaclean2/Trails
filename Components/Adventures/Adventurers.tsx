@@ -6,8 +6,12 @@ import {
 } from '@amaclean2/sundaypeak-treewells';
 
 import {generalStyles} from '../GeneralStyles';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamsList} from '../Navigation/AppContent';
 
-const Adventurers = ({navigation}: any): JSX.Element => {
+const Adventurers = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamsList, 'Adventurers'>): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
   const {getNonLoggedInUser} = useGetUser();
 
@@ -20,9 +24,9 @@ const Adventurers = ({navigation}: any): JSX.Element => {
             style={generalStyles.listItem}
             onPress={() => {
               getNonLoggedInUser({userId: item.user_id});
-              navigation.navigate('AdventureStack', {
-                screen: 'OtherProfile',
-                params: {name: item.display_name, userId: item.user_id},
+              navigation.navigate('OtherProfile', {
+                name: item.display_name,
+                userId: item.user_id,
               });
             }}>
             <Image

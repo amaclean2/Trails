@@ -3,8 +3,15 @@ import {useAdventureStateContext} from '@amaclean2/sundaypeak-treewells';
 import HikeAdventureEditor from './HikeAdventureEditor';
 import ClimbAdventureEditor from './ClimbAdventureEditor';
 import SkiAdventureEditor from './SkiAdventureEditor';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamsList} from '../../Navigation/AppContent';
 
-const AdventureEditor = ({navigation}: any): JSX.Element => {
+const AdventureEditor = ({
+  navigation,
+}: NativeStackScreenProps<
+  RootStackParamsList,
+  'AdventureEditor'
+>): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
 
   switch (currentAdventure?.adventure_type) {

@@ -1,10 +1,26 @@
-import React, {useEffect} from 'react';
-import {ActionSheetIOS, Image, Pressable, StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  ActionSheetIOS,
+  Dimensions,
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {Meatball} from '../../Assets/UIGlyphs/Meatball';
 import {usePictures} from '@amaclean2/sundaypeak-treewells';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamsList} from '../Navigation/AppContent';
 
-const ImageViewer = ({navigation, route}: any) => {
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
+const ImageViewer = ({
+  navigation,
+  route,
+}: NativeStackScreenProps<RootStackParamsList, 'ImageViewer'>) => {
   const {deletePicture} = usePictures();
+  const [scrollIndex, setScrollIndex] = useState(route.params?.imageIndex ?? 0);
 
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -16,7 +32,7 @@ const ImageViewer = ({navigation, route}: any) => {
       buttonIndex => {
         switch (buttonIndex) {
           case 1:
-            deletePicture({url: route.params.image});
+            deletePicture({url: route.params?.images[scrollIndex]});
             navigation.goBack();
             break;
           default:
@@ -37,9 +53,37 @@ const ImageViewer = ({navigation, route}: any) => {
   }, []);
 
   return (
-    <View style={localStyles.imageContainer}>
-      <Image style={localStyles.image} source={{uri: route.params.image}} />
-    </View>
+    <FlatList
+      horizontal
+      initialScrollIndex={route.params?.imageIndex}
+      showsHorizontalScrollIndicator={false}
+      getItemLayout={(data, index) => ({
+        length: SCREEN_WIDTH,
+        offset: SCREEN_WIDTH * index,
+        index,
+      })}
+      data={route.params?.images}
+      onScroll={props => {
+        const offset = props.nativeEvent.contentOffset.x;
+        if (offset % SCREEN_WIDTH === 0) {
+          setScrollIndex(offset / SCREEN_WIDTH);
+        }
+      }}
+      scrollEventThrottle={0}
+      keyExtractor={item => item}
+      snapToInterval={SCREEN_WIDTH}
+      snapToAlignment="center"
+      decelerationRate="fast"
+      pagingEnabled={true}
+      renderItem={({item}) => (
+        <View>
+          <Image
+            source={{uri: item.replace('/thumbs', '')}}
+            style={localStyles.image}
+          />
+        </View>
+      )}
+    />
   );
 };
 
@@ -50,6 +94,7 @@ const localStyles = StyleSheet.create({
   },
   image: {
     flex: 1,
+    width: SCREEN_WIDTH,
     resizeMode: 'contain',
   },
 });

@@ -5,7 +5,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import UserProfile from '../Users';
 import Conversations from '../Conversations';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useUserStateContext} from '@amaclean2/sundaypeak-treewells';
+
 import OtherUser from '../Users/OtherUser';
 import {colors} from '../../Assets/Colors';
 import FriendsList from '../Users/FriendsList';
@@ -29,13 +29,34 @@ const {Navigator: StackNavigator, Screen: StackScreen} =
 
 const defaultHeaderOptions = {
   headerTintColor: colors.primaryAccentColor,
+  headerBackTitleVisible: false,
+};
+
+export type RootStackParamsList = {
+  Login: any;
+  SignUp: any;
+  ForgotPassword: any;
+  ConversationView: any;
+  DefaultAdventureView: any;
+  Adventures: any;
+  Adventurers: any;
+  OtherProfile: any;
+  FriendsList: any;
+  AdventuresList: any;
+  ImageViewer: any;
+  AdventureEditor: any;
+  AdventureMap: any;
+  Profile: any;
+  EditUser: any;
+  Explore: any;
+  ConversationSelector: any;
 };
 
 const AdventureStack = (): JSX.Element => {
   return (
     <StackNavigator screenOptions={{headerShown: false}}>
       <StackScreen
-        name={'DefaultAdventure'}
+        name={'DefaultAdventureView'}
         component={DefaultAdventure}
         options={{
           ...defaultHeaderOptions,
@@ -59,6 +80,7 @@ const AdventureStack = (): JSX.Element => {
           ...defaultHeaderOptions,
           headerShown: true,
           title: 'Todo List',
+          headerBackTitleVisible: true,
         }}
       />
       <StackScreen
@@ -78,6 +100,7 @@ const AdventureStack = (): JSX.Element => {
           headerShown: true,
           headerTitle: 'Connections',
           headerBackTitle: route.params?.backName,
+          headerBackTitleVisible: true,
         })}
       />
       <StackScreen
@@ -88,6 +111,7 @@ const AdventureStack = (): JSX.Element => {
           headerShown: true,
           headerTitle: 'Adventures',
           headerBackTitle: route.params?.backName,
+          headerBackTitleVisible: true,
         })}
       />
       <StackScreen
@@ -112,9 +136,9 @@ const AdventureStack = (): JSX.Element => {
         name="AdventureMap"
         component={AdventureMap}
         options={({route}) => ({
+          ...defaultHeaderOptions,
           headerShown: true,
           headerTitle: route.params?.adventureName,
-          headerBackTitle: 'Adventure',
         })}
       />
     </StackNavigator>
@@ -137,6 +161,7 @@ const UserStack = (): JSX.Element => {
           headerShown: true,
           headerTitle: 'Connections',
           headerBackTitle: route.params?.backName,
+          headerBackTitleVisible: true,
         })}
       />
       <StackScreen
@@ -147,6 +172,7 @@ const UserStack = (): JSX.Element => {
           headerTitle: route.params?.name,
           headerShown: true,
           headerBackTitle: route.params?.backName,
+          headerBackTitleVisible: true,
         })}
       />
       <StackScreen
@@ -157,6 +183,7 @@ const UserStack = (): JSX.Element => {
           headerShown: true,
           headerTitle: 'Adventures',
           headerBackTitle: route.params?.backName,
+          headerBackTitleVisible: true,
         })}
       />
       <StackScreen
@@ -307,8 +334,18 @@ const AppContent = (): JSX.Element => {
         options={{headerShown: false}}
       />
       <StackScreen
+        name={'SignUp'}
+        component={Signup}
+        options={{headerShown: false}}
+      />
+      <StackScreen
         name={'AppTabs'}
         component={AppTabs}
+        options={{headerShown: false}}
+      />
+      <StackScreen
+        name={'ForgotPassword'}
+        component={ForgotPassword}
         options={{headerShown: false}}
       />
       <StackScreen
@@ -320,16 +357,6 @@ const AppContent = (): JSX.Element => {
           headerBackTitleVisible: false,
           headerTitle: route.params?.conversationName,
         })}
-      />
-      <StackScreen
-        name={'ForgotPassword'}
-        component={ForgotPassword}
-        options={{headerShown: false}}
-      />
-      <StackScreen
-        name={'SignUp'}
-        component={Signup}
-        options={{headerShown: false}}
       />
     </StackNavigator>
   );

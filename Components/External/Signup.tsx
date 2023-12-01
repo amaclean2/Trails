@@ -1,104 +1,125 @@
 import React from 'react';
-import {Pressable, Text, TextInput, View} from 'react-native';
+import {
+  Keyboard,
+  Pressable,
+  SafeAreaView,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {
   useCreateUser,
   useEditUser,
-  useMessages,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import LogoInline from '../../Assets/Logos/LogoInline';
-import {generalStyles} from '../GeneralStyles';
-
-import {styles} from './styles';
 import CheckboxElement from '../Reusable/CheckboxElement';
+import {RootStackParamsList} from '../Navigation/AppContent';
 
-const Signup = ({navigation}): JSX.Element => {
+import {generalStyles} from '../GeneralStyles';
+import {styles} from './styles';
+
+const Signup = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamsList, 'SignUp'>): JSX.Element => {
   const {editFormFields} = useEditUser();
   const {formFields, userError} = useUserStateContext();
   const {createNewUser} = useCreateUser();
-  const {initiateConnection} = useMessages();
 
   return (
-    <View style={[styles.container, styles.signupContainer]}>
-      <LogoInline
-        color={'green'}
-        style={[styles.mainLogo, styles.signupLogo]}
-      />
-      {userError && (
-        <View style={generalStyles.errorField}>
-          <Text style={generalStyles.errorFieldText}>{userError}</Text>
-        </View>
-      )}
-      <View style={styles.fieldContainer}>
-        <TextInput
-          placeholder="First Name"
-          style={[generalStyles.inputField, styles.loginField]}
-          onChangeText={text =>
-            editFormFields({name: 'first_name', value: text})
-          }
-          value={formFields.first_name}
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <SafeAreaView style={[styles.container, styles.signupContainer]}>
+        <LogoInline
+          color={'green'}
+          style={[styles.mainLogo, styles.signupLogo]}
         />
-        <TextInput
-          placeholder="Last Name"
-          style={[generalStyles.inputField, styles.loginField]}
-          onChangeText={text =>
-            editFormFields({name: 'last_name', value: text})
-          }
-          value={formFields.last_name}
-        />
-        <TextInput
-          placeholder="Email"
-          style={[generalStyles.inputField, styles.loginField]}
-          autoCapitalize="none"
-          keyboardType={'email-address'}
-          autoComplete={'email'}
-          onChangeText={text => editFormFields({name: 'email', value: text})}
-          value={formFields.email}
-        />
-        <TextInput
-          placeholder="Password"
-          autoComplete={'new-password'}
-          style={[generalStyles.inputField, styles.loginField]}
-          secureTextEntry
-          onChangeText={text => editFormFields({name: 'password', value: text})}
-          value={formFields.password}
-        />
-        <TextInput
-          placeholder="Confirm Password"
-          secureTextEntry
-          autoComplete={'new-password'}
-          style={[generalStyles.inputField, styles.loginField]}
-          onChangeText={text =>
-            editFormFields({name: 'password_2', value: text})
-          }
-          value={formFields.password_2}
-        />
-        <View style={generalStyles.checkboxField}>
-          <CheckboxElement
-            title={'Agree to the Sunday Peak Privacy Policy.'}
-            onChange={(newChecked: boolean) =>
-              editFormFields({name: 'legal', value: newChecked})
+        {userError && (
+          <View style={generalStyles.errorField}>
+            <Text style={generalStyles.errorFieldText}>{userError}</Text>
+          </View>
+        )}
+        <View style={styles.fieldContainer}>
+          <TextInput
+            placeholder="First Name"
+            style={[generalStyles.inputField, styles.loginField]}
+            textContentType={'givenName'}
+            onChangeText={text =>
+              editFormFields({name: 'first_name', value: text})
             }
+            value={formFields.first_name}
           />
+          <TextInput
+            placeholder="Last Name"
+            style={[generalStyles.inputField, styles.loginField]}
+            textContentType={'familyName'}
+            onChangeText={text =>
+              editFormFields({name: 'last_name', value: text})
+            }
+            value={formFields.last_name}
+          />
+          <TextInput
+            placeholder="Email"
+            style={[generalStyles.inputField, styles.loginField]}
+            textContentType={'emailAddress'}
+            autoCapitalize="none"
+            keyboardType={'email-address'}
+            autoComplete={'email'}
+            onChangeText={text => editFormFields({name: 'email', value: text})}
+            value={formFields.email}
+          />
+          <TextInput
+            placeholder="Password"
+            autoComplete={'new-password'}
+            textContentType={'newPassword'}
+            clearTextOnFocus
+            style={[generalStyles.inputField, styles.loginField]}
+            secureTextEntry
+            onChangeText={text =>
+              editFormFields({name: 'password', value: text})
+            }
+            value={formFields.password}
+          />
+          <TextInput
+            placeholder="Confirm Password"
+            secureTextEntry
+            autoComplete={'new-password'}
+            textContentType={'password'}
+            clearTextOnFocus
+            style={[generalStyles.inputField, styles.loginField]}
+            onChangeText={text =>
+              editFormFields({name: 'password_2', value: text})
+            }
+            value={formFields.password_2}
+          />
+          <View style={generalStyles.checkboxField}>
+            <CheckboxElement
+              title={'Agree to the Sunday Peak Privacy Policy.'}
+              onChange={(newChecked: boolean) =>
+                editFormFields({name: 'legal', value: newChecked})
+              }
+            />
+          </View>
         </View>
-      </View>
-      <Pressable
-        style={[generalStyles.button, styles.loginButton]}
-        onPress={() => createNewUser().then(initiateConnection)}>
-        <Text style={generalStyles.buttonText}>Sign Up for Sunday Peak</Text>
-      </Pressable>
-      <View style={[styles.navigateToLogin, styles.signupNavigate]}>
-        <Text>Already have an account?</Text>
         <Pressable
-          style={generalStyles.secondaryButton}
-          onPress={() => navigation.navigate('Login')}>
-          <Text style={generalStyles.secondaryButtonText}>
-            Login to Sunday Peak
-          </Text>
+          style={[generalStyles.button, styles.loginButton]}
+          onPress={() => createNewUser()}>
+          <Text style={generalStyles.buttonText}>Sign Up for Sunday Peak</Text>
         </Pressable>
-      </View>
-    </View>
+        <View style={[styles.navigateToLogin, styles.signupNavigate]}>
+          <Text>Already have an account?</Text>
+          <Pressable
+            style={generalStyles.secondaryButton}
+            onPress={() => navigation.navigate('Login')}>
+            <Text style={generalStyles.secondaryButtonText}>
+              Login to Sunday Peak
+            </Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
