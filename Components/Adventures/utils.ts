@@ -49,7 +49,7 @@ export const useAdventureMenu = () => {
         action: () =>
           Share.share({
             message: 'Check out this adventure!',
-            url: `sp://adventure/${currentAdventure?.adventure_type}/${currentAdventure?.id}`,
+            url: `https://sundaypeak.com/adventure/${currentAdventure?.adventure_type}/${currentAdventure?.id}`,
           }).then(result => {
             if (result.action === Share.sharedAction) {
               if (result.activityType) {

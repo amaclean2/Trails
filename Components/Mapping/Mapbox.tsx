@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {Linking, SafeAreaView, Text} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {SafeAreaView, Text} from 'react-native';
 import {
   MapView,
   UserLocation,
@@ -11,6 +11,7 @@ import {
 } from '@rnmapbox/maps';
 import {
   useAdventureStateContext,
+  useDebounce,
   useManipulateFlows,
   useTokenStateContext,
 } from '@amaclean2/sundaypeak-treewells';
@@ -36,6 +37,13 @@ const Mapbox = ({
   const {updateStartPosition} = useManipulateFlows();
   const {setupConversations} = useSetupConversations(navigation);
   useLinking(navigation);
+  const [userCurrentLocation, setUserCurrentLocation] = useState<{
+    lng: number;
+    lat: number;
+  } | null>(null);
+  const [hasMapMoved, setHasMapMoved] = useState(false);
+
+  const cameraRef = useRef(null);
 
   const images = {
     ski: skierIcon,
@@ -43,13 +51,18 @@ const Mapbox = ({
     hike: hikerIcon,
   };
 
+  const trackUser = useDebounce(
+    location =>
+      setUserCurrentLocation({
+        lat: location.coords.latitude,
+        lng: location.coords.longitude,
+      }),
+    5000,
+  );
+
   useEffect(() => {
     setAccessToken(mapboxToken);
     setupConversations();
-
-    Linking.getInitialURL().then(url => {
-      console.log({url});
-    });
   }, []);
 
   if (!mapboxToken || !allAdventures) {
@@ -72,6 +85,15 @@ const Mapbox = ({
     navigation.navigate('Adventures', {adventureId, adventureType});
   };
 
+  const jumpToUser = () => {
+    userCurrentLocation &&
+      cameraRef?.current?.setCamera({
+        centerCoordinate: [userCurrentLocation.lng, userCurrentLocation.lat],
+        zoomLevel: 14,
+      });
+    setHasMapMoved(false);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <MapView
@@ -83,6 +105,7 @@ const Mapbox = ({
         logoEnabled={false}
         onMapIdle={({properties}) => {
           const [longitude, latitude] = properties.center;
+          setHasMapMoved(true);
           updateStartPosition({
             latitude: Math.round(latitude * 10000) / 10000,
             longitude: Math.round(longitude * 10000) / 10000,
@@ -90,7 +113,7 @@ const Mapbox = ({
           });
         }}
         compassFadeWhenNorth>
-        <UserLocation animated />
+        <UserLocation animated onUpdate={location => trackUser(location)} />
         <Camera
           zoomLevel={startPosition?.zoom ?? 10}
           centerCoordinate={[
@@ -98,6 +121,7 @@ const Mapbox = ({
             startPosition?.latitude ?? 39.33,
           ]}
           animationMode={'moveTo'}
+          ref={cameraRef}
         />
         <Images images={images} />
         <ShapeSource
@@ -117,7 +141,11 @@ const Mapbox = ({
           <SymbolLayer id="adventuresLayer" style={MapboxStyles.mapboxIcon} />
         </ShapeSource>
       </MapView>
-      <TypeButtons />
+      <TypeButtons
+        jumpToUser={() => jumpToUser()}
+        mapMoved={hasMapMoved}
+        isMapView
+      />
       {/* <TestNotifications /> */}
     </SafeAreaView>
   );

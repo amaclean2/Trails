@@ -23,7 +23,7 @@ export const navigateFromUrl = (navigation: any, url: string) => {
       return navigation.navigate('SignUp');
     case 'forgotPassword':
       return navigation.navigate('ForgotPassword');
-    case 'home':
+    case 'discover':
     default:
       return navigation.navigate('ExploreStack', {screen: 'Explore'});
   }

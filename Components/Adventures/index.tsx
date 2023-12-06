@@ -146,9 +146,10 @@ const localStyles = StyleSheet.create({
   listButtons: {
     marginBottom: 0,
     margin: 15,
-    marginTop: 30,
+    marginTop: 10,
     justifyContent: 'center',
-    gap: 20,
+    flexDirection: 'row',
+    gap: 30,
   },
   adventureList: {
     paddingVertical: 15,

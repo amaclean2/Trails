@@ -138,6 +138,7 @@ const localStyles = StyleSheet.create({
   chatView: {
     paddingVertical: 10,
     backgroundColor: colors.mainLight,
+    minHeight: '100%',
   },
   userBubble: {
     width: 28,

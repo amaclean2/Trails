@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   Keyboard,
   Pressable,
@@ -37,26 +37,16 @@ const Login = ({
   const handleLogin = () => {
     loginUser()
       .then(() =>
-        Keychain.setGenericPassword(formFields.email, formFields.password),
+        Keychain.setInternetCredentials(
+          'sundaypeak.com',
+          formFields.email,
+          formFields.password,
+        ),
       )
       .catch(() => {
         console.log('login failed...');
       });
   };
-
-  useEffect(() => {
-    navigation.addListener('focus', () => {
-      Keychain.getGenericPassword().then(credentials => {
-        if (credentials) {
-          console.log('Not ready for this');
-          // editFormFields({name: 'email', value: credentials.username});
-          // editFormFields({name: 'password', value: credentials.password});
-        } else {
-          console.log('No credentials stored');
-        }
-      });
-    });
-  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -71,10 +61,10 @@ const Login = ({
           <TextInput
             placeholder="Email"
             style={[generalStyles.inputField, styles.loginField]}
-            autoCapitalize="none"
-            onChangeText={text => editFormFields({name: 'email', value: text})}
             keyboardType={'email-address'}
             autoComplete={'email'}
+            autoCapitalize={'none'}
+            onChangeText={text => editFormFields({name: 'email', value: text})}
             value={formFields.email}
           />
           <TextInput
@@ -84,6 +74,7 @@ const Login = ({
               editFormFields({name: 'password', value: text})
             }
             autoComplete={'current-password'}
+            keyboardType={'visible-password'}
             secureTextEntry
             value={formFields.password}
           />

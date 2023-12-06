@@ -25,6 +25,7 @@ import {colors} from '../../Assets/Colors';
 import FlexSpacer from '../Reusable/FlexSpacer';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamsList} from '../Navigation/AppContent';
+import {useSetupConversations} from '../Mapping/utils';
 
 const Conversations = ({
   navigation,
@@ -35,11 +36,13 @@ const Conversations = ({
   const [searchList, setSearchList] = useState([]);
   const {addConversation, getConversation} = useMessages();
   const {searchForFriends} = useGetUser();
+  const {clearRequests} = useSetupConversations(navigation);
 
   useEffect(() => {
     navigation.setOptions({
       headerTitle: `${loggedInUser?.first_name} ${loggedInUser?.last_name}`,
     });
+    clearRequests();
   }, []);
 
   const getSearchResults = useDebounce(search => {
@@ -80,16 +83,21 @@ const Conversations = ({
           }
           data={searchList}
           contentContainerStyle={localStyles.users}
-          renderItem={({item}) => (
+          renderItem={({
+            item,
+          }: {
+            item: {
+              user_id: number;
+              display_name: string;
+              profile_picture_url: string;
+            };
+          }) => (
             <Pressable
               style={[generalStyles.listItem, localStyles.listItem]}
               onPress={() => {
                 setSearchText('');
                 setSearchList([]);
-                addConversation({
-                  userId: item.user_id,
-                  name: item.display_name,
-                });
+                addConversation({userId: item.user_id});
                 navigation.navigate('ConversationView', {
                   conversationName: item.display_name,
                 });
