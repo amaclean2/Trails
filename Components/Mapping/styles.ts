@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import {colors} from '../../Assets/Colors';
 
 export const styles = StyleSheet.create({
   map: {

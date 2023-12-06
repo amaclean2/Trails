@@ -5,11 +5,14 @@ import {colors} from '../../Assets/Colors';
 
 const SearchField = ({
   value = '',
-  onChangeText = (text: string) => {
-    console.log({text});
-  },
+  onChangeText = () => {},
   placeholder = '',
   style = {},
+}: {
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder: string;
+  style?: any;
 }): JSX.Element => {
   return (
     <View style={[style, localStyles.fieldBody]}>

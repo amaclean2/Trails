@@ -144,15 +144,18 @@ const DefaultAdventure = ({
 
 const localStyles = StyleSheet.create({
   listButtons: {
-    marginBottom: 0,
-    margin: 15,
-    marginTop: 10,
+    marginBottom: 10,
+    marginTop: 20,
     justifyContent: 'center',
     flexDirection: 'row',
     gap: 30,
+    position: 'relative',
+    top: 'auto',
+    right: 'auto',
+    width: 'auto',
   },
   adventureList: {
-    paddingVertical: 15,
+    paddingVertical: 0,
   },
   adventureListContainer: {
     flexDirection: 'column',

@@ -25,7 +25,6 @@ import {colors} from '../../Assets/Colors';
 import FlexSpacer from '../Reusable/FlexSpacer';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamsList} from '../Navigation/AppContent';
-import {useSetupConversations} from '../Mapping/utils';
 
 const Conversations = ({
   navigation,
@@ -36,13 +35,11 @@ const Conversations = ({
   const [searchList, setSearchList] = useState([]);
   const {addConversation, getConversation} = useMessages();
   const {searchForFriends} = useGetUser();
-  const {clearRequests} = useSetupConversations(navigation);
 
   useEffect(() => {
     navigation.setOptions({
       headerTitle: `${loggedInUser?.first_name} ${loggedInUser?.last_name}`,
     });
-    clearRequests();
   }, []);
 
   const getSearchResults = useDebounce(search => {

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../../Assets/Colors';
 import {
   useAdventureStateContext,
@@ -34,14 +34,14 @@ const TypeButtons = ({
   }, [mapMoved]);
 
   return (
-    <View style={[localStyles.buttonContainer, style]}>
+    <SafeAreaView style={[localStyles.buttonContainer, style]}>
       <Pressable
         onPress={() => changeAdventureType({type: 'ski'})}
         style={[
           localStyles.button,
           globalAdventureType === 'ski' && localStyles.activeButton,
         ]}>
-        <View style={{marginRight: 2, marginLeft: -2, padding: 8}}>
+        <View style={{marginRight: 2, marginLeft: -2, padding: 9}}>
           <LargeSkierIcon
             size={25}
             color={
@@ -108,18 +108,20 @@ const TypeButtons = ({
           />
         </Pressable>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
 const localStyles = StyleSheet.create({
   buttonContainer: {
-    marginBottom: -210,
-    paddingRight: 10,
-    paddingTop: 10,
     flexDirection: 'column',
     gap: 10,
     alignItems: 'flex-end',
+    width: 43,
+    position: 'absolute',
+    marginTop: 30,
+    top: 0,
+    right: 10,
   },
   button: {
     backgroundColor: colors.mainLight,

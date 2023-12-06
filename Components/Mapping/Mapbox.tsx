@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {SafeAreaView, Text, View} from 'react-native';
 import {
   MapView,
   UserLocation,
@@ -95,7 +95,7 @@ const Mapbox = ({
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <MapView
         scaleBarEnabled={false}
         style={styles.map}
@@ -147,7 +147,7 @@ const Mapbox = ({
         isMapView
       />
       {/* <TestNotifications /> */}
-    </SafeAreaView>
+    </View>
   );
 };
 
