@@ -67,7 +67,7 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
       <EditElement
         title="Approach Distance"
         name="distance"
-        value={currentAdventure?.distance}
+        value={currentAdventure?.distance.toString()}
         onChange={editAdventure}
       />
       <MultiElement title={'Elevation'}>
@@ -111,7 +111,7 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
           value={Number(currentAdventure?.difficulty?.split(':')[0])}
           onChange={({target: {name = '', value = ''}}) => {
             editAdventure({
-              target: {name, value: `${value}:${currentAdventure?.difficulty}`},
+              target: {name, value: `${value}:1`},
             });
           }}
           minValue={1}

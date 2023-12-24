@@ -52,38 +52,14 @@ export const styles = StyleSheet.create({
     gap: 10,
     marginTop: 5,
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modal: {
-    padding: 20,
-    backgroundColor: colors.mainLight,
-    borderRadius: 8,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowColor: colors.mainDark,
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    width: 350,
-  },
   finishButton: {
     width: 'auto',
     marginBottom: 0,
     marginTop: 35,
   },
-  closeButton: {
-    width: 'auto',
-    alignItems: 'center',
-    marginTop: 10,
-  },
   adventureActionButton: {
     flex: 1,
     backgroundColor: colors.mainOffWhite,
-    alignItems: 'center',
     borderRadius: 8,
   },
   adventureActionButtonContainer: {
@@ -92,5 +68,11 @@ export const styles = StyleSheet.create({
     padding: 15,
     paddingTop: 20,
     gap: 10,
+  },
+  otherAdventurers: {
+    margin: 0,
+    flex: 1,
+    marginVertical: 0,
+    width: 'auto',
   },
 });

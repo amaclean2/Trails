@@ -2,7 +2,7 @@ import {
   useEditUser,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   Pressable,
@@ -21,6 +21,7 @@ import {sexLabels} from '../Adventures/utils';
 import {fieldStyles} from '../Reusable/FieldStyles';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamsList} from '../Navigation/AppContent';
+import UserDeleteModal from './UserDeleteModal';
 
 const EditUser = ({
   navigation,
@@ -28,6 +29,8 @@ const EditUser = ({
   const {loggedInUser} = useUserStateContext();
   const {updateProfilePicture} = useImageUploads();
   const {editUser} = useEditUser();
+
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({
@@ -111,6 +114,18 @@ const EditUser = ({
           onPress={() => navigation.goBack()}>
           <Text style={generalStyles.buttonText}>Finish</Text>
         </Pressable>
+        <Pressable
+          style={[generalStyles.backButton, generalStyles.badButton]}
+          onPress={() => setIsDeleteModalVisible(true)}>
+          <Text style={[generalStyles.buttonText, generalStyles.badButtonText]}>
+            Delete Account
+          </Text>
+        </Pressable>
+        <UserDeleteModal
+          deleteModalVisible={isDeleteModalVisible}
+          navigation={navigation}
+          closeModal={() => setIsDeleteModalVisible(false)}
+        />
       </ScrollView>
     </SafeAreaView>
   );

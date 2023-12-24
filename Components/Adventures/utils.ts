@@ -12,7 +12,34 @@ export const useAdventureMenu = () => {
   const {saveTodo} = useSaveTodo();
   const [rateAdventureVisible, setRateAdventureVisible] = useState(false);
 
-  const buildMenuContents = ({navigation}: any) => {
+  const buildMenuContents = ({
+    navigation,
+    isMainPage = false,
+  }: {
+    navigation: any;
+    isMainPage?: boolean;
+  }) => {
+    const fields: {
+      text: string;
+      action: () => void;
+    }[] = [];
+
+    if (isMainPage) {
+      fields.push({
+        action: () => console.log('Canceled...'),
+        text: 'Cancel',
+      });
+
+      fields.push({
+        action: () => {
+          navigation.navigate('CreateAdventureView');
+        },
+        text: 'Create a new adventure',
+      });
+
+      return fields;
+    }
+
     if (!loggedInUser) {
       return null;
     }
@@ -28,11 +55,6 @@ export const useAdventureMenu = () => {
     const canComplete = !loggedInUser?.completed_adventures
       ?.map(({adventure_id}) => adventure_id)
       .includes(currentAdventure?.id as number);
-
-    const fields: {
-      text: string;
-      action: () => void;
-    }[] = [];
 
     if (currentAdventure) {
       fields.push({

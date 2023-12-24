@@ -15,6 +15,8 @@ import {
   TouchableWithoutFeedback,
   View,
   Image,
+  Linking,
+  Alert,
 } from 'react-native';
 import {useHeaderHeight} from '@react-navigation/elements';
 
@@ -22,6 +24,7 @@ import {colors} from '../../Assets/Colors';
 import TextBar from './TextBar';
 
 import {generalStyles} from '../GeneralStyles';
+import Hyperlink from 'react-native-hyperlink';
 
 const ConversationView = () => {
   const {messages, conversations, currentConversationId} =
@@ -42,6 +45,16 @@ const ConversationView = () => {
       });
     }
   }, []);
+
+  const handleLinking = async (url: string): Promise<void> => {
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Can't open url: ${url}`);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -79,14 +92,16 @@ const ConversationView = () => {
                       message.user_id === loggedInUser?.id &&
                         localStyles.messageBubbleSent,
                     ]}>
-                    <Text
-                      style={[
-                        localStyles.messageText,
-                        message.user_id === loggedInUser?.id &&
-                          localStyles.messageTextSent,
-                      ]}>
-                      {message.message_body}
-                    </Text>
+                    <Hyperlink onPress={handleLinking}>
+                      <Text
+                        style={[
+                          localStyles.messageText,
+                          message.user_id === loggedInUser?.id &&
+                            localStyles.messageTextSent,
+                        ]}>
+                        {message.message_body}
+                      </Text>
+                    </Hyperlink>
                   </View>
                 </Pressable>
               )}

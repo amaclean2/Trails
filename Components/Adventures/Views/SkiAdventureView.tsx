@@ -12,6 +12,7 @@ import {
   useAdventureStateContext,
   useGetUser,
   useSaveCompletedAdventure,
+  useSaveTodo,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
 
@@ -50,6 +51,7 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
   const {loggedInUser} = useUserStateContext();
   const {saveCompletedAdventure} = useSaveCompletedAdventure();
   const {getNonLoggedInUser} = useGetUser();
+  const {saveTodo} = useSaveTodo();
 
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -95,6 +97,11 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
           ratingCount={Number(currentAdventure?.rating?.split(':')[0])}
         />
         <View style={styles.adventureActionButtonContainer}>
+          <Pressable
+            style={[generalStyles.button, styles.otherAdventurers]}
+            onPress={() => navigation.navigate('Adventurers')}>
+            <Text style={generalStyles.buttonText}>Todo Skiers</Text>
+          </Pressable>
           {canComplete && (
             <Pressable
               style={[
@@ -102,9 +109,7 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
                 styles.adventureActionButton,
               ]}
               onPress={openRateAdventureVisible}>
-              <Text style={[generalStyles.secondaryButtonText]}>
-                Complete Adventure
-              </Text>
+              <Text style={[generalStyles.secondaryButtonText]}>Complete</Text>
             </Pressable>
           )}
           {canAddTodo ? (
@@ -112,10 +117,14 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
               style={[
                 generalStyles.secondaryButton,
                 styles.adventureActionButton,
-              ]}>
-              <Text style={generalStyles.secondaryButtonText}>
-                Add to Todo List
-              </Text>
+              ]}
+              onPress={() => {
+                saveTodo({
+                  adventureId: currentAdventure?.id as number,
+                  adventureType: currentAdventure?.adventure_type as string,
+                });
+              }}>
+              <Text style={generalStyles.secondaryButtonText}>Add Todo</Text>
             </Pressable>
           ) : (
             <FlexSpacer />
@@ -126,11 +135,7 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
           source={'Adventure'}
           backName={currentAdventure?.adventure_name || ''}
           images={currentAdventure?.images as string[]}
-          onAddPicture={
-            currentAdventure?.creator_id === loggedInUser?.id
-              ? saveAdventureImage
-              : undefined
-          }
+          onAddPicture={saveAdventureImage}
         />
         <View style={styles.mapContainer}>
           <AdventurePathView navigation={navigation} />
@@ -145,8 +150,8 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
               title={'Difficulty'}
               content={
                 <DifficultyGraphic
-                  difficultyLevel={Number(
-                    currentAdventure?.difficulty?.split(':')[0],
+                  difficultyLevel={Math.round(
+                    Number(currentAdventure?.difficulty?.split(':')[0]),
                   )}
                 />
               }
@@ -235,8 +240,8 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
         </View>
       </ScrollView>
       <Modal visible={rateAdventureVisible} transparent animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modal}>
+        <View style={generalStyles.modalContainer}>
+          <View style={generalStyles.modal}>
             <Text>
               Vote on a rating and difficulty to complete this adventure
             </Text>
@@ -262,7 +267,10 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
             </Pressable>
             <Pressable
               onPress={closeRateAdventure}
-              style={[generalStyles.secondaryButton, styles.closeButton]}>
+              style={[
+                generalStyles.secondaryButton,
+                generalStyles.closeButton,
+              ]}>
               <Text style={generalStyles.secondaryButtonText}>Cancel</Text>
             </Pressable>
           </View>

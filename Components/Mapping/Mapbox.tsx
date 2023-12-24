@@ -146,7 +146,6 @@ const Mapbox = ({
         mapMoved={hasMapMoved}
         isMapView
       />
-      {/* <TestNotifications /> */}
     </View>
   );
 };

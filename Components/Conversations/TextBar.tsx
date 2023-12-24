@@ -4,6 +4,7 @@ import {colors} from '../../Assets/Colors';
 import {
   useMessages,
   useMessagingStateContext,
+  useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
 import SendIcon from '../../Assets/UIGlyphs/Send';
 
@@ -11,12 +12,14 @@ const TextBar = ({onClick}: {onClick: () => void}) => {
   const [workingText, setWorkingText] = useState('');
   const {sendMessage} = useMessages();
   const {currentConversationId} = useMessagingStateContext();
+  const {loggedInUser} = useUserStateContext();
 
   const handleEnter = () => {
     setWorkingText('');
     sendMessage({
       messageBody: workingText,
       conversationId: currentConversationId as number,
+      senderName: `${loggedInUser?.first_name} ${loggedInUser?.last_name}`,
     });
     onClick();
   };

@@ -20,15 +20,15 @@ const EditElement = ({
   multiline = false,
   numberOfLines = 1,
 }: {
-  title: string;
+  title?: string;
   name: string;
   value: string;
   onChange: (event: onChangeType) => void;
-  autoComplete: string;
-  keyboardType: KeyboardTypeOptions;
-  hasPlaceholder: boolean;
-  multiline: boolean;
-  numberOfLines: number;
+  autoComplete?: string;
+  keyboardType?: KeyboardTypeOptions;
+  hasPlaceholder?: boolean;
+  multiline?: boolean;
+  numberOfLines?: number;
 }): JSX.Element => {
   return (
     <View style={fieldStyles.textAreaContainer}>

@@ -1,11 +1,11 @@
 import React from 'react';
 import {Modal, Pressable, Text, View} from 'react-native';
-import {styles} from '../styles';
-import {generalStyles} from '../../GeneralStyles';
 import {
   useAdventureStateContext,
   useDeleteAdventure,
 } from '@amaclean2/sundaypeak-treewells';
+
+import {generalStyles} from '../../GeneralStyles';
 
 const DeleteModal = ({
   deleteModalVisible = false,
@@ -17,8 +17,8 @@ const DeleteModal = ({
 
   return (
     <Modal visible={deleteModalVisible} transparent animationType="slide">
-      <View style={styles.modalContainer}>
-        <View style={styles.modal}>
+      <View style={generalStyles.modalContainer}>
+        <View style={generalStyles.modal}>
           <Text style={{paddingBottom: 20, textAlign: 'center', fontSize: 16}}>
             Are you sure you want to delete {currentAdventure?.adventure_name}?
           </Text>
@@ -40,7 +40,7 @@ const DeleteModal = ({
           </Pressable>
           <Pressable
             onPress={closeModal}
-            style={[generalStyles.secondaryButton, styles.closeButton]}>
+            style={[generalStyles.secondaryButton, generalStyles.closeButton]}>
             <Text style={generalStyles.secondaryButtonText}>Cancel</Text>
           </Pressable>
         </View>

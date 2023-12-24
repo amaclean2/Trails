@@ -17,14 +17,14 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View,
 } from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
 import {generalStyles} from '../GeneralStyles';
 import SearchField from '../Reusable/SearchField';
 import {colors} from '../../Assets/Colors';
-import FlexSpacer from '../Reusable/FlexSpacer';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamsList} from '../Navigation/AppContent';
+import SwipeableItem from './SwipeableItem';
 
 const Conversations = ({
   navigation,
@@ -33,7 +33,7 @@ const Conversations = ({
   const {loggedInUser} = useUserStateContext();
   const [searchText, setSearchText] = useState('');
   const [searchList, setSearchList] = useState([]);
-  const {addConversation, getConversation} = useMessages();
+  const {addConversation} = useMessages();
   const {searchForFriends} = useGetUser();
 
   useEffect(() => {
@@ -53,18 +53,6 @@ const Conversations = ({
   const handleChangeSearch = (text = '') => {
     setSearchText(text);
     getSearchResults(text);
-  };
-
-  const buildConversationName = (conversation: any) => {
-    if (conversation.conversation_name) {
-      return conversation.conversation_name;
-    } else {
-      return (
-        conversation.users?.find(
-          ({user_id}: {user_id: number}) => user_id !== loggedInUser?.id,
-        ).display_name || ''
-      );
-    }
   };
 
   const buildList = () => {
@@ -120,34 +108,9 @@ const Conversations = ({
           }
           data={Object.values(conversations ?? {})}
           contentContainerStyle={localStyles.users}
+          keyExtractor={item => `${item.conversation_id}`}
           renderItem={({item}) => (
-            <Pressable
-              style={[generalStyles.listItem, localStyles.listItem]}
-              onPress={() => {
-                getConversation({conversationId: item.conversation_id});
-                navigation.navigate('ConversationView', {
-                  conversationName: buildConversationName(item),
-                });
-              }}>
-              <Image
-                source={{
-                  uri:
-                    item.users.find(user => user.user_id !== loggedInUser?.id)
-                      ?.profile_picture_url ?? '',
-                }}
-                style={localStyles.conversationIcon}
-              />
-              <View style={localStyles.listItemTextContent}>
-                <Text style={[generalStyles.listText, localStyles.listText]}>
-                  {buildConversationName(item)}
-                </Text>
-                <Text numberOfLines={1} style={{maxWidth: 240, fontSize: 16}}>
-                  {item.last_message}
-                </Text>
-              </View>
-              <FlexSpacer />
-              {item.unread && <View style={localStyles.unreadButton} />}
-            </Pressable>
+            <SwipeableItem navigation={navigation} item={item} />
           )}
         />
       );

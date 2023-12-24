@@ -118,11 +118,7 @@ const HikeAdventureView = ({navigation}: any): JSX.Element => {
           source={'Adventure'}
           backName={currentAdventure?.adventure_name || ''}
           images={currentAdventure?.images as string[]}
-          onAddPicture={
-            currentAdventure?.creator_id === loggedInUser?.id
-              ? saveAdventureImage
-              : undefined
-          }
+          onAddPicture={saveAdventureImage}
         />
         <View style={styles.mapContainer}>
           <AdventurePathView navigation={navigation} />
@@ -185,8 +181,8 @@ const HikeAdventureView = ({navigation}: any): JSX.Element => {
         </View>
       </ScrollView>
       <Modal visible={rateAdventureVisible} transparent animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modal}>
+        <View style={generalStyles.modalContainer}>
+          <View style={generalStyles.modal}>
             <Text>
               Vote on a rating and difficulty to complete this adventure
             </Text>
@@ -212,7 +208,10 @@ const HikeAdventureView = ({navigation}: any): JSX.Element => {
             </Pressable>
             <Pressable
               onPress={closeRateAdventure}
-              style={[generalStyles.secondaryButton, styles.closeButton]}>
+              style={[
+                generalStyles.secondaryButton,
+                generalStyles.closeButton,
+              ]}>
               <Text style={generalStyles.secondaryButtonText}>Close</Text>
             </Pressable>
           </View>

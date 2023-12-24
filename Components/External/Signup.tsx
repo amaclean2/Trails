@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Keyboard,
+  Linking,
   Pressable,
   SafeAreaView,
   Text,
@@ -21,6 +22,7 @@ import {RootStackParamsList} from '../Navigation/AppContent';
 
 import {generalStyles} from '../GeneralStyles';
 import {styles} from './styles';
+import {colors} from '../../Assets/Colors';
 
 const Signup = ({
   navigation,
@@ -96,7 +98,18 @@ const Signup = ({
           />
           <View style={generalStyles.checkboxField}>
             <CheckboxElement
-              title={'Agree to the Sunday Peak Privacy Policy.'}
+              title={
+                <Text>
+                  Agree to the Sunday Peak{' '}
+                  <Text
+                    onPress={() => {
+                      Linking.openURL('https://sundaypeak.com/privacy');
+                    }}
+                    style={{color: colors.primaryAccentColor}}>
+                    Privacy Policy.
+                  </Text>
+                </Text>
+              }
               onChange={(newChecked: boolean) =>
                 editFormFields({name: 'legal', value: newChecked})
               }

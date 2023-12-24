@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  ActionSheetIOS,
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
@@ -26,6 +27,8 @@ import TypeButtons from '../Reusable/TypeButtons';
 
 import {generalStyles} from '../GeneralStyles';
 import {RootStackParamsList} from '../Navigation/AppContent';
+import {useAdventureMenu} from './utils';
+import {Meatball} from '../../Assets/UIGlyphs/Meatball';
 
 const DefaultAdventure = ({
   navigation,
@@ -36,8 +39,22 @@ const DefaultAdventure = ({
   const {searchAdventures, getAdventureList} = useGetAdventures();
   const {globalAdventureType, adventuresList, startPosition} =
     useAdventureStateContext();
+  const {buildMenuContents} = useAdventureMenu();
+
+  const menuContents = buildMenuContents({navigation, isMainPage: true});
+
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState(null);
+
+  const onMenuPress = () => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: menuContents?.map(({text}) => text) ?? [],
+        cancelButtonIndex: 0,
+      },
+      buttonIndex => menuContents?.[buttonIndex].action(),
+    );
+  };
 
   const handleSendSearchText = useDebounce(text => {
     if (!text.length) {
@@ -129,6 +146,9 @@ const DefaultAdventure = ({
         <SafeAreaView style={{flex: 1}}>
           <View style={generalStyles.header}>
             <Text style={generalStyles.headerText}>Local Adventures</Text>
+            <Pressable onPress={onMenuPress}>
+              <Meatball />
+            </Pressable>
           </View>
           <SearchField
             placeholder={'Find an Adventure'}

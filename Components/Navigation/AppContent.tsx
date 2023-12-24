@@ -22,6 +22,8 @@ import ConversationView from '../Conversations/ConversationView';
 import ForgotPassword from '../External/ForgotPassword';
 import Login from '../External/Login';
 import Signup from '../External/Signup';
+import CreateAdventure from '../Adventures/CreateAdventure';
+import CreateAdventureMap from '../Adventures/CreateAdventureMap';
 
 const {Navigator: TabNavigator, Screen: TabScreen} = createBottomTabNavigator();
 const {Navigator: StackNavigator, Screen: StackScreen} =
@@ -50,6 +52,8 @@ export type RootStackParamsList = {
   EditUser: any;
   Explore: any;
   ConversationSelector: any;
+  CreateAdventureView: any;
+  CreateAdventureMap: any;
 };
 
 const AdventureStack = (): JSX.Element => {
@@ -62,6 +66,24 @@ const AdventureStack = (): JSX.Element => {
           ...defaultHeaderOptions,
           headerShown: false,
           title: 'Adventure',
+        }}
+      />
+      <StackScreen
+        name={'CreateAdventureView'}
+        component={CreateAdventure}
+        options={{
+          ...defaultHeaderOptions,
+          headerShown: true,
+          title: 'Create Adventure',
+        }}
+      />
+      <StackScreen
+        name={'CreateAdventureMap'}
+        component={CreateAdventureMap}
+        options={{
+          ...defaultHeaderOptions,
+          headerShown: true,
+          title: 'Create Adventure',
         }}
       />
       <StackScreen

@@ -2,6 +2,7 @@ import React from 'react';
 import {
   ActionSheetIOS,
   Image,
+  Linking,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -35,14 +36,20 @@ const UserProfile = ({
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['Cancel', 'Share', 'Edit Profile', 'Logout'],
+        options: [
+          'Cancel',
+          'Share',
+          'Edit Profile',
+          'Sumbit Feedback',
+          'Logout',
+        ],
         cancelButtonIndex: 0,
       },
       buttonIndex => {
         switch (buttonIndex) {
           case 1:
             return Share.share({
-              message: 'Check out this adventure!',
+              message: 'Check out this profile!',
               url: `https://sundaypeak.com/user/${loggedInUser?.id}`,
             }).then(result => {
               if (result.action === Share.sharedAction) {
@@ -61,7 +68,10 @@ const UserProfile = ({
             });
             break;
           case 3:
-            closeConnection('moving away from conversations');
+            Linking.openURL('https://sundaypeak.com/support');
+            break;
+          case 4:
+            closeConnection('logging out user');
             logoutUser();
             navigation.navigate('Login');
             break;

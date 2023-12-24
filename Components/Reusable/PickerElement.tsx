@@ -29,7 +29,7 @@ const PickerElement = ({
       <View style={fieldStyles.textAreaContainer}>
         <Text style={{...fieldStyles.descriptor, marginStart: 5}}>{title}</Text>
         <Pressable style={fieldStyles.textArea} onPress={() => handleChange()}>
-          <Text>
+          <Text style={{fontSize: 18}}>
             {
               (
                 items.find(
