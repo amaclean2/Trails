@@ -29,6 +29,7 @@ import {generalStyles} from '../GeneralStyles';
 import {RootStackParamsList} from '../Navigation/AppContent';
 import {useAdventureMenu} from './utils';
 import {Meatball} from '../../Assets/UIGlyphs/Meatball';
+import {styles} from './styles';
 
 const DefaultAdventure = ({
   navigation,
@@ -107,7 +108,7 @@ const DefaultAdventure = ({
     } else if (adventuresList) {
       return (
         <View style={localStyles.adventureListContainer}>
-          <TypeButtons style={localStyles.listButtons} />
+          <TypeButtons style={styles.listAdventureButtons} />
           <FlatList
             data={adventuresList}
             contentContainerStyle={localStyles.adventureList}
@@ -163,17 +164,6 @@ const DefaultAdventure = ({
 };
 
 const localStyles = StyleSheet.create({
-  listButtons: {
-    marginBottom: 10,
-    marginTop: 20,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    gap: 30,
-    position: 'relative',
-    top: 'auto',
-    right: 'auto',
-    width: 'auto',
-  },
   adventureList: {
     paddingVertical: 0,
   },

@@ -13,6 +13,8 @@ import SelectManyElement from '../../Reusable/SelectManyElement';
 import {months} from '../utils';
 import FlexSpacer from '../../Reusable/FlexSpacer';
 import DeleteModal from './DeleteModal';
+import {styles} from '../styles';
+import DistanceEdit from '../../Reusable/DistanceEdit';
 
 const HikeAdventureEditor = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
@@ -27,9 +29,16 @@ const HikeAdventureEditor = ({navigation}: any): JSX.Element => {
 
   return (
     <ScrollView style={{paddingTop: 30}}>
-      <View style={{marginHorizontal: 20, marginVertical: 10}}>
-        <LargeHikerIcon size={40} />
-      </View>
+      <MultiElement>
+        <View style={{marginHorizontal: 20, marginVertical: 10}}>
+          <LargeHikerIcon size={40} />
+        </View>
+        <View style={styles.warningBox}>
+          <Text style={styles.warningBoxText}>
+            To edit the path for this adventure use the Sunday Peak website
+          </Text>
+        </View>
+      </MultiElement>
       <EditElement
         title="Adventure Name"
         name="adventure_name"
@@ -43,35 +52,40 @@ const HikeAdventureEditor = ({navigation}: any): JSX.Element => {
         multiline
         onChange={editAdventure}
       />
-      <EditElement
-        title="Distance"
-        name="distance"
+      <DistanceEdit
         value={currentAdventure?.distance?.toString()}
-        multiline
         onChange={editAdventure}
       />
       <MultiElement title={'Elevation'}>
-        <EditElement
+        <DistanceEdit
           title="Base"
           name="base_elevation"
-          value={currentAdventure?.base_elevation.toString()}
+          unit="feet"
+          value={currentAdventure?.base_elevation?.toString()}
           onChange={editAdventure}
         />
-        <EditElement
+        <DistanceEdit
           title="Summit"
           name="summit_elevation"
-          value={currentAdventure?.summit_elevation.toString()}
+          unit="feet"
+          value={currentAdventure?.summit_elevation?.toString()}
           onChange={editAdventure}
         />
       </MultiElement>
-      <SliderElement
-        name="difficulty"
-        value={currentAdventure?.difficulty}
-        onChange={editAdventure}
-        minValue={1}
-        maxValue={5}
-        title={'Difficulty'}
-      />
+      {Number(currentAdventure?.difficulty?.split(':')[1]) < 2 && (
+        <SliderElement
+          name="difficulty"
+          value={Number(currentAdventure?.difficulty?.split(':')[0])}
+          onChange={({target: {name = '', value = ''}}) => {
+            editAdventure({
+              target: {name, value: `${value}:1`},
+            });
+          }}
+          minValue={1}
+          maxValue={5}
+          title={'Difficulty'}
+        />
+      )}
       <SelectManyElement
         name="season"
         value={

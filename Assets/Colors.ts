@@ -7,8 +7,10 @@ export const colors = {
   mainOffWhite: '#e6e6e6',
   mainLight: '#ffffff',
   mainOffDark: '#666666',
+  mainOffDarkOpacity: '#000000aa',
   borderColor: '#d7d7e8',
   alertErrorColor: '#ff5151',
   offBackgroundColor: '#f6f6f6',
   textAreaBackground: '#e7e7f0',
+  warn: '#f5f353',
 };

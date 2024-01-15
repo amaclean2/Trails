@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Pressable, SafeAreaView, StyleSheet, View} from 'react-native';
 import {colors} from '../../Assets/Colors';
 import {
   useAdventureStateContext,
@@ -8,6 +8,7 @@ import {
 import {LargeSkierIcon} from '../../Assets/Activities/LargeSkierIcon';
 import {LargeClimberIcon} from '../../Assets/Activities/LargeClimberIcon';
 import {LargeHikerIcon} from '../../Assets/Activities/LargeHikerIcon';
+import {LargeBikerIcon} from '../../Assets/Activities/LargeBikerIcon';
 
 const TypeButtons = ({
   style,
@@ -45,9 +46,29 @@ const TypeButtons = ({
           <LargeSkierIcon
             size={25}
             color={
-              globalAdventureType === 'ski'
+              globalAdventureType === 'ski' ? colors.mainLight : colors.mainDark
+            }
+          />
+        </View>
+      </Pressable>
+      <Pressable
+        onPress={() => changeAdventureType({type: 'bike'})}
+        style={[
+          localStyles.button,
+          globalAdventureType === 'bike' && localStyles.activeButton,
+        ]}>
+        <View
+          style={{
+            marginRight: 1,
+            marginLeft: 1,
+            padding: 6,
+          }}>
+          <LargeBikerIcon
+            size={29}
+            color={
+              globalAdventureType === 'bike'
                 ? colors.mainLight
-                : colors.mainOffDark
+                : colors.mainDark
             }
           />
         </View>

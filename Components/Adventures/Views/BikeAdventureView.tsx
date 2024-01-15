@@ -10,33 +10,25 @@ import {
 } from 'react-native';
 import {
   useAdventureStateContext,
-  useGetUser,
   useSaveCompletedAdventure,
-  useSaveTodo,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
 
 import {styles} from '../styles';
 import {Meatball} from '../../../Assets/UIGlyphs/Meatball';
-import {formatGearList, formatSeasons, useAdventureMenu} from '../utils';
+import {formatSeasons, useAdventureMenu} from '../utils';
 import ViewField from '../../Reusable/Field';
 import AdventurePathView from '../AdventurePathView';
 import {generalStyles} from '../../GeneralStyles';
 import ImageGallery from '../../Reusable/ImageGallery';
 import {useImageUploads} from '../../Helpers';
-import {
-  AngleIcon,
-  DistanceIcon,
-  ElevationIcon,
-} from '../../../Assets/Symbols/LabelIcons';
-import {AspectIcon} from '../../../Assets/Symbols/AspectIcon';
+import {DistanceIcon, ElevationIcon} from '../../../Assets/Symbols/LabelIcons';
 import RatingPicker from '../../Reusable/RatingPicker';
 import RatingView from '../../Reusable/RatingView';
-import DifficultyGraphic from '../../../Assets/Symbols/Difficulty';
 import FlexSpacer from '../../Reusable/FlexSpacer';
 import {fieldStyles} from '../../Reusable/FieldStyles';
 
-const SkiAdventureView = ({navigation}: any): JSX.Element => {
+const BikeAdventureView = ({navigation}: any): JSX.Element => {
   const [votedRating, setVotedRating] = useState('0');
   const [votedDifficulty, setVotedDifficulty] = useState('0');
 
@@ -51,8 +43,6 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
   const menuContents = buildMenuContents({navigation});
   const {loggedInUser} = useUserStateContext();
   const {saveCompletedAdventure} = useSaveCompletedAdventure();
-  const {getNonLoggedInUser} = useGetUser();
-  const {saveTodo} = useSaveTodo();
 
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -101,7 +91,7 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
           <Pressable
             style={[generalStyles.button, styles.otherAdventurers]}
             onPress={() => navigation.navigate('Adventurers')}>
-            <Text style={generalStyles.buttonText}>Todo Skiers</Text>
+            <Text style={generalStyles.buttonText}>Todo Riders</Text>
           </Pressable>
           {canComplete && (
             <Pressable
@@ -118,14 +108,8 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
               style={[
                 generalStyles.secondaryButton,
                 styles.adventureActionButton,
-              ]}
-              onPress={() => {
-                saveTodo({
-                  adventureId: currentAdventure?.id as number,
-                  adventureType: currentAdventure?.adventure_type as string,
-                });
-              }}>
-              <Text style={generalStyles.secondaryButtonText}>Add Todo</Text>
+              ]}>
+              <Text style={generalStyles.secondaryButtonText}>Add to Todo</Text>
             </Pressable>
           ) : (
             <FlexSpacer />
@@ -149,72 +133,55 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
           <View style={styles.adventureRow}>
             <ViewField
               title={'Difficulty'}
-              content={
-                <DifficultyGraphic
-                  difficultyLevel={Math.round(
-                    Number(currentAdventure?.difficulty?.split(':')[0]),
-                  )}
-                />
-              }
+              content={currentAdventure?.difficulty?.split(':')[0] ?? '0'}
             />
             <ViewField
-              title={'Exposure'}
-              content={`E${currentAdventure?.exposure}`}
-            />
-            <ViewField
-              title={'Slope Angle'}
+              title={'Distance'}
               content={
                 <View style={styles.symbolView}>
-                  <AngleIcon />
-                  <Text style={fieldStyles.fieldText}>
-                    {`${currentAdventure?.avg_angle ?? ''} - ${
-                      currentAdventure?.max_angle ?? ''
-                    }\u00b0`}
-                  </Text>
+                  <DistanceIcon />
+                  <Text style={fieldStyles.fieldText}>{`${
+                    (
+                      Math.round(currentAdventure?.distance * 10) / 10
+                    ).toString() ?? '0'
+                  } mi`}</Text>
                 </View>
               }
             />
           </View>
           <View style={styles.adventureRow}>
             <ViewField
-              title={'Aspect'}
-              content={
-                <View style={styles.symbolView}>
-                  <AspectIcon direction={currentAdventure?.aspect} />
-                </View>
-              }
-            />
-            <ViewField
-              title={'Approach'}
-              content={
-                <View style={styles.symbolView}>
-                  <DistanceIcon />
-                  <Text style={fieldStyles.fieldText}>{`${
-                    currentAdventure?.distance ?? ''
-                  } mi`}</Text>
-                </View>
-              }
-            />
-            <ViewField
               title={'Elevation'}
               content={
                 <View style={styles.symbolView}>
                   <ElevationIcon />
                   <Text style={fieldStyles.fieldText}>{`${
-                    currentAdventure?.base_elevation ?? ''
-                  } - ${currentAdventure?.summit_elevation} ft`}</Text>
+                    currentAdventure?.base_elevation ?? '0'
+                  } - ${currentAdventure?.summit_elevation ?? '0'} ft`}</Text>
+                </View>
+              }
+            />
+            <ViewField
+              title={'Climb'}
+              content={
+                <View style={styles.symbolView}>
+                  <Text style={fieldStyles.fieldText}>{`${
+                    currentAdventure?.climb ?? ''
+                  } ft`}</Text>
+                </View>
+              }
+            />
+            <ViewField
+              title={'Descent'}
+              content={
+                <View style={styles.symbolView}>
+                  <Text style={fieldStyles.fieldText}>{`${
+                    currentAdventure?.descent ?? ''
+                  } ft`}</Text>
                 </View>
               }
             />
           </View>
-          <ViewField
-            title={'Gear'}
-            content={formatGearList(
-              currentAdventure?.gear?.length
-                ? JSON.parse(currentAdventure.gear)
-                : [],
-            )}
-          />
           <ViewField
             title={'Season'}
             content={formatSeasons(
@@ -227,13 +194,12 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
             title={'Creator'}
             content={
               <Pressable
-                onPress={() => {
-                  getNonLoggedInUser({userId: currentAdventure?.creator_id});
+                onPress={() =>
                   navigation.navigate('OtherProfile', {
                     name: currentAdventure?.creator_name,
                     userId: currentAdventure?.creator_id,
-                  });
-                }}>
+                  })
+                }>
                 <Text style={styles.fieldText}>
                   {currentAdventure?.creator_name}
                 </Text>
@@ -260,7 +226,7 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
               onPress={() => {
                 saveCompletedAdventure({
                   adventureId: currentAdventure?.id as number,
-                  adventureType: 'ski',
+                  adventureType: 'bike',
                   difficulty: `${votedDifficulty}:${currentAdventure?.difficulty}`,
                   rating: `${votedRating}:${currentAdventure?.rating}`,
                 });
@@ -274,7 +240,7 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
                 generalStyles.secondaryButton,
                 generalStyles.closeButton,
               ]}>
-              <Text style={generalStyles.secondaryButtonText}>Cancel</Text>
+              <Text style={generalStyles.secondaryButtonText}>Close</Text>
             </Pressable>
           </View>
         </View>
@@ -283,4 +249,4 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
   );
 };
 
-export default SkiAdventureView;
+export default BikeAdventureView;

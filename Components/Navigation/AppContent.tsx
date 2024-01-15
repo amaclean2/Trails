@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo, useRef} from 'react';
 import Mapbox from '../Mapping/Mapbox';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -24,6 +24,9 @@ import Login from '../External/Login';
 import Signup from '../External/Signup';
 import CreateAdventure from '../Adventures/CreateAdventure';
 import CreateAdventureMap from '../Adventures/CreateAdventureMap';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import AddUserFlow, {AddUserFooter} from '../Conversations/AddUserFlow';
+import {StyleSheet, View} from 'react-native';
 
 const {Navigator: TabNavigator, Screen: TabScreen} = createBottomTabNavigator();
 const {Navigator: StackNavigator, Screen: StackScreen} =
@@ -348,40 +351,73 @@ const AppTabs = (): JSX.Element => {
 };
 
 const AppContent = (): JSX.Element => {
+  const sheetRef = useRef<BottomSheetModal>(null);
+
+  const snapPoints = useMemo(() => ['65%', '95%'], []);
+
   return (
-    <StackNavigator>
-      <StackScreen
-        name={'Login'}
-        component={Login}
-        options={{headerShown: false}}
-      />
-      <StackScreen
-        name={'SignUp'}
-        component={Signup}
-        options={{headerShown: false}}
-      />
-      <StackScreen
-        name={'AppTabs'}
-        component={AppTabs}
-        options={{headerShown: false}}
-      />
-      <StackScreen
-        name={'ForgotPassword'}
-        component={ForgotPassword}
-        options={{headerShown: false}}
-      />
-      <StackScreen
-        name={'ConversationView'}
-        component={ConversationView}
-        options={({route}) => ({
-          ...defaultHeaderOptions,
-          headerShown: true,
-          headerBackTitleVisible: false,
-          headerTitle: route.params?.conversationName,
-        })}
-      />
-    </StackNavigator>
+    <>
+      <StackNavigator>
+        <StackScreen
+          name={'Login'}
+          component={Login}
+          options={{headerShown: false}}
+        />
+        <StackScreen
+          name={'SignUp'}
+          component={Signup}
+          options={{headerShown: false}}
+        />
+        <StackScreen
+          name={'AppTabs'}
+          component={AppTabs}
+          options={{headerShown: false}}
+        />
+        <StackScreen
+          name={'ForgotPassword'}
+          component={ForgotPassword}
+          options={{headerShown: false}}
+        />
+        <StackScreen
+          name={'ConversationView'}
+          options={({route}) => ({
+            ...defaultHeaderOptions,
+            headerShown: true,
+            headerBackTitleVisible: false,
+            headerTitle: route.params?.conversationName,
+          })}>
+          {props => (
+            <ConversationView
+              {...props}
+              openModal={() => sheetRef.current?.present()}
+            />
+          )}
+        </StackScreen>
+      </StackNavigator>
+      <BottomSheetModal
+        ref={sheetRef}
+        index={1}
+        keyboardBehavior={'extend'}
+        snapPoints={snapPoints}
+        // footerComponent={AddUserFooter}
+        backdropComponent={() => (
+          <View style={localStyles.bottomSheetBackground} />
+        )}>
+        <AddUserFlow dismiss={() => sheetRef.current.dismiss()} />
+      </BottomSheetModal>
+    </>
   );
 };
+
+const localStyles = StyleSheet.create({
+  bottomSheetBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: colors.mainOffDarkOpacity,
+  },
+});
 
 export default AppContent;

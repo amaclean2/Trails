@@ -21,6 +21,7 @@ import {OnPressEvent} from '@rnmapbox/maps/lib/typescript/types/OnPressEvent';
 import skierIcon from '../../Assets/Activities/SkierIcon.png';
 import climberIcon from '../../Assets/Activities/ClimberIcon.png';
 import hikerIcon from '../../Assets/Activities/HikerIcon.png';
+import bikerIcon from '../../Assets/Activities/BikerIcon.png';
 
 import {styles} from './styles';
 import TypeButtons from '../Reusable/TypeButtons';
@@ -49,6 +50,7 @@ const Mapbox = ({
     ski: skierIcon,
     climb: climberIcon,
     hike: hikerIcon,
+    bike: bikerIcon,
   };
 
   const trackUser = useDebounce(

@@ -6,18 +6,17 @@ import {
 } from '@amaclean2/sundaypeak-treewells';
 import {Pressable, ScrollView, Text, View} from 'react-native';
 import {generalStyles} from '../../GeneralStyles';
-import {LargeSkierIcon} from '../../../Assets/Activities/LargeSkierIcon';
 import MultiElement from '../../Reusable/MultiElement';
 import SliderElement from '../../Reusable/SliderElement';
-import PickerElement from '../../Reusable/PickerElement';
-import {directions, gearOptions, months} from '../utils';
 import SelectManyElement from '../../Reusable/SelectManyElement';
+import {months} from '../utils';
 import FlexSpacer from '../../Reusable/FlexSpacer';
 import DeleteModal from './DeleteModal';
+import {LargeBikerIcon} from '../../../Assets/Activities/LargeBikerIcon';
 import DistanceEdit from '../../Reusable/DistanceEdit';
 import {styles} from '../styles';
 
-const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
+const BikeAdventureEditor = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
   const {editAdventure} = useSaveAdventure();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -28,30 +27,11 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
     });
   }, [currentAdventure?.adventure_name]);
 
-  useEffect(() => {
-    if (!currentAdventure?.season) {
-      editAdventure({
-        target: {
-          name: 'season',
-          value: JSON.stringify(months.map(() => false)),
-        },
-      });
-    }
-    if (!currentAdventure?.gear) {
-      editAdventure({
-        target: {
-          name: 'season',
-          value: JSON.stringify(months.map(() => false)),
-        },
-      });
-    }
-  }, []);
-
   return (
     <ScrollView style={{paddingTop: 30}}>
       <MultiElement>
         <View style={{marginHorizontal: 20, marginVertical: 10}}>
-          <LargeSkierIcon size={40} />
+          <LargeBikerIcon size={40} />
         </View>
         <View style={styles.warningBox}>
           <Text style={styles.warningBoxText}>
@@ -62,20 +42,18 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
       <EditElement
         title="Adventure Name"
         name="adventure_name"
-        value={currentAdventure?.adventure_name}
+        value={currentAdventure?.adventure_name ?? ''}
         onChange={editAdventure}
       />
       <EditElement
         title="Description"
         name="bio"
-        value={currentAdventure?.bio}
-        multiline={true}
-        numberOfLines={4}
+        value={currentAdventure?.bio ?? ''}
+        multiline
         onChange={editAdventure}
       />
       <DistanceEdit
-        title="Approach Distance"
-        value={currentAdventure?.distance?.toString()}
+        value={(Math.round(currentAdventure?.distance * 10) / 10)?.toString()}
         onChange={editAdventure}
       />
       <MultiElement title={'Elevation'}>
@@ -94,29 +72,22 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
           onChange={editAdventure}
         />
       </MultiElement>
-      <MultiElement title={'Slope Angle'}>
+      <MultiElement title={'Elevation Change'}>
         <DistanceEdit
-          title="Average"
-          name="avg_angle"
-          value={currentAdventure?.avg_angle?.toString()}
-          unit={'degrees'}
+          title="Climb"
+          name="climb"
+          value={currentAdventure?.climb?.toString()}
+          unit={'feet'}
           onChange={editAdventure}
         />
         <DistanceEdit
-          title="Max"
-          name="max_angle"
-          value={currentAdventure?.max_angle?.toString()}
-          unit={'degrees'}
+          title="Descent"
+          name="descent"
+          value={currentAdventure?.descent?.toString()}
+          unit={'feet'}
           onChange={editAdventure}
         />
       </MultiElement>
-      <PickerElement
-        name="aspect"
-        items={directions}
-        onChange={editAdventure}
-        title={'Aspect'}
-        value={currentAdventure?.aspect ?? 'N'}
-      />
       {Number(currentAdventure?.difficulty?.split(':')[1]) < 2 && (
         <SliderElement
           name="difficulty"
@@ -131,23 +102,6 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
           title={'Difficulty'}
         />
       )}
-      <SliderElement
-        name="exposure"
-        value={currentAdventure?.exposure}
-        onChange={editAdventure}
-        minValue={1}
-        maxValue={5}
-        title={'Exposure'}
-      />
-      <SelectManyElement
-        name="gear"
-        value={
-          currentAdventure?.gear ?? JSON.stringify(gearOptions.map(() => false))
-        }
-        onChange={editAdventure}
-        properties={gearOptions}
-        title="Gear"
-      />
       <SelectManyElement
         name="season"
         value={
@@ -160,7 +114,7 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
       <EditElement
         title="Nearest City"
         name="nearest_city"
-        value={currentAdventure?.nearest_city}
+        value={currentAdventure?.nearest_city ?? ''}
         onChange={editAdventure}
       />
       <Pressable
@@ -189,4 +143,4 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
   );
 };
 
-export default SkiAdventureEditor;
+export default BikeAdventureEditor;

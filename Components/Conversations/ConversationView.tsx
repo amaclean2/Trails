@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   useMessagingStateContext,
   useUserStateContext,
@@ -10,13 +10,13 @@ import {
   Platform,
   Pressable,
   SafeAreaView,
-  StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
   Image,
   Linking,
   Alert,
+  StyleSheet,
 } from 'react-native';
 import {useHeaderHeight} from '@react-navigation/elements';
 
@@ -25,26 +25,21 @@ import TextBar from './TextBar';
 
 import {generalStyles} from '../GeneralStyles';
 import Hyperlink from 'react-native-hyperlink';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamsList} from '../Navigation/AppContent';
+import AddIcon from '../../Assets/UIGlyphs/AddIcon';
 
-const ConversationView = () => {
-  const {messages, conversations, currentConversationId} =
+const ConversationView = ({
+  navigation,
+  openModal,
+}: NativeStackScreenProps<RootStackParamsList, 'ConversationView'>) => {
+  let {messages, conversations, currentConversationId} =
     useMessagingStateContext();
   let messageRef: any;
   const {loggedInUser} = useUserStateContext();
-  const [userImages, setUserImages] = useState<any>({});
-
   const headerHeight = useHeaderHeight();
 
-  useEffect(() => {
-    if (conversations?.[currentConversationId as number]) {
-      conversations?.[currentConversationId as number].users.forEach(user => {
-        setUserImages({
-          ...userImages,
-          [user.user_id]: user.profile_picture_url,
-        });
-      });
-    }
-  }, []);
+  const [userImages, setUserImages] = useState<any>({});
 
   const handleLinking = async (url: string): Promise<void> => {
     const supported = await Linking.canOpenURL(url);
@@ -55,6 +50,25 @@ const ConversationView = () => {
       Alert.alert(`Can't open url: ${url}`);
     }
   };
+
+  useEffect(() => {
+    if (conversations?.[currentConversationId as number]) {
+      conversations?.[currentConversationId as number].users.forEach(user => {
+        setUserImages({
+          ...userImages,
+          [user.user_id]: user.profile_picture_url,
+        });
+      });
+    }
+
+    navigation.setOptions({
+      headerRight: () => (
+        <Pressable onPress={openModal}>
+          <AddIcon />
+        </Pressable>
+      ),
+    });
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -122,6 +136,13 @@ const localStyles = StyleSheet.create({
   container: {
     backgroundColor: colors.mainOffWhite,
     flex: 1,
+  },
+  modalContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: '100%',
+    width: '100%',
   },
   messageRow: {
     marginHorizontal: 8,

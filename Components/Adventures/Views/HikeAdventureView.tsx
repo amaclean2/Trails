@@ -27,6 +27,7 @@ import {DistanceIcon, ElevationIcon} from '../../../Assets/Symbols/LabelIcons';
 import RatingPicker from '../../Reusable/RatingPicker';
 import RatingView from '../../Reusable/RatingView';
 import FlexSpacer from '../../Reusable/FlexSpacer';
+import {fieldStyles} from '../../Reusable/FieldStyles';
 
 const HikeAdventureView = ({navigation}: any): JSX.Element => {
   const [votedRating, setVotedRating] = useState('0');
@@ -138,7 +139,9 @@ const HikeAdventureView = ({navigation}: any): JSX.Element => {
               content={
                 <View style={styles.symbolView}>
                   <DistanceIcon />
-                  <Text>{`${currentAdventure?.distance ?? ''} mi`}</Text>
+                  <Text style={fieldStyles.fieldText}>{`${
+                    currentAdventure?.distance ?? ''
+                  } mi`}</Text>
                 </View>
               }
             />
@@ -147,9 +150,9 @@ const HikeAdventureView = ({navigation}: any): JSX.Element => {
               content={
                 <View style={styles.symbolView}>
                   <ElevationIcon />
-                  <Text>{`${currentAdventure?.base_elevation ?? ''} - ${
-                    currentAdventure?.summit_elevation
-                  } ft`}</Text>
+                  <Text style={fieldStyles.fieldText}>{`${
+                    currentAdventure?.base_elevation ?? ''
+                  } - ${currentAdventure?.summit_elevation} ft`}</Text>
                 </View>
               }
             />

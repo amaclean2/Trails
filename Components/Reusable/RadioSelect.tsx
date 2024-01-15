@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {type ReactNode} from 'react';
 import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../../Assets/Colors';
 
@@ -6,15 +6,21 @@ const RadioSelect = ({
   options,
   onPress,
   selectedValue,
+  horizontal = false,
 }: {
-  options: {label: string; value: string | number}[];
+  options: {label: ReactNode; value: string | number}[];
   onPress: (value: string | number) => void;
   selectedValue?: string | number;
+  horizontal: boolean;
 }) => {
   return (
     <FlatList
       data={options}
-      contentContainerStyle={localStyles.radioList}
+      horizontal={horizontal}
+      contentContainerStyle={[
+        localStyles.radioList,
+        {gap: horizontal ? 25 : 10},
+      ]}
       renderItem={({item}) => (
         <Pressable
           onPress={() => onPress(item.value)}
@@ -61,8 +67,6 @@ const localStyles = StyleSheet.create({
     fontSize: 18,
   },
   radioList: {
-    flexDirection: 'column',
-    gap: 10,
     margin: 10,
     marginVertical: 20,
   },

@@ -5,6 +5,7 @@ import ClimbAdventureEditor from './ClimbAdventureEditor';
 import SkiAdventureEditor from './SkiAdventureEditor';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamsList} from '../../Navigation/AppContent';
+import BikeAdventureEditor from './BikeAdventureEditor';
 
 const AdventureEditor = ({
   navigation,
@@ -19,6 +20,8 @@ const AdventureEditor = ({
       return <HikeAdventureEditor navigation={navigation} />;
     case 'climb':
       return <ClimbAdventureEditor navigation={navigation} />;
+    case 'bike':
+      return <BikeAdventureEditor navigation={navigation} />;
     default:
       return <SkiAdventureEditor navigation={navigation} />;
   }

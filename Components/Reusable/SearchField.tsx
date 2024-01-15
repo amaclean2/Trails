@@ -2,27 +2,39 @@ import React from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
 import Search from '../../Assets/UIGlyphs/Search';
 import {colors} from '../../Assets/Colors';
+import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
 
 const SearchField = ({
   value = '',
   onChangeText = () => {},
   placeholder = '',
   style = {},
+  isBottomSheet = false,
 }: {
   value: string;
   onChangeText: (text: string) => void;
   placeholder: string;
   style?: any;
+  isBottomSheet?: boolean;
 }): JSX.Element => {
   return (
     <View style={[style, localStyles.fieldBody]}>
       <Search color={'#999'} size={18} />
-      <TextInput
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        style={localStyles.searchText}
-      />
+      {isBottomSheet ? (
+        <BottomSheetTextInput
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          style={localStyles.searchText}
+        />
+      ) : (
+        <TextInput
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          style={localStyles.searchText}
+        />
+      )}
     </View>
   );
 };

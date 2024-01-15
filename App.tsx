@@ -8,6 +8,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import AppContent from './Components/Navigation/AppContent';
 import {LogBox} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 Connections.setConnections(
   {
@@ -24,9 +25,11 @@ const App = (): JSX.Element => {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <SundayPeakProviders>
-        <NavigationContainer linking={{prefixes: ['sp://app']}}>
-          <AppContent />
-        </NavigationContainer>
+        <BottomSheetModalProvider>
+          <NavigationContainer linking={{prefixes: ['sp://app']}}>
+            <AppContent />
+          </NavigationContainer>
+        </BottomSheetModalProvider>
       </SundayPeakProviders>
     </GestureHandlerRootView>
   );

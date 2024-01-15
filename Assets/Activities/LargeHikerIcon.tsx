@@ -3,13 +3,7 @@ import {Circle, Path, Svg} from 'react-native-svg';
 
 export const LargeHikerIcon = ({size = 100, color = '#000000'}) => {
   return (
-    <Svg
-      id="Layer_1"
-      data-name="Layer 1"
-      width={size}
-      height={size}
-      viewBox="0 0 100 100"
-      fill={color}>
+    <Svg width={size} height={size} viewBox="0 0 100 100" fill={color}>
       <Path d="M78.52,35.66h0c.63-.07,1.19,.36,1.26,.96l4.68,41.74c.07,.6-.39,1.14-1.01,1.21h0c-.63,.07-1.19-.36-1.26-.96l-4.68-41.74c-.07-.6,.39-1.14,1.01-1.21Z" />
       <Circle cx="52.78" cy="13.06" r="7.6" />
       <Path d="M44.74,23.9c-3.78,6.59-4.22,26.6-.14,27.31,3.6,.8,10.18-21.29,9.31-25.61-.82-4.09-5.83-6.2-9.17-1.7Z" />

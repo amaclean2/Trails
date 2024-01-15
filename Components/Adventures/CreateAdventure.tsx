@@ -1,33 +1,20 @@
 import React from 'react';
 import {Pressable, SafeAreaView, StyleSheet, Text} from 'react-native';
 import {generalStyles} from '../GeneralStyles';
-import RadioSelect from '../Reusable/RadioSelect';
-import {
-  useAdventureStateContext,
-  useGetAdventures,
-} from '@amaclean2/sundaypeak-treewells';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamsList} from '../Navigation/AppContent';
+import TypeButtons from '../Reusable/TypeButtons';
+import {styles} from './styles';
 
 const CreateAdventure = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamsList, 'CreateAdventureView'>) => {
-  const {globalAdventureType} = useAdventureStateContext();
-  const {changeAdventureType} = useGetAdventures();
   return (
     <SafeAreaView style={localStyles.createAdventureContainer}>
       <Text style={localStyles.createAdventureText}>
         Select an adventure type then locate on the map.
       </Text>
-      <RadioSelect
-        options={[
-          {label: 'Ski', value: 'ski'},
-          {label: 'Climb', value: 'climb'},
-          {label: 'Hike', value: 'hike'},
-        ]}
-        onPress={value => changeAdventureType({type: value})}
-        selectedValue={globalAdventureType as string}
-      />
+      <TypeButtons isMapView={false} style={styles.listAdventureButtons} />
       <Pressable
         style={[generalStyles.button, localStyles.createAdventureButton]}
         onPress={() => navigation.navigate('CreateAdventureMap')}>

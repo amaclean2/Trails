@@ -13,16 +13,13 @@ import {
   useAdventureStateContext,
   useSaveCompletedAdventure,
   useUserStateContext,
+  gradeConverter,
+  showClimbGrades,
 } from '@amaclean2/sundaypeak-treewells';
 
 import {styles} from '../styles';
 import {Meatball} from '../../../Assets/UIGlyphs/Meatball';
-import {
-  climbTypes,
-  formatSeasons,
-  gradeConverter,
-  showClimbGrades,
-} from '../utils';
+import {climbTypes, formatSeasons} from '../utils';
 import ViewField from '../../Reusable/Field';
 import AdventurePathView from '../AdventurePathView';
 import {generalStyles} from '../../GeneralStyles';

@@ -17,7 +17,7 @@ import {
 import {generalStyles} from '../../GeneralStyles';
 import MultiElement from '../../Reusable/MultiElement';
 import PickerElement from '../../Reusable/PickerElement';
-import {climbTypes, showClimbGrades} from '../utils';
+import {climbTypes} from '../utils';
 import {LargeClimberIcon} from '../../../Assets/Activities/LargeClimberIcon';
 import FlexSpacer from '../../Reusable/FlexSpacer';
 import DeleteModal from './DeleteModal';

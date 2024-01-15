@@ -9,6 +9,7 @@ import SkiAdventureView from './SkiAdventureView';
 import {SafeAreaView, Text} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamsList} from '../../Navigation/AppContent';
+import BikeAdventureView from './BikeAdventureView';
 
 const AdventureViews = ({
   navigation,
@@ -39,6 +40,8 @@ const AdventureViews = ({
       return <HikeAdventureView navigation={navigation} />;
     case 'climb':
       return <ClimbAdventureView navigation={navigation} />;
+    case 'bike':
+      return <BikeAdventureView navigation={navigation} />;
     default:
       return <SkiAdventureView navigation={navigation} />;
   }

@@ -5,7 +5,7 @@ import {
   useMessagingStateContext,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -17,6 +17,7 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
@@ -25,25 +26,68 @@ import SearchField from '../Reusable/SearchField';
 import {colors} from '../../Assets/Colors';
 import {RootStackParamsList} from '../Navigation/AppContent';
 import SwipeableItem from './SwipeableItem';
+import FlexSpacer from '../Reusable/FlexSpacer';
+import {CheckboxIcon, EmptyCheckboxIcon} from '../../Assets/UIGlyphs/Checkbox';
+import ConversationPills from './ConversationPills';
+
+type UserType = {
+  display_name: string;
+  user_id: number;
+  profile_picture_url: string;
+};
 
 const Conversations = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamsList, 'ConversationSelector'>) => {
   const {conversations} = useMessagingStateContext();
   const {loggedInUser} = useUserStateContext();
-  const [searchText, setSearchText] = useState('');
-  const [searchList, setSearchList] = useState([]);
   const {addConversation} = useMessages();
   const {searchForFriends} = useGetUser();
 
+  const [searchText, setSearchText] = useState('');
+  const [searchList, setSearchList] = useState([]);
+  const [conversationList, setConversationList] = useState<number[]>([]);
+
+  const newConversationName = useRef<any | null>(null);
+
   useEffect(() => {
-    navigation.setOptions({
-      headerTitle: `${loggedInUser?.first_name} ${loggedInUser?.last_name}`,
-    });
-  }, []);
+    if (conversationList.length) {
+      navigation.setOptions({
+        // eslint-disable-next-line
+        headerRight: () => (
+          <Pressable
+            style={{paddingEnd: 12}}
+            onPress={() => {
+              const assembledConversationName = loggedInUser?.friends
+                .reduce((convoName: string[], friend) => {
+                  if (conversationList.includes(friend.user_id)) {
+                    return [...convoName, friend.display_name];
+                  } else {
+                    return convoName;
+                  }
+                }, [])
+                .join(', ');
+
+              addConversation({userIds: conversationList});
+              navigation.navigate('ConversationView', {
+                conversationName: assembledConversationName,
+              });
+              newConversationName.current = assembledConversationName;
+              setConversationList([]);
+            }}>
+            <Text style={{color: colors.primaryAccentColor, fontSize: 18}}>
+              Create
+            </Text>
+          </Pressable>
+        ),
+      });
+    }
+  }, [conversationList.length]);
 
   const getSearchResults = useDebounce(search => {
-    if (search.length <= 3) return setSearchList([]);
+    if (search.length <= 3) {
+      return setSearchList([]);
+    }
 
     searchForFriends({search}).then(users => {
       setSearchList(users);
@@ -56,17 +100,27 @@ const Conversations = ({
   };
 
   const buildList = () => {
-    if (searchList?.length) {
+    if (searchList?.length || conversationList.length) {
       return (
         <FlatList
           ListHeaderComponent={
-            <SearchField
-              placeholder={'Search among your friends'}
-              value={searchText}
-              onChangeText={handleChangeSearch}
-            />
+            <View>
+              <SearchField
+                placeholder={'Search conversations'}
+                value={searchText}
+                onChangeText={handleChangeSearch}
+              />
+              <ConversationPills
+                conversationList={conversationList}
+                removeItem={(id: number) => {
+                  const tempConvoList = [...conversationList];
+                  tempConvoList.splice(id, 1);
+                  setConversationList(tempConvoList);
+                }}
+              />
+            </View>
           }
-          data={searchList}
+          data={searchList.length ? searchList : loggedInUser?.friends}
           contentContainerStyle={localStyles.users}
           renderItem={({
             item,
@@ -80,18 +134,29 @@ const Conversations = ({
             <Pressable
               style={[generalStyles.listItem, localStyles.listItem]}
               onPress={() => {
-                setSearchText('');
-                setSearchList([]);
-                addConversation({userId: item.user_id});
-                navigation.navigate('ConversationView', {
-                  conversationName: item.display_name,
-                });
+                if (conversationList.includes(item.user_id)) {
+                  const idx = conversationList.findIndex(
+                    id => id === item.user_id,
+                  );
+                  console.log({idx});
+                  const tempConvoList = [...conversationList];
+                  tempConvoList.splice(idx, 1);
+                  setConversationList(tempConvoList);
+                } else {
+                  setConversationList([...conversationList, item.user_id]);
+                }
               }}>
               <Image
                 source={{uri: item.profile_picture_url}}
                 style={generalStyles.listImage}
               />
               <Text style={generalStyles.listText}>{item.display_name}</Text>
+              <FlexSpacer />
+              {conversationList.includes(item.user_id) ? (
+                <CheckboxIcon color={colors.primaryAccentColor} />
+              ) : (
+                <EmptyCheckboxIcon color={colors.mainOffDark} />
+              )}
             </Pressable>
           )}
         />
@@ -101,7 +166,7 @@ const Conversations = ({
         <FlatList
           ListHeaderComponent={
             <SearchField
-              placeholder={'Search among your friends'}
+              placeholder={'Search conversations'}
               value={searchText}
               onChangeText={handleChangeSearch}
             />
@@ -109,9 +174,18 @@ const Conversations = ({
           data={Object.values(conversations ?? {})}
           contentContainerStyle={localStyles.users}
           keyExtractor={item => `${item.conversation_id}`}
-          renderItem={({item}) => (
-            <SwipeableItem navigation={navigation} item={item} />
-          )}
+          renderItem={({item}) => {
+            if (
+              newConversationName &&
+              item.users.find(({display_name}) => display_name === undefined)
+            ) {
+              item.conversation_name = newConversationName.current;
+            } else {
+              newConversationName.current = null;
+            }
+
+            return <SwipeableItem navigation={navigation} item={item} />;
+          }}
         />
       );
     }
