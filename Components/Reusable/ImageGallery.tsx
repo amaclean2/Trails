@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, Image, Pressable, StyleSheet, Text, View} from 'react-native';
+
 import {colors} from '../../Assets/Colors';
 
 const ImageGallery = ({
@@ -41,7 +42,7 @@ const ImageGallery = ({
       horizontal
       style={localStyles.picturesContainer}
       ItemSeparatorComponent={() => <View style={{width: 5}} />}
-      renderItem={({item: image}) =>
+      renderItem={({item: image, index}) =>
         image.ar === -1 ? (
           <Pressable style={localStyles.addImageButton} onPress={onAddPicture}>
             <Text>Add Photo</Text>
@@ -51,12 +52,14 @@ const ImageGallery = ({
             onPress={() => {
               if (source === 'User') {
                 return navigation.navigate('ImageViewer', {
-                  image: image.url,
+                  images,
+                  imageIndex: index,
                   userName: backName,
                 });
               } else {
                 return navigation.navigate('ImageViewer', {
-                  image: image.url,
+                  images,
+                  imageIndex: index,
                   adventureTitle: backName,
                 });
               }
@@ -86,7 +89,7 @@ const localStyles = StyleSheet.create({
   },
   addImageButton: {
     borderColor: colors.borderColor,
-    borderRadius: 5,
+    borderRadius: 8,
     borderWidth: StyleSheet.hairlineWidth,
     height: 90,
     margin: 5,

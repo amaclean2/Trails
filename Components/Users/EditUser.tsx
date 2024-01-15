@@ -2,7 +2,7 @@ import {
   useEditUser,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   Pressable,
@@ -19,11 +19,18 @@ import {generalStyles} from '../GeneralStyles';
 import PickerElement from '../Reusable/PickerElement';
 import {sexLabels} from '../Adventures/utils';
 import {fieldStyles} from '../Reusable/FieldStyles';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamsList} from '../Navigation/AppContent';
+import UserDeleteModal from './UserDeleteModal';
 
-const EditUser = ({navigation}: any): JSX.Element => {
+const EditUser = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamsList, 'EditUser'>): JSX.Element => {
   const {loggedInUser} = useUserStateContext();
   const {updateProfilePicture} = useImageUploads();
   const {editUser} = useEditUser();
+
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({
@@ -107,6 +114,18 @@ const EditUser = ({navigation}: any): JSX.Element => {
           onPress={() => navigation.goBack()}>
           <Text style={generalStyles.buttonText}>Finish</Text>
         </Pressable>
+        <Pressable
+          style={[generalStyles.backButton, generalStyles.badButton]}
+          onPress={() => setIsDeleteModalVisible(true)}>
+          <Text style={[generalStyles.buttonText, generalStyles.badButtonText]}>
+            Delete Account
+          </Text>
+        </Pressable>
+        <UserDeleteModal
+          deleteModalVisible={isDeleteModalVisible}
+          navigation={navigation}
+          closeModal={() => setIsDeleteModalVisible(false)}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -114,7 +133,7 @@ const EditUser = ({navigation}: any): JSX.Element => {
 
 const localStyles = StyleSheet.create({
   profilePicture: {
-    backgroundColor: colors.borderColor,
+    backgroundColor: colors.textAreaBackground,
     width: 100,
     height: 100,
     borderRadius: 50,

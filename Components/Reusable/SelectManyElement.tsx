@@ -67,7 +67,7 @@ const SelectManyElement = ({
         <Pressable
           style={fieldStyles.textArea}
           onPress={() => setIsExpanded(true)}>
-          <Text>
+          <Text style={{fontSize: 18}}>
             {properties
               .filter((_: string, idx: number) => valueArr[idx])
               .join(', ')}

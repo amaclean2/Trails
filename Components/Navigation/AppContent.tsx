@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useMemo, useRef} from 'react';
 import Mapbox from '../Mapping/Mapbox';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import UserProfile from '../Users';
 import Conversations from '../Conversations';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useUserStateContext} from '@amaclean2/sundaypeak-treewells';
+
 import OtherUser from '../Users/OtherUser';
 import {colors} from '../../Assets/Colors';
 import FriendsList from '../Users/FriendsList';
@@ -22,6 +22,11 @@ import ConversationView from '../Conversations/ConversationView';
 import ForgotPassword from '../External/ForgotPassword';
 import Login from '../External/Login';
 import Signup from '../External/Signup';
+import CreateAdventure from '../Adventures/CreateAdventure';
+import CreateAdventureMap from '../Adventures/CreateAdventureMap';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import AddUserFlow, {AddUserFooter} from '../Conversations/AddUserFlow';
+import {StyleSheet, View} from 'react-native';
 
 const {Navigator: TabNavigator, Screen: TabScreen} = createBottomTabNavigator();
 const {Navigator: StackNavigator, Screen: StackScreen} =
@@ -29,18 +34,59 @@ const {Navigator: StackNavigator, Screen: StackScreen} =
 
 const defaultHeaderOptions = {
   headerTintColor: colors.primaryAccentColor,
+  headerBackTitleVisible: false,
+};
+
+export type RootStackParamsList = {
+  Login: any;
+  SignUp: any;
+  ForgotPassword: any;
+  ConversationView: any;
+  DefaultAdventureView: any;
+  Adventures: any;
+  Adventurers: any;
+  OtherProfile: any;
+  FriendsList: any;
+  AdventuresList: any;
+  ImageViewer: any;
+  AdventureEditor: any;
+  AdventureMap: any;
+  Profile: any;
+  EditUser: any;
+  Explore: any;
+  ConversationSelector: any;
+  CreateAdventureView: any;
+  CreateAdventureMap: any;
 };
 
 const AdventureStack = (): JSX.Element => {
   return (
     <StackNavigator screenOptions={{headerShown: false}}>
       <StackScreen
-        name={'DefaultAdventure'}
+        name={'DefaultAdventureView'}
         component={DefaultAdventure}
         options={{
           ...defaultHeaderOptions,
           headerShown: false,
-          title: 'Adventure View',
+          title: 'Adventure',
+        }}
+      />
+      <StackScreen
+        name={'CreateAdventureView'}
+        component={CreateAdventure}
+        options={{
+          ...defaultHeaderOptions,
+          headerShown: true,
+          title: 'Create Adventure',
+        }}
+      />
+      <StackScreen
+        name={'CreateAdventureMap'}
+        component={CreateAdventureMap}
+        options={{
+          ...defaultHeaderOptions,
+          headerShown: true,
+          title: 'Create Adventure',
         }}
       />
       <StackScreen
@@ -49,7 +95,7 @@ const AdventureStack = (): JSX.Element => {
         options={{
           ...defaultHeaderOptions,
           headerShown: false,
-          title: 'Adventure View',
+          title: 'Adventure',
         }}
       />
       <StackScreen
@@ -59,6 +105,7 @@ const AdventureStack = (): JSX.Element => {
           ...defaultHeaderOptions,
           headerShown: true,
           title: 'Todo List',
+          headerBackTitleVisible: true,
         }}
       />
       <StackScreen
@@ -78,6 +125,7 @@ const AdventureStack = (): JSX.Element => {
           headerShown: true,
           headerTitle: 'Connections',
           headerBackTitle: route.params?.backName,
+          headerBackTitleVisible: true,
         })}
       />
       <StackScreen
@@ -88,6 +136,7 @@ const AdventureStack = (): JSX.Element => {
           headerShown: true,
           headerTitle: 'Adventures',
           headerBackTitle: route.params?.backName,
+          headerBackTitleVisible: true,
         })}
       />
       <StackScreen
@@ -112,9 +161,9 @@ const AdventureStack = (): JSX.Element => {
         name="AdventureMap"
         component={AdventureMap}
         options={({route}) => ({
+          ...defaultHeaderOptions,
           headerShown: true,
           headerTitle: route.params?.adventureName,
-          headerBackTitle: 'Adventure',
         })}
       />
     </StackNavigator>
@@ -137,6 +186,7 @@ const UserStack = (): JSX.Element => {
           headerShown: true,
           headerTitle: 'Connections',
           headerBackTitle: route.params?.backName,
+          headerBackTitleVisible: true,
         })}
       />
       <StackScreen
@@ -147,6 +197,7 @@ const UserStack = (): JSX.Element => {
           headerTitle: route.params?.name,
           headerShown: true,
           headerBackTitle: route.params?.backName,
+          headerBackTitleVisible: true,
         })}
       />
       <StackScreen
@@ -157,6 +208,7 @@ const UserStack = (): JSX.Element => {
           headerShown: true,
           headerTitle: 'Adventures',
           headerBackTitle: route.params?.backName,
+          headerBackTitleVisible: true,
         })}
       />
       <StackScreen
@@ -299,40 +351,73 @@ const AppTabs = (): JSX.Element => {
 };
 
 const AppContent = (): JSX.Element => {
+  const sheetRef = useRef<BottomSheetModal>(null);
+
+  const snapPoints = useMemo(() => ['65%', '95%'], []);
+
   return (
-    <StackNavigator>
-      <StackScreen
-        name={'Login'}
-        component={Login}
-        options={{headerShown: false}}
-      />
-      <StackScreen
-        name={'AppTabs'}
-        component={AppTabs}
-        options={{headerShown: false}}
-      />
-      <StackScreen
-        name={'ConversationView'}
-        component={ConversationView}
-        options={({route}) => ({
-          ...defaultHeaderOptions,
-          headerShown: true,
-          headerBackTitleVisible: false,
-          headerTitle: route.params?.conversationName,
-        })}
-      />
-      <StackScreen
-        name={'ForgotPassword'}
-        component={ForgotPassword}
-        options={{headerShown: false}}
-      />
-      <StackScreen
-        name={'SignUp'}
-        component={Signup}
-        options={{headerShown: false}}
-      />
-    </StackNavigator>
+    <>
+      <StackNavigator>
+        <StackScreen
+          name={'Login'}
+          component={Login}
+          options={{headerShown: false}}
+        />
+        <StackScreen
+          name={'SignUp'}
+          component={Signup}
+          options={{headerShown: false}}
+        />
+        <StackScreen
+          name={'AppTabs'}
+          component={AppTabs}
+          options={{headerShown: false}}
+        />
+        <StackScreen
+          name={'ForgotPassword'}
+          component={ForgotPassword}
+          options={{headerShown: false}}
+        />
+        <StackScreen
+          name={'ConversationView'}
+          options={({route}) => ({
+            ...defaultHeaderOptions,
+            headerShown: true,
+            headerBackTitleVisible: false,
+            headerTitle: route.params?.conversationName,
+          })}>
+          {props => (
+            <ConversationView
+              {...props}
+              openModal={() => sheetRef.current?.present()}
+            />
+          )}
+        </StackScreen>
+      </StackNavigator>
+      <BottomSheetModal
+        ref={sheetRef}
+        index={1}
+        keyboardBehavior={'extend'}
+        snapPoints={snapPoints}
+        // footerComponent={AddUserFooter}
+        backdropComponent={() => (
+          <View style={localStyles.bottomSheetBackground} />
+        )}>
+        <AddUserFlow dismiss={() => sheetRef.current.dismiss()} />
+      </BottomSheetModal>
+    </>
   );
 };
+
+const localStyles = StyleSheet.create({
+  bottomSheetBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: colors.mainOffDarkOpacity,
+  },
+});
 
 export default AppContent;

@@ -14,11 +14,19 @@ export const styles = StyleSheet.create({
     height: 100,
     marginBottom: 50,
   },
+  signupLogo: {
+    marginBottom: 20,
+  },
   navigateToLogin: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 15,
+    marginVertical: 30,
+    marginHorizontal: 10,
+  },
+  signupNavigate: {
+    marginVertical: 10,
   },
   fieldContainer: {
     flexDirection: 'column',
@@ -29,6 +37,16 @@ export const styles = StyleSheet.create({
   resetText: {
     fontWeight: '600',
     padding: 10,
-    fontSize: 15,
+    fontSize: 16,
+  },
+  signupContainer: {
+    marginTop: 30,
+  },
+  loginField: {
+    alignSelf: 'center',
+    width: 330,
+  },
+  loginButton: {
+    width: 330,
   },
 });

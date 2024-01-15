@@ -10,7 +10,9 @@ import {
 } from 'react-native';
 import {
   useAdventureStateContext,
+  useGetUser,
   useSaveCompletedAdventure,
+  useSaveTodo,
   useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
 
@@ -29,6 +31,10 @@ import {
 } from '../../../Assets/Symbols/LabelIcons';
 import {AspectIcon} from '../../../Assets/Symbols/AspectIcon';
 import RatingPicker from '../../Reusable/RatingPicker';
+import RatingView from '../../Reusable/RatingView';
+import DifficultyGraphic from '../../../Assets/Symbols/Difficulty';
+import FlexSpacer from '../../Reusable/FlexSpacer';
+import {fieldStyles} from '../../Reusable/FieldStyles';
 
 const SkiAdventureView = ({navigation}: any): JSX.Element => {
   const [votedRating, setVotedRating] = useState('0');
@@ -36,11 +42,17 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
 
   const {currentAdventure} = useAdventureStateContext();
   const {saveAdventureImage} = useImageUploads();
-  const {buildMenuContents, rateAdventureVisible, closeRateAdventure} =
-    useAdventureMenu();
+  const {
+    buildMenuContents,
+    rateAdventureVisible,
+    closeRateAdventure,
+    openRateAdventureVisible,
+  } = useAdventureMenu();
   const menuContents = buildMenuContents({navigation});
   const {loggedInUser} = useUserStateContext();
   const {saveCompletedAdventure} = useSaveCompletedAdventure();
+  const {getNonLoggedInUser} = useGetUser();
+  const {saveTodo} = useSaveTodo();
 
   const onMenuPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -51,6 +63,18 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
       buttonIndex => menuContents?.[buttonIndex].action(),
     );
   };
+
+  const canAddTodo =
+    !loggedInUser?.todo_adventures
+      ?.map(({adventure_id}) => adventure_id)
+      .includes(currentAdventure?.id as number) &&
+    !loggedInUser?.completed_adventures
+      ?.map(({adventure_id}) => adventure_id)
+      .includes(currentAdventure?.id as number);
+
+  const canComplete = !loggedInUser?.completed_adventures
+    ?.map(({adventure_id}) => adventure_id)
+    .includes(currentAdventure?.id as number);
 
   return (
     <SafeAreaView style={generalStyles.container}>
@@ -70,16 +94,49 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
             </Pressable>
           )}
         </View>
+        <RatingView
+          ratingCount={Number(currentAdventure?.rating?.split(':')[0])}
+        />
+        <View style={styles.adventureActionButtonContainer}>
+          <Pressable
+            style={[generalStyles.button, styles.otherAdventurers]}
+            onPress={() => navigation.navigate('Adventurers')}>
+            <Text style={generalStyles.buttonText}>Todo Skiers</Text>
+          </Pressable>
+          {canComplete && (
+            <Pressable
+              style={[
+                generalStyles.secondaryButton,
+                styles.adventureActionButton,
+              ]}
+              onPress={openRateAdventureVisible}>
+              <Text style={[generalStyles.secondaryButtonText]}>Complete</Text>
+            </Pressable>
+          )}
+          {canAddTodo ? (
+            <Pressable
+              style={[
+                generalStyles.secondaryButton,
+                styles.adventureActionButton,
+              ]}
+              onPress={() => {
+                saveTodo({
+                  adventureId: currentAdventure?.id as number,
+                  adventureType: currentAdventure?.adventure_type as string,
+                });
+              }}>
+              <Text style={generalStyles.secondaryButtonText}>Add Todo</Text>
+            </Pressable>
+          ) : (
+            <FlexSpacer />
+          )}
+        </View>
         <ImageGallery
           navigation={navigation}
           source={'Adventure'}
           backName={currentAdventure?.adventure_name || ''}
           images={currentAdventure?.images as string[]}
-          onAddPicture={
-            currentAdventure?.creator_id === loggedInUser?.id
-              ? saveAdventureImage
-              : undefined
-          }
+          onAddPicture={saveAdventureImage}
         />
         <View style={styles.mapContainer}>
           <AdventurePathView navigation={navigation} />
@@ -92,18 +149,24 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
           <View style={styles.adventureRow}>
             <ViewField
               title={'Difficulty'}
-              content={`${currentAdventure?.difficulty?.split(':')[0]} / 5`}
+              content={
+                <DifficultyGraphic
+                  difficultyLevel={Math.round(
+                    Number(currentAdventure?.difficulty?.split(':')[0]),
+                  )}
+                />
+              }
             />
             <ViewField
               title={'Exposure'}
-              content={`${currentAdventure?.exposure ?? '0'} / 5`}
+              content={`E${currentAdventure?.exposure}`}
             />
             <ViewField
               title={'Slope Angle'}
               content={
                 <View style={styles.symbolView}>
                   <AngleIcon />
-                  <Text>
+                  <Text style={fieldStyles.fieldText}>
                     {`${currentAdventure?.avg_angle ?? ''} - ${
                       currentAdventure?.max_angle ?? ''
                     }\u00b0`}
@@ -126,7 +189,9 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
               content={
                 <View style={styles.symbolView}>
                   <DistanceIcon />
-                  <Text>{`${currentAdventure?.distance ?? ''} mi`}</Text>
+                  <Text style={fieldStyles.fieldText}>{`${
+                    currentAdventure?.distance ?? ''
+                  } mi`}</Text>
                 </View>
               }
             />
@@ -135,9 +200,9 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
               content={
                 <View style={styles.symbolView}>
                   <ElevationIcon />
-                  <Text>{`${currentAdventure?.base_elevation ?? ''} - ${
-                    currentAdventure?.summit_elevation
-                  } ft`}</Text>
+                  <Text style={fieldStyles.fieldText}>{`${
+                    currentAdventure?.base_elevation ?? ''
+                  } - ${currentAdventure?.summit_elevation} ft`}</Text>
                 </View>
               }
             />
@@ -162,12 +227,13 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
             title={'Creator'}
             content={
               <Pressable
-                onPress={() =>
+                onPress={() => {
+                  getNonLoggedInUser({userId: currentAdventure?.creator_id});
                   navigation.navigate('OtherProfile', {
                     name: currentAdventure?.creator_name,
                     userId: currentAdventure?.creator_id,
-                  })
-                }>
+                  });
+                }}>
                 <Text style={styles.fieldText}>
                   {currentAdventure?.creator_name}
                 </Text>
@@ -177,8 +243,8 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
         </View>
       </ScrollView>
       <Modal visible={rateAdventureVisible} transparent animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modal}>
+        <View style={generalStyles.modalContainer}>
+          <View style={generalStyles.modal}>
             <Text>
               Vote on a rating and difficulty to complete this adventure
             </Text>
@@ -192,7 +258,6 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
             <Pressable
               style={[generalStyles.button, styles.finishButton]}
               onPress={() => {
-                console.log({difficulty: currentAdventure?.difficulty});
                 saveCompletedAdventure({
                   adventureId: currentAdventure?.id as number,
                   adventureType: 'ski',
@@ -205,8 +270,11 @@ const SkiAdventureView = ({navigation}: any): JSX.Element => {
             </Pressable>
             <Pressable
               onPress={closeRateAdventure}
-              style={[generalStyles.secondaryButton, styles.closeButton]}>
-              <Text style={generalStyles.secondaryButtonText}>Close</Text>
+              style={[
+                generalStyles.secondaryButton,
+                generalStyles.closeButton,
+              ]}>
+              <Text style={generalStyles.secondaryButtonText}>Cancel</Text>
             </Pressable>
           </View>
         </View>

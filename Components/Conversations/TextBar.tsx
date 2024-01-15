@@ -4,31 +4,37 @@ import {colors} from '../../Assets/Colors';
 import {
   useMessages,
   useMessagingStateContext,
+  useUserStateContext,
 } from '@amaclean2/sundaypeak-treewells';
+import SendIcon from '../../Assets/UIGlyphs/Send';
 
-const TextBar = () => {
+const TextBar = ({onClick}: {onClick: () => void}) => {
   const [workingText, setWorkingText] = useState('');
   const {sendMessage} = useMessages();
   const {currentConversationId} = useMessagingStateContext();
+  const {loggedInUser} = useUserStateContext();
 
   const handleEnter = () => {
     setWorkingText('');
     sendMessage({
       messageBody: workingText,
       conversationId: currentConversationId as number,
+      senderName: `${loggedInUser?.first_name} ${loggedInUser?.last_name}`,
     });
+    onClick();
   };
   return (
     <View style={localStyles.textBar}>
       <TextInput
         style={localStyles.inputField}
+        onFocus={onClick}
         placeholder={'Message'}
         value={workingText}
         onChangeText={text => setWorkingText(text)}
         multiline
       />
       <Pressable style={localStyles.sendButton} onPress={handleEnter}>
-        <Text style={localStyles.sendButtonText}>Send</Text>
+        <SendIcon color={colors.mainLight} size={18} />
       </Pressable>
     </View>
   );
@@ -36,29 +42,31 @@ const TextBar = () => {
 
 const localStyles = StyleSheet.create({
   textBar: {
-    margin: 8,
-    backgroundColor: colors.mainLight,
     flexDirection: 'row',
-    borderRadius: 18,
     alignItems: 'flex-end',
-    maxHeight: 200,
+    backgroundColor: colors.mainLight,
+    padding: 8,
+    gap: 5,
+    borderTopColor: colors.borderColor,
+    borderTopWidth: 1,
   },
   inputField: {
     fontSize: 16,
     color: colors.mainDark,
+    backgroundColor: colors.mainLight,
+    padding: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
     flex: 1,
-    paddingStart: 15,
-    maxWidth: 350,
-    marginVertical: 8,
+    alignSelf: 'stretch',
   },
   sendButton: {
     backgroundColor: colors.primaryAccentColor,
-    borderRadius: 12,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
-    margin: 6,
-    height: 40,
+    paddingHorizontal: 10,
   },
   sendButtonText: {
     color: colors.mainLight,

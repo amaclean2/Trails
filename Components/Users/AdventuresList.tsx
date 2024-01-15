@@ -5,6 +5,8 @@ import {LargeHikerIcon} from '../../Assets/Activities/LargeHikerIcon';
 import {LargeClimberIcon} from '../../Assets/Activities/LargeClimberIcon';
 import {LargeSkierIcon} from '../../Assets/Activities/LargeSkierIcon';
 import {colors} from '../../Assets/Colors';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamsList} from '../Navigation/AppContent';
 
 const ActionIcon = ({actionType}: any): JSX.Element => {
   switch (actionType) {
@@ -17,18 +19,24 @@ const ActionIcon = ({actionType}: any): JSX.Element => {
   }
 };
 
-const AdventuresList = ({navigation, route}: any): JSX.Element => {
+const AdventuresList = ({
+  navigation,
+  route,
+}: NativeStackScreenProps<
+  RootStackParamsList,
+  'AdventuresList'
+>): JSX.Element => {
   return (
     <View>
       <SectionList
         sections={[
           {
             title: 'Todo Adventures',
-            data: route.params.todoAdventures,
+            data: route.params?.todoAdventures,
           },
           {
             title: 'Completed Adventures',
-            data: route.params.completedAdventures,
+            data: route.params?.completedAdventures,
           },
         ]}
         renderSectionHeader={({section}) => (
@@ -38,12 +46,9 @@ const AdventuresList = ({navigation, route}: any): JSX.Element => {
           <Pressable
             style={generalStyles.listItem}
             onPress={() => {
-              navigation.navigate('AdventureStack', {
-                screen: 'Adventures',
-                params: {
-                  adventureType: item.adventure_type,
-                  adventureId: item.adventure_id,
-                },
+              navigation.navigate('Adventures', {
+                adventureType: item.adventure_type,
+                adventureId: item.adventure_id,
               });
             }}>
             <ActionIcon actionType={item.adventure_type} />
@@ -61,7 +66,7 @@ const localStyles = StyleSheet.create({
     paddingHorizontal: 10,
     fontSize: 16,
     fontWeight: '600',
-    backgroundColor: colors.borderColor,
+    backgroundColor: colors.textAreaBackground,
   },
 });
 

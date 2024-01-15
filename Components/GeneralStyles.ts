@@ -3,29 +3,34 @@ import {colors} from '../Assets/Colors';
 
 export const generalStyles = StyleSheet.create({
   inputField: {
-    backgroundColor: colors.borderColor,
+    backgroundColor: colors.textAreaBackground,
     paddingVertical: 8,
     paddingHorizontal: 16,
     margin: 3,
     borderRadius: 8,
+    fontSize: 18,
   },
   button: {
     backgroundColor: colors.primaryAccentColor,
-    width: 350,
     paddingVertical: 10,
-    margin: 20,
+    marginVertical: 20,
     borderRadius: 8,
     alignItems: 'center',
+    justifyContent: 'center',
+    width: 310,
   },
   buttonText: {
     color: colors.mainLight,
     fontWeight: '700',
   },
-  secondaryButton: {},
+  secondaryButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   secondaryButtonText: {
     fontWeight: '700',
     color: colors.primaryAccentColor,
-    padding: 10,
+    padding: 8,
   },
   errorField: {
     backgroundColor: colors.alertErrorColor,
@@ -68,10 +73,10 @@ export const generalStyles = StyleSheet.create({
   headerText: {
     color: colors.primaryAccentColor,
     fontWeight: '700',
-    fontSize: 20,
+    fontSize: 24,
   },
   headerSubText: {
-    fontSize: 15,
+    fontSize: 16,
     paddingTop: 5,
   },
   container: {
@@ -113,5 +118,38 @@ export const generalStyles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 15,
     justifyContent: 'center',
+  },
+  fullScreenView: {
+    flex: 1,
+  },
+  badButton: {
+    backgroundColor: colors.mainOffWhite,
+    marginVertical: 0,
+  },
+  badButtonText: {
+    color: colors.alertErrorColor,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    padding: 20,
+    backgroundColor: colors.mainLight,
+    borderRadius: 8,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowColor: colors.mainDark,
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    width: 350,
+  },
+  closeButton: {
+    width: 'auto',
+    alignItems: 'center',
+    marginTop: 10,
   },
 });

@@ -7,8 +7,14 @@ import HikeAdventureView from './HikeAdventureView';
 import ClimbAdventureView from './ClimbAdventureView';
 import SkiAdventureView from './SkiAdventureView';
 import {SafeAreaView, Text} from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamsList} from '../../Navigation/AppContent';
+import BikeAdventureView from './BikeAdventureView';
 
-const AdventureViews = ({navigation, route}: any): JSX.Element => {
+const AdventureViews = ({
+  navigation,
+  route,
+}: NativeStackScreenProps<RootStackParamsList, 'Adventures'>): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
   const {getAdventure} = useGetAdventures();
 
@@ -34,6 +40,8 @@ const AdventureViews = ({navigation, route}: any): JSX.Element => {
       return <HikeAdventureView navigation={navigation} />;
     case 'climb':
       return <ClimbAdventureView navigation={navigation} />;
+    case 'bike':
+      return <BikeAdventureView navigation={navigation} />;
     default:
       return <SkiAdventureView navigation={navigation} />;
   }

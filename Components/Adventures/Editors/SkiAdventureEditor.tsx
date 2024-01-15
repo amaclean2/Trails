@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import EditElement from '../../Reusable/EditElement';
 import {
   useAdventureStateContext,
@@ -12,10 +12,15 @@ import SliderElement from '../../Reusable/SliderElement';
 import PickerElement from '../../Reusable/PickerElement';
 import {directions, gearOptions, months} from '../utils';
 import SelectManyElement from '../../Reusable/SelectManyElement';
+import FlexSpacer from '../../Reusable/FlexSpacer';
+import DeleteModal from './DeleteModal';
+import DistanceEdit from '../../Reusable/DistanceEdit';
+import {styles} from '../styles';
 
 const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
   const {currentAdventure} = useAdventureStateContext();
   const {editAdventure} = useSaveAdventure();
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({
@@ -44,9 +49,16 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
 
   return (
     <ScrollView style={{paddingTop: 30}}>
-      <View style={{marginHorizontal: 20, marginVertical: 10}}>
-        <LargeSkierIcon size={40} />
-      </View>
+      <MultiElement>
+        <View style={{marginHorizontal: 20, marginVertical: 10}}>
+          <LargeSkierIcon size={40} />
+        </View>
+        <View style={styles.warningBox}>
+          <Text style={styles.warningBoxText}>
+            To edit the path for this adventure use the Sunday Peak website
+          </Text>
+        </View>
+      </MultiElement>
       <EditElement
         title="Adventure Name"
         name="adventure_name"
@@ -61,37 +73,40 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
         numberOfLines={4}
         onChange={editAdventure}
       />
-      <EditElement
+      <DistanceEdit
         title="Approach Distance"
-        name="distance"
-        value={currentAdventure?.distance}
+        value={currentAdventure?.distance?.toString()}
         onChange={editAdventure}
       />
       <MultiElement title={'Elevation'}>
-        <EditElement
+        <DistanceEdit
           title="Base"
           name="base_elevation"
-          value={currentAdventure?.base_elevation.toString()}
+          value={currentAdventure?.base_elevation?.toString()}
+          unit={'feet'}
           onChange={editAdventure}
         />
-        <EditElement
+        <DistanceEdit
           title="Summit"
           name="summit_elevation"
-          value={currentAdventure?.summit_elevation.toString()}
+          value={currentAdventure?.summit_elevation?.toString()}
+          unit={'feet'}
           onChange={editAdventure}
         />
       </MultiElement>
       <MultiElement title={'Slope Angle'}>
-        <EditElement
+        <DistanceEdit
           title="Average"
           name="avg_angle"
-          value={currentAdventure.avg_angle.toString()}
+          value={currentAdventure?.avg_angle?.toString()}
+          unit={'degrees'}
           onChange={editAdventure}
         />
-        <EditElement
+        <DistanceEdit
           title="Max"
           name="max_angle"
-          value={currentAdventure.max_angle.toString()}
+          value={currentAdventure?.max_angle?.toString()}
+          unit={'degrees'}
           onChange={editAdventure}
         />
       </MultiElement>
@@ -106,7 +121,11 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
         <SliderElement
           name="difficulty"
           value={Number(currentAdventure?.difficulty?.split(':')[0])}
-          onChange={editAdventure}
+          onChange={({target: {name = '', value = ''}}) => {
+            editAdventure({
+              target: {name, value: `${value}:1`},
+            });
+          }}
           minValue={1}
           maxValue={5}
           title={'Difficulty'}
@@ -149,6 +168,23 @@ const SkiAdventureEditor = ({navigation}: any): JSX.Element => {
         onPress={() => navigation.goBack()}>
         <Text style={generalStyles.buttonText}>Finish</Text>
       </Pressable>
+      <Pressable
+        style={[generalStyles.backButton, generalStyles.badButton]}
+        onPress={() => {
+          setIsDeleteModalVisible(true);
+        }}>
+        <Text
+          style={[
+            generalStyles.buttonText,
+            generalStyles.badButtonText,
+          ]}>{`Delete ${currentAdventure?.adventure_name}`}</Text>
+      </Pressable>
+      <FlexSpacer height={60} />
+      <DeleteModal
+        deleteModalVisible={isDeleteModalVisible}
+        navigation={navigation}
+        closeModal={() => setIsDeleteModalVisible(false)}
+      />
     </ScrollView>
   );
 };

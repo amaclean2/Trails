@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   Pressable,
@@ -10,21 +10,29 @@ import {
 import {colors} from '../../Assets/Colors';
 import MapIcon from '../../Assets/UIGlyphs/MapIcon';
 import AdventureIcon from '../../Assets/UIGlyphs/AdventureIcon';
-import ProfileIcon from '../../Assets/UIGlyphs/ProfileIcon';
 import ConversationIcon from '../../Assets/UIGlyphs/ConversationIcon';
-import {useUserStateContext} from '@amaclean2/sundaypeak-treewells';
+import {
+  useMessagingStateContext,
+  useUserStateContext,
+} from '@amaclean2/sundaypeak-treewells';
 
 const TabBar = ({state, descriptors, navigation}: any): JSX.Element => {
   const {loggedInUser} = useUserStateContext();
+  const {conversations} = useMessagingStateContext();
+  const [hasUnreadConversation, setHasUnreadConversation] = useState(false);
+
+  useEffect(() => {
+    setHasUnreadConversation(
+      (conversations &&
+        Object.values(conversations).some(
+          ({unread}: {unread: boolean}) => unread,
+        )) ??
+        false,
+    );
+  }, [conversations]);
 
   return (
-    <SafeAreaView
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        borderTopColor: colors.borderColor,
-        borderTopWidth: StyleSheet.hairlineWidth,
-      }}>
+    <SafeAreaView style={localStyles.containerViewStyle}>
       {state.routes.map((route: any, index: any) => {
         const {options} = descriptors[route.key];
         const label =
@@ -57,7 +65,7 @@ const TabBar = ({state, descriptors, navigation}: any): JSX.Element => {
         };
 
         const showIcon = () => {
-          const iconSize = 18;
+          const iconSize = 20;
           switch (label) {
             case 'Explore':
               return (
@@ -71,7 +79,7 @@ const TabBar = ({state, descriptors, navigation}: any): JSX.Element => {
             case 'Adventures':
               return (
                 <AdventureIcon
-                  size={iconSize}
+                  size={iconSize * 1.2}
                   color={
                     isFocused ? colors.primaryAccentColor : colors.mainOffDark
                   }
@@ -79,12 +87,17 @@ const TabBar = ({state, descriptors, navigation}: any): JSX.Element => {
               );
             case 'Conversations':
               return (
-                <ConversationIcon
-                  size={iconSize}
-                  color={
-                    isFocused ? colors.primaryAccentColor : colors.mainOffDark
-                  }
-                />
+                <View>
+                  <ConversationIcon
+                    size={iconSize * 1.1}
+                    color={
+                      isFocused ? colors.primaryAccentColor : colors.mainOffDark
+                    }
+                  />
+                  {hasUnreadConversation && (
+                    <View style={localStyles.conversationStyle} />
+                  )}
+                </View>
               );
             default:
               return (
@@ -110,15 +123,7 @@ const TabBar = ({state, descriptors, navigation}: any): JSX.Element => {
             onLongPress={onLongPress}
             style={localStyles.bottomButton}
             key={`tab_${index}`}>
-            <View
-              style={{
-                width: 20,
-                height: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              {showIcon()}
-            </View>
+            <View style={localStyles.buttonIconSpacing}>{showIcon()}</View>
             <Text
               style={[
                 localStyles.bottomButtonText,
@@ -148,6 +153,27 @@ const localStyles = StyleSheet.create({
   },
   bottomButtonText: {
     fontSize: 12,
+  },
+  buttonIconSpacing: {
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  conversationStyle: {
+    position: 'absolute',
+    width: 12,
+    height: 12,
+    borderRadius: 12,
+    top: -6,
+    right: -6,
+    backgroundColor: colors.alertErrorColor,
+  },
+  containerViewStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    borderTopColor: colors.borderColor,
+    borderTopWidth: StyleSheet.hairlineWidth,
   },
 });
 

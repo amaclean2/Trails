@@ -1,58 +1,220 @@
 import React from 'react';
-import {G, Line, Path, Svg, Text} from 'react-native-svg';
+import {G, Rect, Svg, TSpan, Text} from 'react-native-svg';
 
-export const Exposure = () => (
-  <Svg
-    id="Layer_1"
-    data-name="Layer 1"
-    width="90"
-    height="32"
-    viewBox="0 0 90 32">
+const ExposureOne = () => (
+  <Svg width="90" height="16" viewBox="0 0 90 16" style={{paddingVertical: 15}}>
     <G>
-      <Line
-        x1="5.76"
-        y1="16.23"
-        x2="84"
-        y2="16.23"
-        fill="none"
-        stroke="#000"
-        strokeLinecap="round"
-        strokeMiterlimit="10"
-        strokeWidth="2px"
-      />
-      <G>
-        <Path
-          d="M18.7,20.56A4.34,4.34,0,1,1,23,16.23,4.33,4.33,0,0,1,18.7,20.56Z"
-          fill="#00CF00"
-        />
-        <Path d="M18.7,12.39a3.84,3.84,0,1,1-3.83,3.84,3.84,3.84,0,0,1,3.83-3.84m0-1a4.84,4.84,0,1,0,4.84,4.84,4.83,4.83,0,0,0-4.84-4.84Z" />
+      <Rect width="90" height="2" rx="1" transform="translate(0 4)" />
+      <G transform="translate(4)" fill="#02ad85" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
       </G>
-      <G>
-        <Path
-          d="M33.08,17.76a1.58,1.58,0,1,1,1.58-1.58A1.58,1.58,0,0,1,33.08,17.76Z"
-          fill="#FFFFFF"
-        />
-        <Path d="M33.08,15.1A1.09,1.09,0,1,1,32,16.18a1.09,1.09,0,0,1,1.08-1.08m0-1a2.09,2.09,0,1,0,2.08,2.08,2.08,2.08,0,0,0-2.08-2.08Z" />
+      <G transform="translate(22)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
       </G>
-      <G>
-        <Path d="M46.59,17.76a1.58,1.58,0,1,1,1.59-1.58A1.58,1.58,0,0,1,46.59,17.76Z" />
-        <Path d="M46.59,15.1a1.09,1.09,0,1,1-1.08,1.08,1.09,1.09,0,0,1,1.08-1.08m0-1a2.09,2.09,0,1,0,2.09,2.08,2.08,2.08,0,0,0-2.09-2.08Z" />
+      <G transform="translate(40)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
       </G>
-      <G>
-        <Path d="M60.24,17.81a1.59,1.59,0,1,1,1.58-1.58A1.58,1.58,0,0,1,60.24,17.81Z" />
-        <Path d="M60.24,15.14a1.09,1.09,0,1,1-1.08,1.09,1.08,1.08,0,0,1,1.08-1.09m0-1a2.09,2.09,0,1,0,2.08,2.09,2.09,2.09,0,0,0-2.08-2.09Z" />
+      <G transform="translate(58)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
       </G>
-      <G>
-        <Path d="M73.63,17.81a1.59,1.59,0,1,1,1.58-1.58A1.58,1.58,0,0,1,73.63,17.81Z" />
-        <Path d="M73.63,15.14a1.09,1.09,0,1,1-1.08,1.09,1.08,1.08,0,0,1,1.08-1.09m0-1a2.09,2.09,0,1,0,2.08,2.09,2.09,2.09,0,0,0-2.08-2.09Z" />
+      <G transform="translate(76)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
       </G>
-      <Text
-        fontSize="4.3px"
-        fontFamily="HelveticaNeue-Bold, Helvetica Neue"
-        fontWeight="700"
-        transform="translate(16.11 9.67)">
-        E1
-      </Text>
     </G>
+    <Text
+      transform="translate(11 15)"
+      font-size="15"
+      font-family="HelveticaNeue-Bold, Helvetica Neue"
+      font-weight="700">
+      <TSpan x="-4.214" y="0">
+        E1
+      </TSpan>
+    </Text>
   </Svg>
 );
+
+const ExposureTwo = () => (
+  <Svg width="90" height="16" viewBox="0 0 90 16" style={{paddingVertical: 15}}>
+    <G>
+      <Rect width="90" height="2" rx="1" transform="translate(0 4)" />
+      <G transform="translate(4)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G
+        transform="translate(22)"
+        fill="#02ad85"
+        stroke="#000"
+        stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G transform="translate(40)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G transform="translate(58)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G transform="translate(76)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+    </G>
+    <Text
+      transform="translate(29 15)"
+      font-size="15"
+      font-family="HelveticaNeue-Bold, Helvetica Neue"
+      font-weight="700">
+      <TSpan x="-4.214" y="0">
+        E2
+      </TSpan>
+    </Text>
+  </Svg>
+);
+
+const ExposureThree = () => (
+  <Svg width="90" height="16" viewBox="0 0 90 16" style={{paddingVertical: 15}}>
+    <G>
+      <Rect width="90" height="2" rx="1" transform="translate(0 4)" />
+      <G transform="translate(4)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G transform="translate(22)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G
+        transform="translate(40)"
+        fill="#02ad85"
+        stroke="#000"
+        stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G transform="translate(58)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G transform="translate(76)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+    </G>
+    <Text
+      transform="translate(47 15)"
+      font-size="15"
+      font-family="HelveticaNeue-Bold, Helvetica Neue"
+      font-weight="700">
+      <TSpan x="-4.214" y="0">
+        E3
+      </TSpan>
+    </Text>
+  </Svg>
+);
+
+const ExposureFour = () => (
+  <Svg width="90" height="16" viewBox="0 0 90 16" style={{paddingVertical: 15}}>
+    <G>
+      <Rect width="90" height="2" rx="1" transform="translate(0 4)" />
+      <G transform="translate(4)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G transform="translate(22)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G transform="translate(40)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G
+        transform="translate(58)"
+        fill="#02ad85"
+        stroke="#000"
+        stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G transform="translate(76)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+    </G>
+    <Text
+      transform="translate(65 15)"
+      font-size="15"
+      font-family="HelveticaNeue-Bold, Helvetica Neue"
+      font-weight="700">
+      <TSpan x="-4.214" y="0">
+        E4
+      </TSpan>
+    </Text>
+  </Svg>
+);
+
+const ExposureFive = () => (
+  <Svg width="90" height="16" viewBox="0 0 90 16" style={{paddingVertical: 15}}>
+    <G>
+      <Rect width="90" height="2" rx="1" transform="translate(0 4)" />
+      <G transform="translate(4)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G transform="translate(22)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G transform="translate(40)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G transform="translate(58)" fill="#fff" stroke="#000" stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+      <G
+        transform="translate(76)"
+        fill="#02ad85"
+        stroke="#000"
+        stroke-width="1">
+        <Rect width="10" height="10" stroke="none" />
+        <Rect x="0.5" y="0.5" width="9" height="9" fill="none" />
+      </G>
+    </G>
+    <Text
+      transform="translate(83 15)"
+      font-size="15"
+      font-family="HelveticaNeue-Bold, Helvetica Neue"
+      font-weight="700">
+      <TSpan x="-4.214" y="0">
+        E5
+      </TSpan>
+    </Text>
+  </Svg>
+);
+
+const ExposureGraphic = ({exposureLevel = 1}) => {
+  switch (exposureLevel) {
+    case 1:
+      return <ExposureOne />;
+    case 2:
+      return <ExposureTwo />;
+    case 3:
+      return <ExposureThree />;
+    case 4:
+      return <ExposureFour />;
+    default:
+      return <ExposureFive />;
+  }
+};
+
+export default ExposureGraphic;

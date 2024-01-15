@@ -1,7 +1,7 @@
 import React from 'react';
 import {Circle, Path, Svg} from 'react-native-svg';
 
-export const RatingEmpty = () => {
+export const RatingCircleEmpty = () => {
   return (
     <Svg width="32" height="32" viewBox="0 0 22 22">
       <Path
@@ -12,7 +12,7 @@ export const RatingEmpty = () => {
   );
 };
 
-export const RatingFull = ({color = 'green'}) => {
+export const RatingCircleFull = ({color = 'green'}) => {
   return (
     <Svg width="32" height="32" viewBox="0 0 22 22">
       <Circle
